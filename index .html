@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Conciencia y Profesión — Ética Profesional · IUE 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0d1b2a;
+    --navy-mid: #1a2e45;
+    --blue: #1a4a7a;
+    --teal: #0d6e6e;
+    --accent: #4a9ec0;
+    --text: #1a1a2e;
+    --text-mid: #3a4a6a;
+    --text-light: #6a7a9a;
+    --bg: #f8f7f4;
+    --surface: #ffffff;
+    --border: #e8edf5;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--navy);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    border-bottom: 2px solid var(--blue);
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .nav-logo {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--blue), var(--teal));
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    color: #e8f0fe;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    flex-shrink: 0;
+  }
+  .nav-brand-text { display: flex; flex-direction: column; }
+  .nav-title { font-family: 'Playfair Display', serif; color: #f0f4ff; font-size: 1.05rem; font-weight: 600; }
+  .nav-subtitle-small { color: #7a9bc0; font-size: 0.68rem; font-style: italic; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link {
+    background: none; border: none;
+    color: #a0b8d0;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 6px 14px;
+    border-radius: 4px;
+    transition: all .2s;
+  }
+  .nav-link:hover { color: #f0f4ff; background: rgba(255,255,255,.07); }
+  .nav-link.active { color: #f0f4ff; background: rgba(26,74,122,.5); }
+
+  /* ── PAGES ── */
+  .page { display: none; }
+  .page.visible { display: block; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    padding: 5rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(26,74,122,.4) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(13,110,110,.25) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(26,74,122,.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,74,122,.08) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 860px; margin: 0 auto; position: relative; }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .68rem; color: var(--accent);
+    letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hero-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--accent); }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 700; color: #f0f4ff;
+    line-height: 1.15; margin-bottom: 1rem;
+  }
+  .hero-title em { font-style: italic; color: #7ab8e8; }
+  .hero-sub { font-size: 1.1rem; color: #8aa8c8; line-height: 1.7; max-width: 600px; margin-bottom: 2.5rem; font-weight: 300; }
+  .hero-stats { display: flex; gap: 2rem; flex-wrap: wrap; align-items: center; }
+  .hero-stat { display: flex; flex-direction: column; gap: 2px; }
+  .hero-stat-num { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #f0f4ff; font-weight: 700; }
+  .hero-stat-label { font-size: .7rem; color: #6a8aaa; font-family: 'JetBrains Mono', monospace; letter-spacing: .5px; }
+  .hero-divider { width: 2px; background: rgba(74,158,192,.3); align-self: stretch; margin: 4px 0; }
+
+  /* ── MAIN WRAP ── */
+  .main { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
+
+  /* ── PAGE HEADER ── */
+  .page-header { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: .68rem; color: #7a9bc0; letter-spacing: 2px; text-transform: uppercase; margin-bottom: .5rem; }
+  .page-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--navy); letter-spacing: -.3px; }
+  .page-desc { font-size: .92rem; color: var(--text-light); line-height: 1.65; max-width: 560px; margin-top: .75rem; }
+
+  /* ── FILTER BAR ── */
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2.5rem; align-items: center; }
+  .filter-label { font-family: 'JetBrains Mono', monospace; font-size: .68rem; color: #7a8aaa; letter-spacing: 1px; text-transform: uppercase; margin-right: 4px; }
+  .filter-btn {
+    padding: 6px 16px; border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--surface); color: #4a5a7a;
+    font-family: 'Source Serif 4', serif; font-size: .8rem;
+    cursor: pointer; transition: all .2s;
+  }
+  .filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .filter-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
+
+  /* ── ARTICLES GRID ── */
+  .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 1.75rem; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border-radius: 12px; overflow: hidden;
+    cursor: pointer; transition: all .25s;
+    border: 1.5px solid var(--border);
+    display: flex; flex-direction: column;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(26,74,122,.12); border-color: var(--blue); }
+  .card-head { padding: 1.4rem 1.4rem 0; display: flex; justify-content: space-between; align-items: flex-start; }
+  .badge {
+    padding: 3px 10px; border-radius: 12px;
+    font-size: .68rem; font-family: 'JetBrains Mono', monospace;
+    letter-spacing: .3px; font-weight: 500; border: 1px solid;
+  }
+  .badge-etica    { background: #e8f0fe; color: #1a4a7a; border-color: #1a4a7a; }
+  .badge-deonto   { background: #e6f4f1; color: #0d6e6e; border-color: #0d6e6e; }
+  .badge-impacto  { background: #fff3e0; color: #b45309; border-color: #b45309; }
+  .badge-ia       { background: #f3e8ff; color: #6b21a8; border-color: #6b21a8; }
+  .read-time { font-family: 'JetBrains Mono', monospace; font-size: .68rem; color: #9aaac0; }
+  .card-body { padding: 1.1rem 1.4rem; flex: 1; }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 1.18rem; font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: .35rem; }
+  .card-sub { font-size: .8rem; color: #7a8aaa; font-style: italic; margin-bottom: .85rem; }
+  .card-excerpt { font-size: .86rem; color: var(--text-mid); line-height: 1.65; }
+  .card-foot { padding: .9rem 1.4rem; border-top: 1px solid #f0f4ff; display: flex; justify-content: space-between; align-items: center; }
+  .card-author { font-size: .76rem; color: #6a7a9a; }
+  .card-date { font-family: 'JetBrains Mono', monospace; font-size: .67rem; color: #aab8cc; }
+
+  /* ── CTA BUTTON ── */
+  .cta-wrap { text-align: center; margin-top: 2.5rem; }
+  .cta-btn {
+    background: var(--blue); color: white; border: none;
+    padding: 12px 32px; border-radius: 6px;
+    font-family: 'Source Serif 4', serif; font-size: .9rem;
+    cursor: pointer; letter-spacing: .3px; transition: background .2s;
+  }
+  .cta-btn:hover { background: #1a3a6a; }
+
+  /* ── ARTICLE VIEW ── */
+  .article-view { max-width: 760px; margin: 0 auto; padding: 3rem 2rem; }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: none; border: none; color: var(--blue);
+    font-family: 'Source Serif 4', serif; font-size: .88rem;
+    cursor: pointer; padding: 8px 0; margin-bottom: 2.5rem;
+    transition: gap .2s;
+  }
+  .back-btn:hover { gap: 12px; }
+  .art-cat-row { display: flex; gap: 12px; align-items: center; margin-bottom: 1rem; }
+  .art-title { font-family: 'Playfair Display', serif; font-size: clamp(1.9rem,4vw,2.8rem); font-weight: 700; color: var(--navy); line-height: 1.2; margin-bottom: .6rem; }
+  .art-subtitle { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #4a6a9a; font-style: italic; font-weight: 400; margin-bottom: 1.5rem; }
+  .byline {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    padding: 1rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem; font-size: .8rem; color: #6a7a9a;
+    align-items: center;
+  }
+  .byline-dot { color: #c8d8e8; }
+
+  /* Content blocks */
+  .c-lead { font-size: 1.12rem; line-height: 1.8; color: #2a3a5a; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 2px solid #e8f0fe; }
+  .c-h2 { font-family: 'Playfair Display', serif; font-size: 1.32rem; font-weight: 700; color: var(--navy); margin: 2.5rem 0 1rem; }
+  .c-p { font-size: 1rem; line-height: 1.85; color: var(--text-mid); margin-bottom: 1.3rem; }
+  .c-quote {
+    border-left: 4px solid var(--blue);
+    margin: 2.5rem 0; padding: 1.2rem 2rem;
+    background: #f0f5ff; border-radius: 0 8px 8px 0;
+  }
+  .c-quote p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.08rem; line-height: 1.7; color: #1a2a4a; margin-bottom: .5rem; }
+  .c-quote cite { font-family: 'JetBrains Mono', monospace; font-size: .68rem; color: #6a8aaa; font-style: normal; }
+  .c-reflection { background: var(--navy); border-radius: 12px; padding: 2rem; margin: 2.5rem 0; }
+  .c-reflection-title { font-family: 'JetBrains Mono', monospace; font-size: .68rem; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 8px; }
+  .c-reflection-title::before { content:''; display:block; width:16px; height:1px; background:var(--accent); }
+  .c-reflection ul { list-style: none; }
+  .c-reflection li { font-size: .9rem; color: #a0b8d0; line-height: 1.65; padding: .7rem 0 .7rem 1.3rem; border-bottom: 1px solid rgba(74,158,192,.15); position: relative; }
+  .c-reflection li:last-child { border-bottom: none; }
+  .c-reflection li::before { content:'→'; position:absolute; left:0; color:var(--accent); font-family:'JetBrains Mono',monospace; font-size:.78rem; }
+  .c-refs { background: #f8faff; border: 1px solid #dde5f5; border-radius: 8px; padding: 1.5rem; margin-top: 2.5rem; }
+  .c-refs-title { font-family: 'JetBrains Mono', monospace; font-size: .68rem; letter-spacing: 1.5px; color: #7a9bc0; text-transform: uppercase; margin-bottom: 1rem; }
+  .c-refs ul { list-style: none; }
+  .c-refs li { font-size: .8rem; color: #4a5a7a; line-height: 1.6; padding: .4rem 0 .4rem 1.2rem; border-bottom: 1px solid #eef2fa; position: relative; }
+  .c-refs li:last-child { border-bottom: none; }
+  .c-refs li::before { content:'—'; position:absolute; left:0; color:#b0c0d8; font-family:'JetBrains Mono',monospace; }
+
+  /* ── AUTHORS ── */
+  .authors-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.4rem; margin-top: 2rem; }
+  .author-card { background: var(--surface); border-radius: 12px; padding: 1.75rem; border: 1.5px solid var(--border); transition: all .2s; }
+  .author-card:hover { border-color: var(--blue); box-shadow: 0 8px 24px rgba(26,74,122,.1); }
+  .author-avatar { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: white; margin-bottom: 1rem; }
+  .author-name { font-family: 'Playfair Display', serif; font-size: 1.08rem; font-weight: 700; color: var(--navy); margin-bottom: .2rem; }
+  .author-role { font-family: 'JetBrains Mono', monospace; font-size: .66rem; color: #7a9bc0; letter-spacing: .3px; margin-bottom: .85rem; }
+  .author-bio { font-size: .83rem; color: #4a5a7a; line-height: 1.65; }
+  .supervisor-box { margin-top: 2.5rem; background: #f0f5ff; border-radius: 12px; padding: 2rem; border: 1px solid #dde5f5; }
+  .supervisor-box .eyebrow { margin-bottom: .7rem; }
+  .supervisor-name { font-family: 'Playfair Display', serif; font-size: 1.08rem; color: var(--navy); margin-bottom: .2rem; }
+  .supervisor-role { font-size: .8rem; color: #6a7a9a; }
+
+  /* ── FOOTER ── */
+  footer { background: var(--navy); padding: 2rem; text-align: center; margin-top: 4rem; border-top: 2px solid var(--blue); }
+  .footer-code { font-family: 'JetBrains Mono', monospace; font-size: .68rem; color: #4a6a8a; letter-spacing: 1px; }
+  .footer-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: #7a9bc0; margin-top: 4px; }
+
+  @media (max-width: 640px) {
+    nav { padding: 0 1rem; }
+    .nav-subtitle-small, .nav-links .nav-link:not(.active) { display: none; }
+    .main { padding: 2rem 1rem; }
+    .hero { padding: 3rem 1rem 2.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand" onclick="showPage('home')">
+    <div class="nav-logo">C&amp;P</div>
+    <div class="nav-brand-text">
+      <span class="nav-title">Conciencia y Profesión</span>
+      <span class="nav-subtitle-small">Ética aplicada para la vida laboral y social</span>
+    </div>
+  </div>
+  <div class="nav-links">
+    <button class="nav-link active" id="nav-home" onclick="showPage('home')">Inicio</button>
+    <button class="nav-link" id="nav-blog" onclick="showPage('blog')">Artículos</button>
+    <button class="nav-link" id="nav-authors" onclick="showPage('authors')">Equipo Editorial</button>
+  </div>
+</nav>
+
+<!-- ═══════ HOME ═══════ -->
+<div id="page-home" class="page visible">
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Institución Universitaria de Envigado · Ética Profesional · 2026</div>
+      <h1 class="hero-title"><em>Conciencia</em> y Profesión</h1>
+      <p class="hero-sub">Una revista académica sobre los desafíos éticos que enfrentan los profesionales en la era digital. Reflexión crítica, responsabilidad social y compromiso con el bien común.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="hero-stat-num">6</span><span class="hero-stat-label">artículos publicados</span></div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat"><span class="hero-stat-num">5</span><span class="hero-stat-label">editores académicos</span></div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat"><span class="hero-stat-num">4</span><span class="hero-stat-label">líneas temáticas</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="main">
+    <div class="page-header" style="border:none; margin-bottom:1.5rem;">
+      <div class="eyebrow">Últimos artículos</div>
+      <h2 class="page-title" style="font-size:1.5rem;">Reflexiones recientes</h2>
+    </div>
+    <div class="articles-grid" id="home-grid"></div>
+    <div class="cta-wrap">
+      <button class="cta-btn" onclick="showPage('blog')">Ver todos los artículos →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ BLOG ═══════ -->
+<div id="page-blog" class="page">
+  <div class="main">
+    <div class="page-header">
+      <div class="eyebrow">Publicaciones académicas</div>
+      <h1 class="page-title">Artículos</h1>
+      <p class="page-desc">Exploraciones sobre ética profesional, responsabilidad social y el impacto de la tecnología en la sociedad. Todos los artículos siguen las normas APA 7.ª edición.</p>
+    </div>
+    <div class="filter-bar">
+      <span class="filter-label">Filtrar:</span>
+      <button class="filter-btn active" onclick="filterArticles('Todos',this)">Todos</button>
+      <button class="filter-btn" onclick="filterArticles('Ética General',this)">Ética General</button>
+      <button class="filter-btn" onclick="filterArticles('Deontología',this)">Deontología</button>
+      <button class="filter-btn" onclick="filterArticles('Impacto Social',this)">Impacto Social</button>
+      <button class="filter-btn" onclick="filterArticles('IA y Futuro',this)">IA y Futuro</button>
+    </div>
+    <div class="articles-grid" id="blog-grid"></div>
+  </div>
+</div>
+
+<!-- ═══════ ARTICLE ═══════ -->
+<div id="page-article" class="page">
+  <div class="article-view" id="article-content"></div>
+</div>
+
+<!-- ═══════ AUTHORS ═══════ -->
+<div id="page-authors" class="page">
+  <div class="main">
+    <div class="page-header">
+      <div class="eyebrow">Comité Editorial</div>
+      <h1 class="page-title">Equipo Editorial</h1>
+      <p class="page-desc">Estudiantes de Ingeniería Informática e Ingeniería Electrónica de la Institución Universitaria de Envigado comprometidos con la reflexión ética en la práctica profesional.</p>
+    </div>
+    <div class="authors-grid">
+      <div class="author-card">
+        <div class="author-avatar" style="background:linear-gradient(135deg,#1a4a7a,#1a4a7acc)">SJ</div>
+        <div class="author-name">Simón Jiménez</div>
+        <div class="author-role">Ingeniería Informática</div>
+        <p class="author-bio">Estudiante de Ingeniería Informática en la IUE. Le interesa entender cómo funcionan las tecnologías desde adentro y aplicarlas para resolver problemas de forma práctica y eficiente.</p>
+      </div>
+      <div class="author-card">
+        <div class="author-avatar" style="background:linear-gradient(135deg,#0d6e6e,#0d6e6ecc)">SM</div>
+        <div class="author-name">Santiago Muñoz</div>
+        <div class="author-role">Ingeniería Electrónica</div>
+        <p class="author-bio">Estudiante de Ingeniería Electrónica en proceso de formación profesional. Cree en el trabajo en equipo como parte fundamental del crecimiento y en la responsabilidad ética del ingeniero.</p>
+      </div>
+      <div class="author-card">
+        <div class="author-avatar" style="background:linear-gradient(135deg,#2d4a8a,#2d4a8acc)">SR</div>
+        <div class="author-name">Samuel Romero</div>
+        <div class="author-role">Ingeniería Informática — 7° semestre</div>
+        <p class="author-bio">Enfocado en desarrollo de software, inteligencia artificial y ciberseguridad. Considera que la ética profesional es fundamental en la informática para construir sistemas seguros y confiables.</p>
+      </div>
+      <div class="author-card">
+        <div class="author-avatar" style="background:linear-gradient(135deg,#1a5c5c,#1a5c5ccc)">SC</div>
+        <div class="author-name">Sebastián Calderón</div>
+        <div class="author-role">Ingeniería Informática — 7° semestre</div>
+        <p class="author-bio">Enfocado en el desarrollo de software y la creación de soluciones reales. Persona responsable, analítica y comprometida que actúa con criterio y ética en cada proceso.</p>
+      </div>
+      <div class="author-card">
+        <div class="author-avatar" style="background:linear-gradient(135deg,#3a2d6e,#3a2d6ecc)">MC</div>
+        <div class="author-name">María Camila Rodríguez</div>
+        <div class="author-role">Ingeniería Informática — 7° semestre</div>
+        <p class="author-bio">Especializada en inteligencia artificial y robótica. Entiende que la ingeniería no solo implica desarrollar tecnología, sino hacerlo con responsabilidad y compromiso ético.</p>
+      </div>
+    </div>
+    <div class="supervisor-box">
+      <div class="eyebrow">Supervisión académica</div>
+      <div class="supervisor-name">Ph.D. Luis Guillermo Orozco Sánchez</div>
+      <div class="supervisor-role">Docente · Facultad de Ciencias Sociales y Humanas · Curso: Ética Profesional · IUE, 2026</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-code">INSTITUCIÓN UNIVERSITARIA DE ENVIGADO · ÉTICA PROFESIONAL · 2026</div>
+  <div class="footer-name">Revista Conciencia y Profesión</div>
+</footer>
+
+<script>
+const ARTICLES = [
+  {
+    id: 1,
+    title: "Responsabilidad social del ingeniero en entornos digitales",
+    subtitle: "Desafíos éticos en la web contemporánea",
+    category: "Impacto Social",
+    author: "Samuel Romero",
+    date: "Marzo 2026",
+    readTime: "8 min",
+    excerpt: "El desarrollo acelerado de las tecnologías digitales y la expansión de la web han transformado profundamente la manera en que las personas interactúan, acceden a la información y toman decisiones. En este contexto, la ingeniería desempeña un papel central —y una creciente responsabilidad ética.",
+    blocks: [
+      {type:"lead", text:"El desarrollo acelerado de las tecnologías digitales y la expansión de la web han transformado profundamente la manera en que las personas interactúan, acceden a la información y toman decisiones. En este contexto, la ingeniería, especialmente en áreas relacionadas con sistemas, software y telecomunicaciones, desempeña un papel central en la construcción de estos entornos."},
+      {type:"h2", text:"La responsabilidad ética del ingeniero en la era digital"},
+      {type:"p", text:"La práctica de la ingeniería no puede limitarse únicamente al dominio técnico. La verdadera competencia profesional implica integrar conocimientos técnicos con principios éticos sólidos. Las tecnologías actuales no son neutrales: influyen directamente en la vida de millones de personas."},
+      {type:"quote", text:"Las tecnologías de la información y de la comunicación (TIC) están invadiendo todos los aspectos de la existencia humana y están planteando serios desafíos a valores individuales y sociales que se consideraban firmemente establecidos.", author:"Montuschi, L. (2005)"},
+      {type:"p", text:"Esta visión resalta que la ética no es un complemento opcional, sino una parte esencial del ejercicio profesional. Cada decisión técnica conlleva una dimensión moral. En el entorno digital, donde las decisiones pueden escalar rápidamente y afectar a grandes poblaciones, esta responsabilidad se vuelve aún más crítica."},
+      {type:"h2", text:"Desafíos éticos en la web y las TIC"},
+      {type:"p", text:"El entorno digital ha dado lugar a nuevos dilemas éticos y ha amplificado problemas existentes. Uno de los principales problemas radica en la falta de regulación adecuada. Este vacío permite que se desarrollen prácticas cuestionables, como el uso indebido de datos personales, la manipulación de información o la creación de algoritmos sesgados."},
+      {type:"p", text:"La web también se ha convertido en un espacio donde pueden proliferar conductas negativas. Internet se ha convertido en muchos casos en un vehículo para conductas criminales, lo que evidencia que las decisiones técnicas tienen consecuencias reales y, en algunos casos, perjudiciales para la sociedad."},
+      {type:"h2", text:"Formación y compromiso profesional"},
+      {type:"p", text:"Para enfrentar estos desafíos, es fundamental que los ingenieros reciban una formación integral que incluya aspectos éticos y sociales. No basta con dominar herramientas técnicas; es necesario desarrollar una visión crítica y responsable, integrando criterios de responsabilidad social y sostenibilidad en la actividad profesional."},
+      {type:"reflection", questions:["¿En qué medida las decisiones que toma un ingeniero de software impactan a comunidades que nunca conocerá?","¿Cómo puede un profesional equilibrar la presión empresarial con sus compromisos éticos?","¿Qué responsabilidad tiene la universidad en formar ingenieros con conciencia social?","¿Es suficiente cumplir con la ley para actuar éticamente en el entorno digital?"]},
+      {type:"refs", items:["Montuschi, L. (2005). Aspectos éticos de las tecnologías de la información y de la comunicación. Serie Documentos de Trabajo, No. 298.","Marín, J. C. (2006). La gestión ética y la responsabilidad social en la ingeniería. Rev. Técnica Ind, 262, 26–30.","Miñano Rubio, R. (2017). Integración de competencias de responsabilidad social, sostenibilidad y ética profesional en los grados de ingeniería informática."]}
+    ]
+  },
+  {
+    id: 2,
+    title: "Relación ética con usuarios, colegas e instituciones",
+    subtitle: "Confianza como fundamento de la práctica profesional digital",
+    category: "Deontología",
+    author: "Sebastián Calderón",
+    date: "Marzo 2026",
+    readTime: "7 min",
+    excerpt: "La digitalización ha reconfigurado profundamente las formas en que interactuamos, trabajamos y aprendemos, creando nuevas dinámicas sociales que exigen una reflexión crítica urgente sobre la confianza profesional.",
+    blocks: [
+      {type:"lead", text:"La digitalización ha reconfigurado profundamente las formas en que interactuamos, trabajamos y aprendemos, creando nuevas dinámicas sociales que exigen una reflexión crítica urgente. En este nuevo escenario, el internet emerge como el principal canal de comunicación, donde los metadatos y algoritmos influyen en la percepción de la realidad."},
+      {type:"h2", text:"La integridad en la relación con los usuarios"},
+      {type:"p", text:"La relación del profesional con los usuarios en el entorno digital debe fundamentarse en la veracidad y la confianza. Según los códigos de ética profesional, esto implica actuar con honestidad y transparencia en la expresión pública de conceptos, asegurando que el profesional sea una persona de confianza para quienes reciben sus servicios."},
+      {type:"p", text:"Sin embargo, el rápido avance tecnológico a menudo supera la capacidad de la sociedad para regular estas interacciones, generando vacíos normativos que exponen a los usuarios a riesgos como la manipulación de información y la vigilancia masiva."},
+      {type:"h2", text:"El compromiso ético con las instituciones"},
+      {type:"p", text:"Las instituciones necesitan ajustar y redirigir sus normas y valores para preservar la confianza de la sociedad ante los rápidos cambios tecnológicos. Existe el riesgo de caer en el 'ethics washing' o formas ambiguas de autorregulación que no llenan los vacíos normativos existentes."},
+      {type:"quote", text:"La ética en las relaciones digitales es el cimiento de la confianza social.", author:"Comité Editorial – Revista Conciencia y Profesión"},
+      {type:"h2", text:"Hacia una gobernanza ética global"},
+      {type:"p", text:"La hibridación entre lo humano y lo tecnológico es un fenómeno creciente que requiere una reflexión legal y ética profunda. Ante la carencia de regulaciones internacionales suficientes, se hace imperativo establecer un marco ético global que promueva el uso responsable de la inteligencia artificial y proteja la dignidad humana."},
+      {type:"reflection", questions:["¿Cómo puede un profesional garantizar la privacidad de los usuarios cuando las plataformas donde trabaja la vulneran?","¿Qué diferencia existe entre cumplir normas deontológicas y actuar éticamente?","¿De qué manera el 'ethics washing' daña la confianza pública en las instituciones tecnológicas?","¿Cómo construir relaciones profesionales auténticas en un entorno mediado por algoritmos?"]},
+      {type:"refs", items:["Arriola Rosales, C. R. (2024). La ética en la era digital. Revista Científica Internacional, 7(1), 135–153.","Balladares-Burgos, J. (2022). Valores para una ética digital a partir de las generaciones digitales. 593 Digital Publisher CEIT, 7(1), 40–52.","Cortina, A. (2002). La dimensión pública de las éticas aplicadas. Revista Iberoamericana de Educación, 29, 45–64."]}
+    ]
+  },
+  {
+    id: 3,
+    title: "La ética en la era digital",
+    subtitle: "Desafíos y responsabilidad en la Web",
+    category: "Ética General",
+    author: "Simón Jiménez",
+    date: "Marzo 2026",
+    readTime: "5 min",
+    excerpt: "Vivimos en una época en la que la tecnología y el internet han transformado profundamente la forma en que nos comunicamos, trabajamos y accedemos a la información. ¿Cómo actuar de manera ética en un entorno que cambia constantemente?",
+    blocks: [
+      {type:"lead", text:"Vivimos en una época en la que la tecnología y el internet han transformado profundamente la forma en que nos comunicamos, trabajamos y accedemos a la información. Las redes sociales, las plataformas digitales y los algoritmos influyen cada vez más en la manera en que las personas construyen opiniones, toman decisiones y se relacionan con el mundo."},
+      {type:"quote", text:"La ética es la brújula que orienta nuestras decisiones en el mundo digital.", author:"Comité Editorial – Conciencia y Profesión, Marzo 2026"},
+      {type:"p", text:"La ética profesional se convierte en una guía esencial para enfrentar estos desafíos. Más allá de las normas o regulaciones, la ética implica una reflexión consciente sobre el impacto de nuestras acciones en los demás. Cada decisión que se toma en el entorno digital —desde la difusión de información hasta el manejo de datos personales— puede tener consecuencias significativas para la sociedad."},
+      {type:"p", text:"Uno de los principales retos de la era digital es la aparición de nuevos dilemas éticos. La privacidad de los datos, la desinformación en internet, el uso de algoritmos para influir en la información y la brecha digital que afecta a diferentes comunidades son algunos de los problemas que requieren una mirada crítica y responsable."},
+      {type:"reflection", questions:["¿Cuáles son los dilemas éticos más urgentes que enfrenta un ingeniero informático en 2026?","¿Puede existir neutralidad tecnológica o toda decisión técnica es también una decisión moral?","¿Qué valores deben guiar el diseño de plataformas digitales que afectan a millones de personas?"]},
+      {type:"refs", items:["García López, I. E., y Juan Pérez, J. I. (2024). Ética aplicada y valores en la era digital.","Durán, C. (2022). Ética profesional, una responsabilidad humanística. Revista Boletín Redipe, 11(6), 188–195."]}
+    ]
+  },
+  {
+    id: 4,
+    title: "Algoritmos con conciencia: ética en el desarrollo de IA",
+    subtitle: "Responsabilidad moral en el diseño de sistemas inteligentes",
+    category: "IA y Futuro",
+    author: "María Camila Rodríguez",
+    date: "Abril 2026",
+    readTime: "9 min",
+    excerpt: "Los sistemas de inteligencia artificial no son objetos inertes: son extensiones de las decisiones humanas. Cada algoritmo lleva impresa la visión —y los sesgos— de quienes lo diseñaron.",
+    blocks: [
+      {type:"lead", text:"Los sistemas de inteligencia artificial no son objetos inertes: son extensiones de las decisiones humanas. Cada algoritmo lleva impresa la visión —y los sesgos— de quienes lo diseñaron. Cuando un modelo de IA decide qué noticias mostrar, qué candidatos recomendar para un empleo, o qué pacientes priorizar en atención médica, está ejerciendo un poder que antes solo pertenecía a personas con nombre y responsabilidad."},
+      {type:"h2", text:"El problema del sesgo algorítmico"},
+      {type:"p", text:"Un algoritmo entrenado con datos históricos reproduce y amplifica las inequidades presentes en esos datos. Si los datos de contratación de una empresa históricamente favorecieron a hombres de determinado perfil, el modelo aprenderá a discriminar a quienes no encajen en ese molde —sin que nadie lo haya programado explícitamente para hacerlo."},
+      {type:"p", text:"Desde la perspectiva de la ética kantiana, este proceso viola el imperativo categórico: no se puede tratar a una persona como un dato estadístico, como medio y no como fin. La dignidad humana no es negociable, incluso cuando el sistema que la vulnera actúa en fracciones de segundo y a escala global."},
+      {type:"quote", text:"La responsabilidad debe ser imputada a personas que ejecutaron ciertas acciones. Difícilmente pueda imputarse responsabilidad a un aparato.", author:"Montuschi, L. (2005). Aspectos éticos de las TIC"},
+      {type:"h2", text:"Transparencia y explicabilidad como obligaciones éticas"},
+      {type:"p", text:"El principio de explicabilidad —la capacidad de un sistema de IA para justificar sus decisiones en términos comprensibles para los afectados— no es solo una buena práctica técnica. Es una obligación ética. Un ciudadano que recibe una negativa de crédito, una persona que no es convocada a una entrevista de trabajo: todos merecen saber por qué."},
+      {type:"p", text:"Esto demanda que el ingeniero informático no diseñe únicamente para la eficiencia, sino también para la rendición de cuentas. Construir sistemas auditables, con registros claros y mecanismos de apelación, es parte del ejercicio ético de la profesión."},
+      {type:"h2", text:"El rol del ingeniero como guardián ético"},
+      {type:"p", text:"La formación ética del ingeniero informático debe incluir la capacidad de plantear objeciones de conciencia. Si un sistema solicitado vulnera derechos fundamentales, el profesional tiene no solo el derecho, sino la obligación de señalarlo. La ética no es una restricción al trabajo técnico: es su condición de legitimidad."},
+      {type:"reflection", questions:["¿Puede un ingeniero eximirse de responsabilidad moral argumentando que 'solo siguió las instrucciones del cliente'?","¿Qué mecanismos concretos puede implementar un equipo de desarrollo para detectar y corregir sesgos algorítmicos?","¿Cómo equilibrar la innovación tecnológica con la protección de los derechos fundamentales?","¿Qué papel deben jugar los filósofos, juristas y científicos sociales en los equipos de desarrollo de IA?"]},
+      {type:"refs", items:["Montuschi, L. (2005). Aspectos éticos de las tecnologías de la información y de la comunicación. Serie Documentos de Trabajo, No. 298.","García López, I. E., y Juan Pérez, J. I. (2024). Ética aplicada y valores en la era digital.","Miñano Rubio, R. (2017). Integración de competencias de responsabilidad social, sostenibilidad y ética profesional en los grados de ingeniería informática."]}
+    ]
+  },
+  {
+    id: 5,
+    title: "Ciberseguridad como imperativo moral",
+    subtitle: "Proteger la dignidad humana en el espacio digital",
+    category: "Deontología",
+    author: "Santiago Muñoz",
+    date: "Abril 2026",
+    readTime: "8 min",
+    excerpt: "Cada brecha de seguridad no es solo un fallo técnico: es una violación de la confianza depositada en quienes construyen los sistemas que custodian la vida digital de las personas.",
+    blocks: [
+      {type:"lead", text:"Cada brecha de seguridad no es solo un fallo técnico: es una violación de la confianza depositada en quienes construyen los sistemas que custodian la vida digital de las personas. Datos de salud, conversaciones privadas, información financiera, identidades: todo esto habita en servidores y sistemas diseñados —o mal diseñados— por ingenieros."},
+      {type:"h2", text:"La privacidad como derecho fundamental"},
+      {type:"p", text:"La privacidad no es un privilegio técnico. Es un derecho humano reconocido internacionalmente y una condición necesaria para el ejercicio de la autonomía, la libertad de pensamiento y la dignidad personal. Desde la ética aristotélica, la vida buena requiere espacios de intimidad donde la persona pueda desarrollarse sin vigilancia ni coerción."},
+      {type:"p", text:"Cuando un sistema informático es diseñado con medidas de seguridad insuficientes —ya sea por negligencia, por recorte de costos o por presión de tiempos— el ingeniero está transfiriendo un riesgo invisible a los usuarios. Ese traslado de riesgo es, en sí mismo, un acto con dimensión moral."},
+      {type:"quote", text:"Como profesionales, los ingenieros deben buscar el hacer las cosas bien y esto se consigue cuando se tiene la suficiente competencia técnica, cuando las relaciones personales están basadas en la confianza y cuando se tiene un profundo respeto a las personas y al medio ambiente.", author:"Marín, J. C. (2006). La gestión ética y la responsabilidad social en la ingeniería"},
+      {type:"h2", text:"El ingeniero como custodio de la confianza"},
+      {type:"p", text:"Implementar buenas prácticas de seguridad —cifrado robusto, autenticación multifactor, principio de mínimo privilegio, auditorías regulares— no debería ser visto como un costo adicional. Es parte de la responsabilidad deontológica del profesional, tan fundamental como escribir código correcto."},
+      {type:"p", text:"Más aún: el ingeniero tiene la obligación ética de comunicar con claridad los riesgos de seguridad a sus clientes y empleadores, incluso cuando esta comunicación resulte incómoda. El silencio cómplice ante una vulnerabilidad conocida es una forma de negligencia profesional."},
+      {type:"reflection", questions:["¿Es éticamente justificable implementar sistemas con vulnerabilidades conocidas bajo presión de plazos de entrega?","¿Qué responsabilidad tienen las empresas tecnológicas cuando sus plataformas son utilizadas para vigilar o perseguir a ciudadanos?","¿Cómo puede un profesional de la ciberseguridad operar éticamente en contextos donde la ley es ambigua?","¿Qué significa 'privacidad por diseño' y por qué debería ser un estándar mínimo en todo desarrollo de software?"]},
+      {type:"refs", items:["Marín, J. C. (2006). La gestión ética y la responsabilidad social en la ingeniería. Rev. Técnica Ind, 262, 26–30.","Arriola Rosales, C. R. (2024). La ética en la era digital. Revista Científica Internacional, 7(1), 135–153.","Sguerra, S. (2019). Comité de Ética en la Asociación Colombiana de Ingenieros – ACIEM."]}
+    ]
+  },
+  {
+    id: 6,
+    title: "El ingeniero informático frente a la brecha digital",
+    subtitle: "Tecnología para todos o para pocos: una elección ética",
+    category: "Impacto Social",
+    author: "Simón Jiménez",
+    date: "Abril 2026",
+    readTime: "7 min",
+    excerpt: "Mientras construimos aplicaciones más sofisticadas, millones de personas siguen sin acceso estable a internet. Esta paradoja no es solo un problema de infraestructura: es un dilema ético que interpela directamente a quienes diseñan el mundo digital.",
+    blocks: [
+      {type:"lead", text:"Mientras construimos aplicaciones más sofisticadas, millones de personas siguen sin acceso estable a internet. Esta paradoja no es solo un problema de infraestructura: es un dilema ético que interpela directamente a quienes diseñan el mundo digital. La brecha digital no es un fenómeno natural; es el resultado acumulado de decisiones —técnicas, económicas y políticas— tomadas por personas."},
+      {type:"h2", text:"¿Qué es la brecha digital y por qué importa éticamente?"},
+      {type:"p", text:"La brecha digital no se limita al acceso a dispositivos o conectividad. Incluye también la capacidad de uso significativo —la habilidad de evaluar críticamente la información, proteger la privacidad propia, participar en la economía digital— y las oportunidades que genera ese uso. Quien no tiene acceso queda excluido de servicios educativos, oportunidades laborales, atención médica digital y participación cívica."},
+      {type:"quote", text:"La nueva sociedad basada en las tecnologías de la información debería tender a reducir las desigualdades existentes y asegurar el acceso general a la información.", author:"Montuschi, L. (2005)"},
+      {type:"h2", text:"El diseño inclusivo como práctica ética"},
+      {type:"p", text:"Todo sistema que se desarrolla bajo la asunción implícita de que el usuario tiene banda ancha, un teléfono de última generación y alfabetización digital avanzada está tomando una decisión de exclusión. El diseño inclusivo —interfaces livianas, soporte offline, lenguaje claro, accesibilidad para personas con discapacidad— no es un añadido de lujo: es la implementación técnica de la justicia social."},
+      {type:"p", text:"Desde el utilitarismo de Mill, una tecnología verdaderamente buena es aquella que maximiza el bienestar del mayor número de personas. Desde Kant, ninguna persona puede ser tratada simplemente como un 'mercado no rentable' al que no vale la pena atender. Ambas tradiciones filosóficas convergen en la misma conclusión práctica: diseñar con inclusión es diseñar bien."},
+      {type:"h2", text:"El compromiso del ingeniero informático"},
+      {type:"p", text:"El ingeniero informático tiene herramientas concretas para actuar frente a la brecha digital: defender estándares abiertos, contribuir a proyectos de código libre, diseñar para dispositivos de bajo recurso, abogar dentro de sus organizaciones por políticas de accesibilidad. Cada una de estas decisiones es, al mismo tiempo, una decisión técnica y una declaración de valores."},
+      {type:"reflection", questions:["¿Es responsabilidad del ingeniero pensar en usuarios que nunca verá ni conocerá?","¿Cómo puede un profesional individual incidir en políticas de acceso digital que dependen de decisiones gubernamentales y corporativas?","¿Qué criterios éticos debería usar un equipo de desarrollo al decidir en qué plataformas y dispositivos soportar su aplicación?","¿La contribución al software libre es un acto ético, técnico o ambos?"]},
+      {type:"refs", items:["Montuschi, L. (2005). Aspectos éticos de las tecnologías de la información y de la comunicación. Serie Documentos de Trabajo, No. 298.","Miñano Rubio, R. (2017). Integración de competencias de responsabilidad social, sostenibilidad y ética profesional.","Balladares-Burgos, J. (2022). Valores para una ética digital a partir de las generaciones digitales. 593 Digital Publisher CEIT, 7(1), 40–52."]}
+    ]
+  }
+];
+
+const BADGE_CLASS = {
+  "Ética General": "badge-etica",
+  "Deontología":   "badge-deonto",
+  "Impacto Social":"badge-impacto",
+  "IA y Futuro":   "badge-ia"
+};
+
+let currentFilter = "Todos";
+
+function badge(cat) {
+  return `<span class="badge ${BADGE_CLASS[cat] || ''}">${cat}</span>`;
+}
+
+function cardHTML(art) {
+  return `
+    <div class="card" onclick="openArticle(${art.id})">
+      <div class="card-head">
+        ${badge(art.category)}
+        <span class="read-time">${art.readTime} lectura</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">${art.title}</h3>
+        <p class="card-sub">${art.subtitle}</p>
+        <p class="card-excerpt">${art.excerpt}</p>
+      </div>
+      <div class="card-foot">
+        <span class="card-author">Por ${art.author}</span>
+        <span class="card-date">${art.date}</span>
+      </div>
+    </div>`;
+}
+
+function renderGrid(container, articles) {
+  container.innerHTML = articles.map(cardHTML).join('');
+}
+
+function renderBlocks(blocks) {
+  return blocks.map(b => {
+    if (b.type === 'lead') return `<p class="c-lead">${b.text}</p>`;
+    if (b.type === 'h2')   return `<h2 class="c-h2">${b.text}</h2>`;
+    if (b.type === 'p')    return `<p class="c-p">${b.text}</p>`;
+    if (b.type === 'quote') return `
+      <blockquote class="c-quote">
+        <p>"${b.text}"</p>
+        <cite>${b.author}</cite>
+      </blockquote>`;
+    if (b.type === 'reflection') return `
+      <div class="c-reflection">
+        <div class="c-reflection-title">Preguntas para la reflexión</div>
+        <ul>${b.questions.map(q => `<li>${q}</li>`).join('')}</ul>
+      </div>`;
+    if (b.type === 'refs') return `
+      <div class="c-refs">
+        <div class="c-refs-title">Referencias (APA 7ª ed.)</div>
+        <ul>${b.items.map(r => `<li>${r}</li>`).join('')}</ul>
+      </div>`;
+    return '';
+  }).join('');
+}
+
+function openArticle(id) {
+  const art = ARTICLES.find(a => a.id === id);
+  if (!art) return;
+  document.getElementById('article-content').innerHTML = `
+    <button class="back-btn" onclick="showPage('blog')">← Volver a artículos</button>
+    <div>
+      <div class="art-cat-row">
+        ${badge(art.category)}
+        <span style="font-family:'JetBrains Mono',monospace;font-size:.67rem;color:#aab8cc;letter-spacing:.5px">${art.readTime} de lectura</span>
+      </div>
+      <h1 class="art-title">${art.title}</h1>
+      <p class="art-subtitle">${art.subtitle}</p>
+      <div class="byline">
+        <span>Por <strong>${art.author}</strong></span>
+        <span class="byline-dot">·</span>
+        <span>${art.date}</span>
+        <span class="byline-dot">·</span>
+        <span>Institución Universitaria de Envigado</span>
+      </div>
+      ${renderBlocks(art.blocks)}
+    </div>`;
+  showPage('article');
+}
+
+function filterArticles(cat, btn) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = cat === 'Todos' ? ARTICLES : ARTICLES.filter(a => a.category === cat);
+  renderGrid(document.getElementById('blog-grid'), filtered);
+}
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('visible'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('visible');
+  const navKey = name === 'article' ? 'blog' : name;
+  const navEl = document.getElementById('nav-' + navKey);
+  if (navEl) navEl.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Init
+renderGrid(document.getElementById('home-grid'), ARTICLES.slice(0, 3));
+renderGrid(document.getElementById('blog-grid'), ARTICLES);
+</script>
+</body>
+</html>
