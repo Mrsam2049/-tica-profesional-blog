@@ -11,21 +11,22 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --navy: #0d1b2a;
-    --navy-mid: #1a2e45;
-    --blue: #1a4a7a;
-    --teal: #0d6e6e;
-    --accent: #4a9ec0;
-    --text: #1a1a2e;
-    --text-mid: #3a4a6a;
-    --text-light: #6a7a9a;
-    --bg: #f8f7f4;
-    --surface: #ffffff;
-    --border: #e8edf5;
+    --navy:      #0b1729;
+    --navy-mid:  #152440;
+    --blue:      #1a4a7a;
+    --teal:      #0d6e6e;
+    --accent:    #4a9ec0;
+    --accent2:   #38bdf8;
+    --gold:      #f0c060;
+    --text:      #1a1a2e;
+    --text-mid:  #3a4a6a;
+    --text-light:#6a7a9a;
+    --bg:        #f5f6fa;
+    --surface:   #ffffff;
+    --border:    #e2e8f5;
   }
 
   html { scroll-behavior: smooth; }
-
   body {
     font-family: 'Source Serif 4', Georgia, serif;
     background: var(--bg);
@@ -44,93 +45,246 @@
     position: sticky;
     top: 0;
     z-index: 200;
-    border-bottom: 2px solid var(--blue);
+    border-bottom: 2px solid rgba(74,158,192,.35);
+    backdrop-filter: blur(8px);
   }
   .nav-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    text-decoration: none;
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer; text-decoration: none;
   }
   .nav-logo {
-    width: 36px; height: 36px;
+    width: 38px; height: 38px;
     background: linear-gradient(135deg, var(--blue), var(--teal));
-    border-radius: 6px;
+    border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     font-family: 'JetBrains Mono', monospace;
-    color: #e8f0fe;
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: -0.5px;
-    flex-shrink: 0;
+    color: #e8f0fe; font-size: 12px; font-weight: 500;
+    letter-spacing: -.5px; flex-shrink: 0;
+    box-shadow: 0 0 0 1px rgba(74,158,192,.3);
   }
   .nav-brand-text { display: flex; flex-direction: column; }
   .nav-title { font-family: 'Playfair Display', serif; color: #f0f4ff; font-size: 1.05rem; font-weight: 600; }
-  .nav-subtitle-small { color: #7a9bc0; font-size: 0.68rem; font-style: italic; }
+  .nav-subtitle-small { color: #5a8aac; font-size: .67rem; font-style: italic; }
   .nav-links { display: flex; gap: 4px; }
   .nav-link {
-    background: none; border: none;
-    color: #a0b8d0;
-    font-family: 'Source Serif 4', serif;
-    font-size: 0.85rem;
-    cursor: pointer;
-    padding: 6px 14px;
-    border-radius: 4px;
+    background: none; border: none; color: #8aaccc;
+    font-family: 'Source Serif 4', serif; font-size: .85rem;
+    cursor: pointer; padding: 6px 14px; border-radius: 4px;
     transition: all .2s;
   }
   .nav-link:hover { color: #f0f4ff; background: rgba(255,255,255,.07); }
-  .nav-link.active { color: #f0f4ff; background: rgba(26,74,122,.5); }
+  .nav-link.active { color: #f0f4ff; background: rgba(26,74,122,.55); }
 
   /* ── PAGES ── */
   .page { display: none; }
   .page.visible { display: block; }
 
-  /* ── HERO ── */
+  /* ══════════════════════════════════════
+     HERO — Tech-Engineering Magazine Style
+  ══════════════════════════════════════ */
   .hero {
     background: var(--navy);
-    padding: 5rem 2rem 4rem;
     position: relative;
     overflow: hidden;
+    min-height: 540px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
-  .hero::before {
+
+  /* Animated circuit-board grid background */
+  .hero-bg {
+    position: absolute; inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .hero-bg::before {
     content: '';
     position: absolute; inset: 0;
     background:
-      radial-gradient(ellipse at 20% 50%, rgba(26,74,122,.4) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 20%, rgba(13,110,110,.25) 0%, transparent 50%);
-    pointer-events: none;
+      radial-gradient(ellipse 60% 70% at 75% 50%, rgba(26,74,122,.55) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 50% at 15% 30%, rgba(13,110,110,.3) 0%, transparent 60%),
+      radial-gradient(ellipse 30% 40% at 85% 85%, rgba(74,158,192,.15) 0%, transparent 50%);
   }
-  .hero-grid {
+  /* circuit-board grid */
+  .hero-circuit {
     position: absolute; inset: 0;
     background-image:
-      linear-gradient(rgba(26,74,122,.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(26,74,122,.08) 1px, transparent 1px);
-    background-size: 48px 48px;
-    pointer-events: none;
+      linear-gradient(rgba(74,158,192,.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(74,158,192,.07) 1px, transparent 1px);
+    background-size: 40px 40px;
   }
-  .hero-inner { max-width: 860px; margin: 0 auto; position: relative; }
-  .hero-eyebrow {
+  /* Decorative tech SVG shapes */
+  .hero-tech-art {
+    position: absolute;
+    right: 0; top: 0;
+    width: 55%;
+    height: 100%;
+    opacity: .85;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    padding: 3rem 2rem 4rem;
+    max-width: 620px;
+  }
+  .hero-issue-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(74,158,192,.15);
+    border: 1px solid rgba(74,158,192,.35);
+    border-radius: 4px;
+    padding: 4px 12px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: .68rem; color: var(--accent);
-    letter-spacing: 2px; text-transform: uppercase;
+    font-size: .65rem; color: var(--accent2);
+    letter-spacing: 1.5px; text-transform: uppercase;
     margin-bottom: 1.5rem;
-    display: flex; align-items: center; gap: 8px;
   }
-  .hero-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--accent); }
+  .hero-issue-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent2);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .5; transform: scale(.7); }
+  }
   .hero-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-size: clamp(2.6rem, 5.5vw, 4.2rem);
     font-weight: 700; color: #f0f4ff;
-    line-height: 1.15; margin-bottom: 1rem;
+    line-height: 1.1; margin-bottom: .9rem;
+    letter-spacing: -.5px;
   }
-  .hero-title em { font-style: italic; color: #7ab8e8; }
-  .hero-sub { font-size: 1.1rem; color: #8aa8c8; line-height: 1.7; max-width: 600px; margin-bottom: 2.5rem; font-weight: 300; }
-  .hero-stats { display: flex; gap: 2rem; flex-wrap: wrap; align-items: center; }
-  .hero-stat { display: flex; flex-direction: column; gap: 2px; }
-  .hero-stat-num { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: #f0f4ff; font-weight: 700; }
-  .hero-stat-label { font-size: .7rem; color: #6a8aaa; font-family: 'JetBrains Mono', monospace; letter-spacing: .5px; }
-  .hero-divider { width: 2px; background: rgba(74,158,192,.3); align-self: stretch; margin: 4px 0; }
+  .hero-title em { font-style: italic; color: var(--accent2); }
+  .hero-deck {
+    font-size: 1.05rem; color: #7aaacf;
+    line-height: 1.75; max-width: 520px;
+    margin-bottom: 2.5rem; font-weight: 300;
+  }
+  /* Stat strip */
+  .hero-stats {
+    display: flex; gap: 0; flex-wrap: wrap;
+    border: 1px solid rgba(74,158,192,.25);
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 480px;
+  }
+  .hero-stat {
+    display: flex; flex-direction: column; gap: 2px;
+    padding: .9rem 1.5rem;
+    border-right: 1px solid rgba(74,158,192,.2);
+    background: rgba(255,255,255,.03);
+    flex: 1;
+  }
+  .hero-stat:last-child { border-right: none; }
+  .hero-stat-num { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: #e8f4ff; font-weight: 700; line-height: 1; }
+  .hero-stat-label { font-size: .62rem; color: #5a8aac; font-family: 'JetBrains Mono', monospace; letter-spacing: .5px; text-transform: uppercase; margin-top: 2px; }
+
+  /* ══════════════════════════════════════
+     EDITORIAL STRIP — between hero and articles
+  ══════════════════════════════════════ */
+  .editorial-section {
+    background: var(--navy-mid);
+    border-top: 1px solid rgba(74,158,192,.2);
+    border-bottom: 3px solid var(--blue);
+    padding: 3.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .editorial-section::before {
+    content: '"';
+    position: absolute;
+    top: -1.5rem; left: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 18rem;
+    color: rgba(74,158,192,.05);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+  .editorial-inner {
+    max-width: 980px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .editorial-label-col {
+    position: relative;
+  }
+  .editorial-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .62rem; color: var(--gold);
+    letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .editorial-tag::after { content:''; flex: 1; height: 1px; background: var(--gold); opacity: .35; }
+  .editorial-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 700; color: #f0f4ff;
+    line-height: 1.15; margin-bottom: 1.2rem;
+  }
+  .editorial-heading em { font-style: italic; color: var(--accent2); }
+  .editorial-subheading {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; color: #6a9abf; font-style: italic;
+    margin-bottom: 1.5rem; line-height: 1.5;
+  }
+  .editorial-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .65rem; color: #4a7a9a;
+    letter-spacing: .5px; line-height: 1.9;
+    border-top: 1px solid rgba(74,158,192,.2);
+    padding-top: 1.2rem;
+  }
+  .editorial-meta strong { color: #6a9abf; display: block; margin-bottom: .3rem; }
+  /* Body text column */
+  .editorial-body {
+    position: relative;
+  }
+  .editorial-dropcap {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; color: #b0c8e0;
+    line-height: 1.8;
+    columns: 2; column-gap: 2.5rem;
+  }
+  .editorial-dropcap p { margin-bottom: 1.1rem; break-inside: avoid; }
+  .editorial-dropcap p:first-child::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem; font-weight: 700;
+    color: var(--accent2);
+    float: left; line-height: .8;
+    margin: .05em .12em 0 0;
+  }
+  .editorial-pullquote {
+    background: rgba(74,158,192,.12);
+    border-left: 3px solid var(--gold);
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0 6px 6px 0;
+    break-inside: avoid;
+  }
+  .editorial-pullquote p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-size: 1.08rem;
+    color: #d0e8f8; line-height: 1.65;
+    margin: 0 !important;
+  }
+  .editorial-sign {
+    margin-top: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem; color: #4a7a9a;
+    letter-spacing: .5px;
+    display: flex; align-items: center; gap: 12px;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(74,158,192,.2);
+  }
+  .editorial-sign::before { content: '—'; color: var(--gold); }
 
   /* ── MAIN WRAP ── */
   .main { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
@@ -140,6 +294,25 @@
   .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: .68rem; color: #7a9bc0; letter-spacing: 2px; text-transform: uppercase; margin-bottom: .5rem; }
   .page-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--navy); letter-spacing: -.3px; }
   .page-desc { font-size: .92rem; color: var(--text-light); line-height: 1.65; max-width: 560px; margin-top: .75rem; }
+
+  /* Section header for home articles */
+  .section-eyebrow {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 2rem;
+  }
+  .section-eyebrow-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .65rem; color: #7a9bc0;
+    letter-spacing: 2.5px; text-transform: uppercase;
+  }
+  .section-eyebrow-line {
+    flex: 1; height: 1px; background: var(--border);
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 700;
+    color: var(--navy); margin-bottom: 1.75rem;
+  }
 
   /* ── FILTER BAR ── */
   .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2.5rem; align-items: center; }
@@ -241,6 +414,23 @@
   .c-refs li:last-child { border-bottom: none; }
   .c-refs li::before { content:'—'; position:absolute; left:0; color:#b0c0d8; font-family:'JetBrains Mono',monospace; }
 
+  /* ── INLINE SVG DIAGRAMS ── */
+  .c-diagram {
+    margin: 2.5rem 0;
+    background: #f0f5ff;
+    border: 1px solid #dde5f5;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .c-diagram-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .65rem; letter-spacing: 2px; text-transform: uppercase;
+    color: #7a9bc0; padding: .75rem 1.4rem;
+    border-bottom: 1px solid #dde5f5;
+    background: #e8f0fb;
+  }
+  .c-diagram svg { display: block; width: 100%; height: auto; }
+
   /* ── AUTHORS ── */
   .authors-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.4rem; margin-top: 2rem; }
   .author-card { background: var(--surface); border-radius: 12px; padding: 1.75rem; border: 1.5px solid var(--border); transition: all .2s; }
@@ -255,15 +445,22 @@
   .supervisor-role { font-size: .8rem; color: #6a7a9a; }
 
   /* ── FOOTER ── */
-  footer { background: var(--navy); padding: 2rem; text-align: center; margin-top: 4rem; border-top: 2px solid var(--blue); }
-  .footer-code { font-family: 'JetBrains Mono', monospace; font-size: .68rem; color: #4a6a8a; letter-spacing: 1px; }
-  .footer-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: #7a9bc0; margin-top: 4px; }
+  footer { background: var(--navy); padding: 2.5rem 2rem; text-align: center; margin-top: 4rem; border-top: 2px solid var(--blue); }
+  .footer-code { font-family: 'JetBrains Mono', monospace; font-size: .68rem; color: #3a6a8a; letter-spacing: 1px; }
+  .footer-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: #6a9abf; margin-top: 4px; }
+  .footer-tagline { font-size: .78rem; color: #2a4a6a; margin-top: 6px; }
 
+  @media (max-width: 900px) {
+    .editorial-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .editorial-dropcap { columns: 1; }
+    .hero-tech-art { display: none; }
+  }
   @media (max-width: 640px) {
     nav { padding: 0 1rem; }
-    .nav-subtitle-small, .nav-links .nav-link:not(.active) { display: none; }
+    .nav-subtitle-small { display: none; }
     .main { padding: 2rem 1rem; }
-    .hero { padding: 3rem 1rem 2.5rem; }
+    .hero-content { padding: 2.5rem 1rem 3rem; }
+    .editorial-section { padding: 2.5rem 1rem; }
   }
 </style>
 </head>
@@ -275,7 +472,7 @@
     <div class="nav-logo">C&amp;P</div>
     <div class="nav-brand-text">
       <span class="nav-title">Conciencia y Profesión</span>
-      <span class="nav-subtitle-small">Ética aplicada para la vida laboral y social</span>
+      <span class="nav-subtitle-small">Ética aplicada · IUE 2026</span>
     </div>
   </div>
   <div class="nav-links">
@@ -285,29 +482,186 @@
   </div>
 </nav>
 
-<!-- ═══════ HOME ═══════ -->
+<!-- ═══════════════════════════════════════
+     HOME
+═══════════════════════════════════════ -->
 <div id="page-home" class="page visible">
+
+  <!-- HERO -->
   <section class="hero">
-    <div class="hero-grid"></div>
-    <div class="hero-inner">
-      <div class="hero-eyebrow">Institución Universitaria de Envigado · Ética Profesional · 2026</div>
-      <h1 class="hero-title"><em>Conciencia</em> y Profesión</h1>
-      <p class="hero-sub">Una revista académica sobre los desafíos éticos que enfrentan los profesionales en la era digital. Reflexión crítica, responsabilidad social y compromiso con el bien común.</p>
+    <div class="hero-bg"></div>
+    <div class="hero-circuit"></div>
+
+    <!-- Decorative SVG: circuit + lock + code — tech/engineering visual -->
+    <div class="hero-tech-art">
+      <svg viewBox="0 0 520 460" width="520" height="460" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background glow -->
+        <circle cx="260" cy="230" r="180" fill="url(#heroGlow)" opacity=".5"/>
+
+        <!-- Circuit traces -->
+        <g stroke="rgba(74,158,192,.25)" stroke-width="1.2" fill="none">
+          <!-- Horizontal lines -->
+          <line x1="60" y1="120" x2="200" y2="120"/>
+          <line x1="320" y1="120" x2="460" y2="120"/>
+          <line x1="60" y1="340" x2="200" y2="340"/>
+          <line x1="320" y1="340" x2="460" y2="340"/>
+          <!-- Vertical lines -->
+          <line x1="120" y1="60" x2="120" y2="200"/>
+          <line x1="120" y1="260" x2="120" y2="400"/>
+          <line x1="400" y1="60" x2="400" y2="200"/>
+          <line x1="400" y1="260" x2="400" y2="400"/>
+          <!-- Diagonal circuit paths -->
+          <polyline points="200,120 220,100 300,100 320,120"/>
+          <polyline points="200,340 220,360 300,360 320,340"/>
+          <polyline points="120,200 100,220 100,240 120,260"/>
+          <polyline points="400,200 420,220 420,240 400,260"/>
+        </g>
+
+        <!-- Circuit nodes -->
+        <g fill="rgba(74,158,192,.4)">
+          <circle cx="120" cy="120" r="4"/><circle cx="400" cy="120" r="4"/>
+          <circle cx="120" cy="340" r="4"/><circle cx="400" cy="340" r="4"/>
+          <circle cx="60" cy="120" r="2.5"/><circle cx="460" cy="120" r="2.5"/>
+          <circle cx="60" cy="340" r="2.5"/><circle cx="460" cy="340" r="2.5"/>
+          <circle cx="120" cy="60" r="2.5"/><circle cx="400" cy="60" r="2.5"/>
+          <circle cx="120" cy="400" r="2.5"/><circle cx="400" cy="400" r="2.5"/>
+        </g>
+
+        <!-- Central hexagonal lock / ethics symbol -->
+        <g transform="translate(260,230)">
+          <!-- Outer hex ring -->
+          <polygon points="0,-90 78,-45 78,45 0,90 -78,45 -78,-45"
+                   stroke="rgba(74,158,192,.45)" stroke-width="1.5" fill="rgba(26,74,122,.35)"/>
+          <!-- Inner hex -->
+          <polygon points="0,-62 54,-31 54,31 0,62 -54,31 -54,-31"
+                   stroke="rgba(74,158,192,.6)" stroke-width="1" fill="rgba(13,46,90,.6)"/>
+          <!-- Lock body -->
+          <rect x="-22" y="-5" width="44" height="36" rx="5"
+                fill="rgba(74,158,192,.7)" stroke="rgba(56,189,248,.8)" stroke-width="1.2"/>
+          <!-- Lock shackle -->
+          <path d="M -14 -5 L -14 -22 Q -14 -38 0 -38 Q 14 -38 14 -22 L 14 -5"
+                fill="none" stroke="rgba(56,189,248,.85)" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Keyhole -->
+          <circle cx="0" cy="10" r="6" fill="rgba(11,23,41,.8)"/>
+          <rect x="-3" y="10" width="6" height="10" rx="1" fill="rgba(11,23,41,.8)"/>
+          <!-- Scale of justice — small, top -->
+          <line x1="0" y1="-65" x2="0" y2="-56" stroke="rgba(240,192,96,.5)" stroke-width="1"/>
+          <line x1="-14" y1="-56" x2="14" y2="-56" stroke="rgba(240,192,96,.5)" stroke-width="1"/>
+          <circle cx="-14" cy="-52" r="5" fill="none" stroke="rgba(240,192,96,.5)" stroke-width="1"/>
+          <circle cx="14" cy="-52" r="5" fill="none" stroke="rgba(240,192,96,.5)" stroke-width="1"/>
+        </g>
+
+        <!-- Floating code snippets -->
+        <g font-family="JetBrains Mono, monospace" font-size="9" fill="rgba(56,189,248,.28)">
+          <text x="55" y="180">ethics.apply()</text>
+          <text x="340" y="180">if(integrity){</text>
+          <text x="55" y="290">// TIC + Ética</text>
+          <text x="355" y="290">return trust;</text>
+          <text x="150" y="420">01001001 01110101 01100101</text>
+          <text x="140" y="55">/* Conciencia y Profesión */</text>
+        </g>
+
+        <!-- Chip shapes (decorative) -->
+        <g fill="none" stroke="rgba(74,158,192,.2)" stroke-width="1">
+          <rect x="55" y="145" width="40" height="26" rx="3"/>
+          <line x1="62" y1="145" x2="62" y2="138"/><line x1="72" y1="145" x2="72" y2="138"/>
+          <line x1="82" y1="145" x2="82" y2="138"/>
+          <line x1="62" y1="171" x2="62" y2="178"/><line x1="72" y1="171" x2="72" y2="178"/>
+          <line x1="82" y1="171" x2="82" y2="178"/>
+        </g>
+        <g fill="none" stroke="rgba(74,158,192,.2)" stroke-width="1">
+          <rect x="415" y="300" width="40" height="26" rx="3"/>
+          <line x1="422" y1="300" x2="422" y2="293"/><line x1="432" y1="300" x2="432" y2="293"/>
+          <line x1="442" y1="300" x2="442" y2="293"/>
+          <line x1="422" y1="326" x2="422" y2="333"/><line x1="432" y1="326" x2="432" y2="333"/>
+          <line x1="442" y1="326" x2="442" y2="333"/>
+        </g>
+
+        <defs>
+          <radialGradient id="heroGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#1a4a7a" stop-opacity=".8"/>
+            <stop offset="100%" stop-color="#0b1729" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- Hero text content -->
+    <div class="hero-content">
+      <div class="hero-issue-tag">
+        <span class="hero-issue-dot"></span>
+        IUE · Ética Profesional · Edición 2026
+      </div>
+      <h1 class="hero-title"><em>Conciencia</em><br>y Profesión</h1>
+      <p class="hero-deck">Una revista académica sobre los desafíos éticos que enfrentan los ingenieros informáticos y electrónicos en la era digital. Reflexión crítica, responsabilidad social y compromiso con el bien común.</p>
       <div class="hero-stats">
-        <div class="hero-stat"><span class="hero-stat-num">6</span><span class="hero-stat-label">artículos publicados</span></div>
-        <div class="hero-divider"></div>
-        <div class="hero-stat"><span class="hero-stat-num">5</span><span class="hero-stat-label">editores académicos</span></div>
-        <div class="hero-divider"></div>
-        <div class="hero-stat"><span class="hero-stat-num">4</span><span class="hero-stat-label">líneas temáticas</span></div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">6</span>
+          <span class="hero-stat-label">artículos</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">5</span>
+          <span class="hero-stat-label">editores</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">4</span>
+          <span class="hero-stat-label">líneas temáticas</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num">Mar</span>
+          <span class="hero-stat-label">2026</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <div class="main">
-    <div class="page-header" style="border:none; margin-bottom:1.5rem;">
-      <div class="eyebrow">Últimos artículos</div>
-      <h2 class="page-title" style="font-size:1.5rem;">Reflexiones recientes</h2>
+  <!-- ══════════════════════════════════════
+       EDITORIAL — tercera página de la revista
+  ══════════════════════════════════════ -->
+  <section class="editorial-section">
+    <div class="editorial-inner">
+
+      <!-- Left column: label + title + meta -->
+      <div class="editorial-label-col">
+        <div class="editorial-tag">Editorial</div>
+        <h2 class="editorial-heading">La <em>Ética</em> en la Era Digital</h2>
+        <p class="editorial-subheading">Desafíos y responsabilidad en la Web</p>
+        <div class="editorial-meta">
+          <strong>Comité Editorial</strong>
+          Revista Conciencia y Profesión<br>
+          Institución Universitaria de Envigado<br>
+          Curso: Ética Profesional<br>
+          Marzo 2026
+        </div>
+      </div>
+
+      <!-- Right column: full editorial text -->
+      <div class="editorial-body">
+        <div class="editorial-dropcap">
+          <p>Vivimos en una época en la que la tecnología y el internet han transformado profundamente la forma en que nos comunicamos, trabajamos y accedemos a la información. Las redes sociales, las plataformas digitales y los algoritmos influyen cada vez más en la manera en que las personas construyen opiniones, toman decisiones y se relacionan con el mundo. En medio de este panorama, surge una pregunta fundamental: ¿cómo actuar de manera ética en un entorno digital que cambia constantemente?</p>
+          <p>La ética profesional se convierte en una guía esencial para enfrentar estos desafíos. Más allá de las normas o regulaciones, la ética implica una reflexión consciente sobre el impacto de nuestras acciones en los demás. Cada decisión que se toma en el entorno digital —desde la difusión de información hasta el manejo de datos personales— puede tener consecuencias significativas para la sociedad.</p>
+          <div class="editorial-pullquote">
+            <p>"La ética es la brújula que orienta nuestras decisiones en el mundo digital."</p>
+          </div>
+          <p>Uno de los principales retos de la era digital es la aparición de nuevos dilemas éticos. La privacidad de los datos, la desinformación en internet, el uso de algoritmos para influir en la información y la brecha digital que afecta a diferentes comunidades son algunos de los problemas que requieren una mirada crítica y responsable.</p>
+          <p>Estos desafíos no solo afectan a las empresas tecnológicas, sino también a los profesionales y ciudadanos que participan activamente en el mundo digital. Por esta razón, la ética puede entenderse como una brújula que orienta nuestras decisiones en medio de la complejidad del entorno tecnológico. Actuar con responsabilidad, respeto y honestidad se convierte en una tarea fundamental para quienes desean contribuir a una sociedad más justa y transparente.</p>
+          <p>La revista Conciencia y Profesión invita a reflexionar sobre estos desafíos y a reconocer la importancia de desarrollar una conciencia ética sólida frente a los problemas que surgen en la Web. En un mundo cada vez más conectado, fortalecer esta reflexión resulta indispensable para construir un futuro digital más responsable y humano.</p>
+        </div>
+        <div class="editorial-sign">
+          Comité Editorial · Revista Conciencia y Profesión · Marzo 2026
+        </div>
+      </div>
+
     </div>
+  </section>
+
+  <!-- RECENT ARTICLES -->
+  <div class="main">
+    <div class="section-eyebrow">
+      <span class="section-eyebrow-label">Últimas publicaciones</span>
+      <span class="section-eyebrow-line"></span>
+    </div>
+    <h2 class="section-title">Reflexiones recientes</h2>
     <div class="articles-grid" id="home-grid"></div>
     <div class="cta-wrap">
       <button class="cta-btn" onclick="showPage('blog')">Ver todos los artículos →</button>
@@ -315,7 +669,9 @@
   </div>
 </div>
 
-<!-- ═══════ BLOG ═══════ -->
+<!-- ═══════════════════════════════════════
+     BLOG
+═══════════════════════════════════════ -->
 <div id="page-blog" class="page">
   <div class="main">
     <div class="page-header">
@@ -335,12 +691,16 @@
   </div>
 </div>
 
-<!-- ═══════ ARTICLE ═══════ -->
+<!-- ═══════════════════════════════════════
+     ARTICLE DETAIL
+═══════════════════════════════════════ -->
 <div id="page-article" class="page">
   <div class="article-view" id="article-content"></div>
 </div>
 
-<!-- ═══════ AUTHORS ═══════ -->
+<!-- ═══════════════════════════════════════
+     AUTHORS
+═══════════════════════════════════════ -->
 <div id="page-authors" class="page">
   <div class="main">
     <div class="page-header">
@@ -391,6 +751,7 @@
 <footer>
   <div class="footer-code">INSTITUCIÓN UNIVERSITARIA DE ENVIGADO · ÉTICA PROFESIONAL · 2026</div>
   <div class="footer-name">Revista Conciencia y Profesión</div>
+  <div class="footer-tagline">Ingeniería Informática · Ingeniería Electrónica · IUE</div>
 </footer>
 
 <script>
@@ -400,88 +761,147 @@ const ARTICLES = [
     title: "Responsabilidad social del ingeniero en entornos digitales",
     subtitle: "Desafíos éticos en la web contemporánea",
     category: "Impacto Social",
-    author: "Samuel Romero",
+    author: "Santiago Muñoz",
     date: "Marzo 2026",
-    readTime: "8 min",
+    readTime: "10 min",
     excerpt: "El desarrollo acelerado de las tecnologías digitales y la expansión de la web han transformado profundamente la manera en que las personas interactúan, acceden a la información y toman decisiones. En este contexto, la ingeniería desempeña un papel central —y una creciente responsabilidad ética.",
     blocks: [
-      {type:"lead", text:"El desarrollo acelerado de las tecnologías digitales y la expansión de la web han transformado profundamente la manera en que las personas interactúan, acceden a la información y toman decisiones. En este contexto, la ingeniería, especialmente en áreas relacionadas con sistemas, software y telecomunicaciones, desempeña un papel central en la construcción de estos entornos."},
+      {type:"lead", text:"El desarrollo acelerado de las tecnologías digitales y la expansión de la web han transformado profundamente la manera en que las personas interactúan, acceden a la información y toman decisiones. En este contexto, la ingeniería, especialmente en áreas relacionadas con sistemas, software y telecomunicaciones, desempeña un papel central en la construcción de estos entornos. Sin embargo, este protagonismo también implica una creciente responsabilidad ética."},
+      {type:"p", text:"Las tecnologías actuales no son neutrales, ya que influyen directamente en la vida de millones de personas. Las tecnologías de la información y de la comunicación (TIC) están planteando serios desafíos a valores individuales y sociales que se consideraban firmemente establecidos. Esto plantea la necesidad de analizar el papel del ingeniero no solo como desarrollador de soluciones técnicas, sino como agente social responsable de las consecuencias de su trabajo."},
       {type:"h2", text:"La responsabilidad ética del ingeniero en la era digital"},
-      {type:"p", text:"La práctica de la ingeniería no puede limitarse únicamente al dominio técnico. La verdadera competencia profesional implica integrar conocimientos técnicos con principios éticos sólidos. Las tecnologías actuales no son neutrales: influyen directamente en la vida de millones de personas."},
-      {type:"quote", text:"Las tecnologías de la información y de la comunicación (TIC) están invadiendo todos los aspectos de la existencia humana y están planteando serios desafíos a valores individuales y sociales que se consideraban firmemente establecidos.", author:"Montuschi, L. (2005)"},
-      {type:"p", text:"Esta visión resalta que la ética no es un complemento opcional, sino una parte esencial del ejercicio profesional. Cada decisión técnica conlleva una dimensión moral. En el entorno digital, donde las decisiones pueden escalar rápidamente y afectar a grandes poblaciones, esta responsabilidad se vuelve aún más crítica."},
+      {type:"p", text:"La práctica de la ingeniería no puede limitarse únicamente al dominio técnico. La verdadera competencia profesional implica integrar conocimientos técnicos con principios éticos sólidos. Como profesionales, los ingenieros deben buscar el hacer las cosas bien, y esto se consigue cuando se tiene la suficiente competencia técnica, cuando las relaciones personales están basadas en la confianza y cuando se tiene un profundo respeto a las personas y al medio ambiente."},
+      {type:"quote", text:"Como profesionales, los ingenieros deben buscar el hacer las cosas bien y esto se consigue cuando se tiene la suficiente competencia técnica, cuando las relaciones personales están basadas en la confianza y cuando se tiene un profundo respeto a las personas y al medio ambiente.", author:"Marín, J. C. (2006). La gestión ética y la responsabilidad social en la ingeniería"},
+      {type:"p", text:"Esta visión resalta que la ética no es un complemento opcional, sino una parte esencial del ejercicio profesional. De hecho, se puede concluir que la unión de lo técnico y lo profesional es lo ético, lo que implica que cada decisión técnica conlleva una dimensión moral. En el entorno digital, donde las decisiones pueden escalar rápidamente y afectar a grandes poblaciones, esta responsabilidad se vuelve aún más crítica."},
+      {type:"p", text:"Además, es importante reconocer que las tecnologías no actúan por sí mismas. La responsabilidad debe ser imputada a personas que ejecutaron ciertas acciones; difícilmente pueda imputarse responsabilidad a un aparato. Esto refuerza la idea de que los ingenieros deben asumir las consecuencias de los sistemas que diseñan e implementan."},
+      {type:"svg", id:"svg-resp-tecnologica"},
       {type:"h2", text:"Desafíos éticos en la web y las TIC"},
-      {type:"p", text:"El entorno digital ha dado lugar a nuevos dilemas éticos y ha amplificado problemas existentes. Uno de los principales problemas radica en la falta de regulación adecuada. Este vacío permite que se desarrollen prácticas cuestionables, como el uso indebido de datos personales, la manipulación de información o la creación de algoritmos sesgados."},
-      {type:"p", text:"La web también se ha convertido en un espacio donde pueden proliferar conductas negativas. Internet se ha convertido en muchos casos en un vehículo para conductas criminales, lo que evidencia que las decisiones técnicas tienen consecuencias reales y, en algunos casos, perjudiciales para la sociedad."},
+      {type:"p", text:"El entorno digital ha dado lugar a nuevos dilemas éticos y ha amplificado problemas existentes. La ética de la computación estudia la forma en que las computadoras presentan nuevas versiones de problemas y dilemas morales usuales, exacerbando viejos problemas y forzando la aplicación de las normas morales ordinarias en dominios no registrados."},
+      {type:"p", text:"Uno de los principales problemas radica en la falta de regulación adecuada. El problema surge porque existe una suerte de vacío en las políticas relativas a la forma en que deberían ser utilizadas tales tecnologías. Este vacío permite que se desarrollen prácticas cuestionables, como el uso indebido de datos personales, la manipulación de información o la creación de algoritmos sesgados."},
+      {type:"quote", text:"Las tecnologías de la información y de la comunicación (TIC) están invadiendo todos los aspectos de la existencia humana y están planteando serios desafíos a valores individuales y sociales que se consideraban firmemente establecidos.", author:"Montuschi, L. (2005). Aspectos éticos de las TIC"},
+      {type:"p", text:"Asimismo, la web también se ha convertido en un espacio donde pueden proliferar conductas negativas. Internet se ha convertido en muchos casos en un vehículo para conductas criminales. Esto evidencia que las decisiones técnicas tienen consecuencias reales y, en algunos casos, perjudiciales para la sociedad."},
+      {type:"h2", text:"Impacto social de las decisiones tecnológicas"},
+      {type:"p", text:"Las decisiones tomadas por los ingenieros tienen un impacto directo en la sociedad. No se trata únicamente de crear sistemas funcionales, sino de comprender cómo estos afectan a las personas y al entorno. En este sentido, es fundamental la capacidad para analizar y valorar el impacto social y medioambiental de las soluciones técnicas, comprendiendo la responsabilidad ética y profesional de la actividad del ingeniero."},
+      {type:"p", text:"El desarrollo de tecnologías digitales debería orientarse hacia el bienestar colectivo. La tecnología no solo transforma procesos, sino también la forma en que las personas se relacionan entre sí. En este contexto, el papel del ingeniero es clave, ya que su responsabilidad va a afectar a las partes interesadas (stakeholders) en una medida que puede tener dimensiones importantes. Cada sistema desarrollado puede impactar a usuarios, empresas y comunidades enteras."},
+      {type:"p", text:"Por ejemplo, la nueva sociedad basada en las tecnologías de la información debería tender a reducir las desigualdades existentes y asegurar el acceso general a la información. Sin embargo, en la práctica, muchas tecnologías pueden generar efectos contrarios, como la exclusión digital o la concentración del poder informativo."},
+      {type:"p", text:"Otro aspecto relevante es el impacto en las relaciones humanas. Es necesario evitar que este medio conduzca a un mayor egocentrismo y alienación, y que profundice el aislamiento de personas o grupos que estarían interactuando con datos y no unos con otros."},
       {type:"h2", text:"Formación y compromiso profesional"},
-      {type:"p", text:"Para enfrentar estos desafíos, es fundamental que los ingenieros reciban una formación integral que incluya aspectos éticos y sociales. No basta con dominar herramientas técnicas; es necesario desarrollar una visión crítica y responsable, integrando criterios de responsabilidad social y sostenibilidad en la actividad profesional."},
+      {type:"p", text:"Para enfrentar estos desafíos, es fundamental que los ingenieros reciban una formación integral que incluya aspectos éticos y sociales. No basta con dominar herramientas técnicas; es necesario desarrollar una visión crítica y responsable. Es necesario que los futuros profesionales integren criterios de responsabilidad social y sostenibilidad en su actividad profesional. Esto implica que la ética debe ser parte del proceso educativo y no un elemento aislado."},
+      {type:"p", text:"Sin embargo, existe una debilidad en este ámbito. La escasa formación humanística y social recibida en la universidad hace imprescindible que se incluyan actividades encaminadas a poner a disposición de sus colegiados qué es esto de la gestión ética y la responsabilidad social. Esta carencia puede llevar a que los profesionales no estén preparados para enfrentar los dilemas del mundo real."},
+      {type:"svg", id:"svg-formacion-ingenieria"},
+      {type:"p", text:"Los ingenieros están llamados a desempeñar un rol transformador. Los ingenieros están destinados a ser los artífices más importantes de esa nueva estrategia empresarial, basada en la integración. Esto implica que deben liderar cambios hacia modelos más éticos y sostenibles en el desarrollo tecnológico."},
+      {type:"h2", text:"Conclusión"},
+      {type:"p", text:"La responsabilidad social del ingeniero en entornos digitales es un aspecto fundamental en la actualidad. La web y las tecnologías asociadas han ampliado el alcance de las decisiones técnicas, haciendo que sus consecuencias sean cada vez más significativas."},
+      {type:"p", text:"El ingeniero no puede limitarse a cumplir funciones técnicas, sino que debe actuar con criterio ético, considerando el impacto de sus decisiones en la sociedad. La falta de regulación, los riesgos asociados al uso de la tecnología y las posibles consecuencias negativas hacen imprescindible una actuación responsable."},
+      {type:"p", text:"En este sentido, la ética profesional se convierte en un elemento clave para garantizar que el desarrollo tecnológico contribuya al bienestar social y no al deterioro de los valores humanos. Formar ingenieros con una visión integral, capaces de combinar conocimiento técnico con responsabilidad social, es uno de los principales retos de la educación actual."},
       {type:"reflection", questions:["¿En qué medida las decisiones que toma un ingeniero de software impactan a comunidades que nunca conocerá?","¿Cómo puede un profesional equilibrar la presión empresarial con sus compromisos éticos?","¿Qué responsabilidad tiene la universidad en formar ingenieros con conciencia social?","¿Es suficiente cumplir con la ley para actuar éticamente en el entorno digital?"]},
-      {type:"refs", items:["Montuschi, L. (2005). Aspectos éticos de las tecnologías de la información y de la comunicación. Serie Documentos de Trabajo, No. 298.","Marín, J. C. (2006). La gestión ética y la responsabilidad social en la ingeniería. Rev. Técnica Ind, 262, 26–30.","Miñano Rubio, R. (2017). Integración de competencias de responsabilidad social, sostenibilidad y ética profesional en los grados de ingeniería informática."]}
+      {type:"refs", items:["Miñano Rubio, R. (2017). Integración de competencias de responsabilidad social, sostenibilidad y ética profesional en los grados de ingeniería informática.","Marín, J. C. (2006). La gestión ética y la responsabilidad social en la ingeniería. Rev. Técnica Ind, 262, 26–30.","Montuschi, L. (2005). Aspectos éticos de las tecnologías de la información y de la comunicación: la ética de la computación, Internet y la World Wide Web (No. 298). Serie Documentos de Trabajo.","Arriola Rosales, C. R. (2024). La ética en la era digital. Revista Científica Internacional, 7(1), 135–153. https://doi.org/10.46734/revcientifica.v7i1.81","Balladares-Burgos, J. (2022). Valores para una ética digital a partir de las generaciones digitales y el uso de las redes sociales. 593 Digital Publisher CEIT, 7(1), 40–52.","Cortina, A. (2002). La dimensión pública de las éticas aplicadas. Revista Iberoamericana de Educación, 29, 45–64.","Durán, C. (2022). Ética profesional, una responsabilidad humanística. Revista Boletín Redipe, 11(6), 188–195.","García López, I. E., y Juan Pérez, J. I. (2024). Ética aplicada y valores en la era digital: perspectivas y desafíos en los jóvenes universitarios.","Sguerra, S. (2019). Comité de Ética en la Asociación Colombiana de Ingenieros – ACIEM. Citado en Arriola Rosales (2024)."]}
     ]
   },
   {
     id: 2,
     title: "Relación ética con usuarios, colegas e instituciones",
-    subtitle: "Confianza como fundamento de la práctica profesional digital",
+    subtitle: "Desafíos éticos en la web contemporánea",
     category: "Deontología",
-    author: "Sebastián Calderón",
+    author: "Samuel Romero Ruiz",
     date: "Marzo 2026",
-    readTime: "7 min",
-    excerpt: "La digitalización ha reconfigurado profundamente las formas en que interactuamos, trabajamos y aprendemos, creando nuevas dinámicas sociales que exigen una reflexión crítica urgente sobre la confianza profesional.",
+    readTime: "10 min",
+    excerpt: "La digitalización ha reconfigurado profundamente las formas en que interactuamos, trabajamos y aprendemos, creando nuevas dinámicas sociales que exigen una reflexión crítica urgente. La ética no debe separarse de la práctica profesional: debe funcionar como brújula moral que guía nuestras interacciones en el mundo digital.",
     blocks: [
-      {type:"lead", text:"La digitalización ha reconfigurado profundamente las formas en que interactuamos, trabajamos y aprendemos, creando nuevas dinámicas sociales que exigen una reflexión crítica urgente. En este nuevo escenario, el internet emerge como el principal canal de comunicación, donde los metadatos y algoritmos influyen en la percepción de la realidad."},
-      {type:"h2", text:"La integridad en la relación con los usuarios"},
-      {type:"p", text:"La relación del profesional con los usuarios en el entorno digital debe fundamentarse en la veracidad y la confianza. Según los códigos de ética profesional, esto implica actuar con honestidad y transparencia en la expresión pública de conceptos, asegurando que el profesional sea una persona de confianza para quienes reciben sus servicios."},
-      {type:"p", text:"Sin embargo, el rápido avance tecnológico a menudo supera la capacidad de la sociedad para regular estas interacciones, generando vacíos normativos que exponen a los usuarios a riesgos como la manipulación de información y la vigilancia masiva."},
+      {type:"lead", text:"La digitalización ha reconfigurado profundamente las formas en que interactuamos, trabajamos y aprendemos, creando nuevas dinámicas sociales que exigen una reflexión crítica urgente. En este nuevo escenario, el internet emerge como el principal canal de comunicación, donde los metadatos y algoritmos influyen en la percepción de la realidad. En medio de esta complejidad, la ética no debe separarse de la práctica profesional, sino que debe estar entrelazada con la estructura misma de la sociedad, funcionando como una brújula moral que guía nuestras interacciones mediadas tecnológicamente."},
+      {type:"p", text:"Actuar con responsabilidad, respeto y honestidad frente a usuarios, colegas e instituciones se convierte en una tarea fundamental para quienes desean contribuir a una sociedad más justa y transparente."},
+      {type:"h2", text:"La integridad en la relación con los usuarios y la sociedad"},
+      {type:"p", text:"La relación del profesional con los usuarios en el entorno digital debe fundamentarse en la veracidad y la confianza. Según los códigos de ética profesional, esto implica actuar con honestidad y transparencia en la expresión pública de conceptos, asegurando que el profesional sea una persona de confianza para quienes reciben sus servicios. En la web contemporánea, esto se traduce en el manejo responsable de los datos y la protección de la privacidad en línea, temas que son pilares esenciales de la ética digital."},
+      {type:"p", text:"Sin embargo, el rápido avance tecnológico a menudo supera la capacidad de la sociedad para regular estas interacciones, generando vacíos normativos que exponen a los usuarios a riesgos como la manipulación de información y la vigilancia masiva. Por ello, el profesional debe asumir un compromiso serio que otorgue prioridad al bien común sobre el particular, garantizando que la tecnología funcione de manera justa para todos los grupos de usuarios y minimizando los sesgos algorítmicos que puedan generar discriminación."},
+      {type:"svg", id:"svg-puente-veracidad"},
+      {type:"h2", text:"Cooperación y ética entre colegas en la era del conectivismo"},
+      {type:"p", text:"Las relaciones entre colegas han evolucionado hacia modelos de conectivismo, donde el aprendizaje y el trabajo ocurren a través de la interconexión de nodos en redes de conocimiento. En este contexto, las competencias sociales y transversales —conocidas como habilidades blandas— han reemplazado en importancia a las competencias duras tradicionales, haciendo que la capacidad de colaboración y el respeto mutuo sean ejes centrales del éxito laboral."},
+      {type:"p", text:"La ética en la relación con los colegas exige defender el honor de la profesión, promoviendo las buenas prácticas y el intercambio de saberes de manera honesta. Como se señala en la formación de ingenieros, es necesario integrar criterios de responsabilidad y solidaridad, entendiendo que el éxito individual está intrínsecamente ligado al bienestar colectivo y a la capacidad de trabajar con personas diversas. La 'amistad académica' o profesional, mediada por el saber, debe resistir la tendencia a la deshumanización y al aislamiento que a veces propician los medios digitales."},
       {type:"h2", text:"El compromiso ético con las instituciones"},
-      {type:"p", text:"Las instituciones necesitan ajustar y redirigir sus normas y valores para preservar la confianza de la sociedad ante los rápidos cambios tecnológicos. Existe el riesgo de caer en el 'ethics washing' o formas ambiguas de autorregulación que no llenan los vacíos normativos existentes."},
-      {type:"quote", text:"La ética en las relaciones digitales es el cimiento de la confianza social.", author:"Comité Editorial – Revista Conciencia y Profesión"},
-      {type:"h2", text:"Hacia una gobernanza ética global"},
+      {type:"p", text:"Las instituciones necesitan ajustar y redirigir sus normas y valores para preservar la confianza de la sociedad ante los rápidos cambios tecnológicos. Para el profesional, la relación ética con la institución implica el cumplimiento de deberes deontológicos y la lealtad a los principios axiológicos compartidos por la comunidad. No obstante, existe el riesgo de caer en el 'ethics washing' o formas ambiguas de autorregulación que no llenan los vacíos normativos existentes."},
+      {type:"p", text:"Un desafío crucial es evitar la 'mercantilización' del oficio profesional dentro de las organizaciones, donde el lucro puede llegar a prevalecer sobre el compromiso social y ambiental. Por el contrario, la ética organizacional debe buscar que las instituciones actúen como agentes de cambio, comprometidas con la justicia social y el desarrollo humano sostenible. El profesional íntegro debe ser capaz de liderar cambios hacia modelos más éticos dentro de su institución, asegurando que la tecnología sea una herramienta al servicio de la equidad."},
+      {type:"quote", text:"La ética en las relaciones digitales es el cimiento de la confianza social.", author:"Comité Editorial – Revista Conciencia y Profesión, Marzo 2026"},
+      {type:"p", text:"Un ejemplo concreto de este compromiso se observa en el ámbito de la educación superior y las organizaciones profesionales. Una institución éticamente comprometida debe luchar contra la 'mercantilización' del oficio profesional, donde el lucro suele prevalecer sobre el compromiso social y ambiental. En su lugar, debe promover que el conocimiento sea un bien común, defendiendo su libertad y gratuidad."},
+      {type:"h2", text:"Desafíos futuros: hacia una gobernanza ética global"},
       {type:"p", text:"La hibridación entre lo humano y lo tecnológico es un fenómeno creciente que requiere una reflexión legal y ética profunda. Ante la carencia de regulaciones internacionales suficientes, se hace imperativo establecer un marco ético global que promueva el uso responsable de la inteligencia artificial y proteja la dignidad humana."},
-      {type:"reflection", questions:["¿Cómo puede un profesional garantizar la privacidad de los usuarios cuando las plataformas donde trabaja la vulneran?","¿Qué diferencia existe entre cumplir normas deontológicas y actuar éticamente?","¿De qué manera el 'ethics washing' daña la confianza pública en las instituciones tecnológicas?","¿Cómo construir relaciones profesionales auténticas en un entorno mediado por algoritmos?"]},
-      {type:"refs", items:["Arriola Rosales, C. R. (2024). La ética en la era digital. Revista Científica Internacional, 7(1), 135–153.","Balladares-Burgos, J. (2022). Valores para una ética digital a partir de las generaciones digitales. 593 Digital Publisher CEIT, 7(1), 40–52.","Cortina, A. (2002). La dimensión pública de las éticas aplicadas. Revista Iberoamericana de Educación, 29, 45–64."]}
+      {type:"p", text:"La formación universitaria juega un papel decisivo en este proceso, ya que debe cultivar no solo competencias técnicas, sino también una profunda alfabetización moral que permita a los futuros profesionales tomar decisiones conscientes y críticas en un mundo interconectado. En definitiva, la ética aplicada en la web no es una opción, sino un compromiso compartido para construir un futuro tecnológicamente responsable y éticamente sostenible, donde la tecnología sirva a la humanidad y no al revés."},
+      {type:"svg", id:"svg-puente-veracidad-2"},
+      {type:"reflection", questions:["¿Cómo puede un profesional garantizar la privacidad de los usuarios cuando las plataformas donde trabaja la vulneran?","¿Qué diferencia existe entre cumplir normas deontológicas y actuar éticamente?","¿De qué manera el 'ethics washing' daña la confianza pública en las instituciones tecnológicas?","¿Cómo construir relaciones profesionales auténticas en un entorno mediado por algoritmos?","¿Puede el conectivismo reemplazar la responsabilidad individual en la toma de decisiones éticas?"]},
+      {type:"refs", items:["Miñano Rubio, R. (2017). Integración de competencias de responsabilidad social, sostenibilidad y ética profesional en los grados de ingeniería informática.","Marín, J. C. (2006). La gestión ética y la responsabilidad social en la ingeniería. Rev. Técnica Ind, 262, 26–30.","Montuschi, L. (2005). Aspectos éticos de las tecnologías de la información y de la comunicación: la ética de la computación, Internet y la World Wide Web (No. 298). Serie Documentos de Trabajo.","Arriola Rosales, C. R. (2024). La ética en la era digital. Revista Científica Internacional, 7(1), 135–153. https://doi.org/10.46734/revcientifica.v7i1.81","Balladares-Burgos, J. (2022). Valores para una ética digital a partir de las generaciones digitales y el uso de las redes sociales. 593 Digital Publisher CEIT, 7(1), 40–52. https://doi.org/10.33386/593dp.2022.1.747","Cortina, A. (2002). La dimensión pública de las éticas aplicadas. Revista Iberoamericana de Educación, 29, 45–64. https://doi.org/10.35362/rie290950","Durán, C. (2022). Ética profesional, una responsabilidad humanística. Revista Boletín Redipe, 11(6), 188–195.","García López, I. E., y Juan Pérez, J. I. (2024). Ética aplicada y valores en la era digital: perspectivas y desafíos en los jóvenes universitarios.","Sguerra, S. (2019). Comité de Ética en la Asociación Colombiana de Ingenieros – ACIEM. Citado en Arriola Rosales (2024)."]}
     ]
   },
   {
     id: 3,
-    title: "La ética en la era digital",
-    subtitle: "Desafíos y responsabilidad en la Web",
+    title: "Ética y legalidad: coincidencias y diferencias",
+    subtitle: "Cuando cumplir la ley no es suficiente para actuar bien",
     category: "Ética General",
-    author: "Simón Jiménez",
+    author: "María Camila Rodríguez",
     date: "Marzo 2026",
-    readTime: "5 min",
-    excerpt: "Vivimos en una época en la que la tecnología y el internet han transformado profundamente la forma en que nos comunicamos, trabajamos y accedemos a la información. ¿Cómo actuar de manera ética en un entorno que cambia constantemente?",
+    readTime: "10 min",
+    excerpt: "Cumplir la ley y actuar éticamente no siempre son la misma cosa. En el entorno digital, donde la legislación avanza lento y la tecnología corre rápido, esta distinción se vuelve crítica para cualquier ingeniero que desee ejercer con integridad.",
     blocks: [
-      {type:"lead", text:"Vivimos en una época en la que la tecnología y el internet han transformado profundamente la forma en que nos comunicamos, trabajamos y accedemos a la información. Las redes sociales, las plataformas digitales y los algoritmos influyen cada vez más en la manera en que las personas construyen opiniones, toman decisiones y se relacionan con el mundo."},
-      {type:"quote", text:"La ética es la brújula que orienta nuestras decisiones en el mundo digital.", author:"Comité Editorial – Conciencia y Profesión, Marzo 2026"},
-      {type:"p", text:"La ética profesional se convierte en una guía esencial para enfrentar estos desafíos. Más allá de las normas o regulaciones, la ética implica una reflexión consciente sobre el impacto de nuestras acciones en los demás. Cada decisión que se toma en el entorno digital —desde la difusión de información hasta el manejo de datos personales— puede tener consecuencias significativas para la sociedad."},
-      {type:"p", text:"Uno de los principales retos de la era digital es la aparición de nuevos dilemas éticos. La privacidad de los datos, la desinformación en internet, el uso de algoritmos para influir en la información y la brecha digital que afecta a diferentes comunidades son algunos de los problemas que requieren una mirada crítica y responsable."},
-      {type:"reflection", questions:["¿Cuáles son los dilemas éticos más urgentes que enfrenta un ingeniero informático en 2026?","¿Puede existir neutralidad tecnológica o toda decisión técnica es también una decisión moral?","¿Qué valores deben guiar el diseño de plataformas digitales que afectan a millones de personas?"]},
-      {type:"refs", items:["García López, I. E., y Juan Pérez, J. I. (2024). Ética aplicada y valores en la era digital.","Durán, C. (2022). Ética profesional, una responsabilidad humanística. Revista Boletín Redipe, 11(6), 188–195."]}
+      {type:"lead", text:"Existe una confusión frecuente en el ejercicio profesional: creer que mientras no se viole ninguna norma jurídica, se está actuando correctamente. En el entorno digital, donde la legislación avanza a paso lento frente a la velocidad de la tecnología, esta confusión puede tener consecuencias graves. Ética y legalidad son dos sistemas normativos distintos que a veces coinciden, a veces se superponen y, con frecuencia, divergen de maneras que el profesional de la ingeniería debe saber identificar y resolver."},
+      {type:"h2", text:"Dos sistemas normativos, una misma realidad"},
+      {type:"p", text:"La legalidad es el conjunto de normas establecidas por el Estado que regulan la conducta de los ciudadanos bajo la amenaza de una sanción. La ética, en cambio, es un sistema de principios y valores que orienta el comportamiento humano hacia el bien, más allá de lo que la ley exige o prohíbe. Como señala Cortina (2002), las éticas aplicadas surgen precisamente en aquellos ámbitos donde las normas jurídicas son insuficientes para resolver los dilemas morales que genera la práctica profesional."},
+      {type:"p", text:"En la ingeniería informática y electrónica, esta distinción cobra especial relevancia. Un desarrollador puede recopilar y comercializar datos de usuarios respetando formalmente los términos de servicio aceptados por esos usuarios —acto perfectamente legal—, y aun así estar actuando de forma éticamente cuestionable si esos términos fueron redactados en lenguaje opaco para ocultar el verdadero alcance del tratamiento de datos. La legalidad ampara el acto; la ética lo cuestiona."},
+      {type:"svg", id:"svg-etica-legalidad"},
+      {type:"h2", text:"Zonas de coincidencia: donde ley y ética se refuerzan"},
+      {type:"p", text:"La legislación sobre protección de datos —como el Reglamento General de Protección de Datos (RGPD) en Europa o la Ley 1581 de 2012 en Colombia— representa un área donde la legalidad y la ética convergen con claridad. Proteger la privacidad de los usuarios es tanto una obligación jurídica como un imperativo ético. En estos casos, cumplir la ley es también cumplir con el principio de respeto a la autonomía y la dignidad de las personas."},
+      {type:"p", text:"Del mismo modo, la prohibición de crear software malicioso, de facilitar accesos no autorizados a sistemas o de participar en la distribución de contenido ilegal constituye un punto en el que ambos sistemas normativos coinciden plenamente. El ingeniero que no desarrolla malware no solo está respetando el Código Penal: está actuando en consonancia con los principios deontológicos de su profesión, que exigen no causar daño y proteger la integridad de terceros."},
+      {type:"quote", text:"La ética profesional se convierte en una guía esencial para enfrentar estos desafíos. Más allá de las normas o regulaciones, la ética implica una reflexión consciente sobre el impacto de nuestras acciones en los demás.", author:"Arriola Rosales, C. R. (2024). La ética en la era digital"},
+      {type:"h2", text:"Zonas de divergencia: lo legal que no es ético"},
+      {type:"p", text:"El espacio más problemático para el profesional es aquel donde algo es legal pero éticamente inaceptable. El diseño de interfaces oscuras (dark patterns) —técnicas de diseño que manipulan al usuario para que tome decisiones que no son de su interés, como suscribirse sin querer a servicios de pago— es un ejemplo paradigmático. En muchos países estas prácticas no están explícitamente prohibidas, pero violan el principio ético fundamental de no engañar ni manipular a las personas."},
+      {type:"p", text:"Otro ejemplo son los algoritmos de recomendación diseñados deliberadamente para maximizar el tiempo de pantalla, aun cuando se sabe que esto puede generar adicción, ansiedad o polarización en los usuarios. Montuschi (2005) ya advertía que la ética de la computación debe ocuparse precisamente de estas situaciones: las tecnologías plantean nuevas versiones de problemas morales en dominios que la ley todavía no ha alcanzado a regular."},
+      {type:"p", text:"En el campo de la ingeniería electrónica, el diseño de dispositivos con obsolescencia programada —reducir deliberadamente la vida útil de un producto para forzar su reemplazo— también se ubica en esta zona gris: puede ser perfectamente legal, pero entra en conflicto con principios éticos de sostenibilidad, honestidad y respeto al consumidor."},
+      {type:"h2", text:"Lo ético que podría ser ilegal: la objeción de conciencia profesional"},
+      {type:"p", text:"La relación entre ética y legalidad no es unidireccional. También existen situaciones en que la norma jurídica entra en conflicto con el juicio moral del profesional. Un ingeniero que trabaja para una empresa y descubre que su sistema está siendo usado para vigilar ilegalmente a ciudadanos, o que sus algoritmos están siendo utilizados con fines discriminatorios, enfrenta un dilema: cumplir con su contrato laboral —que tiene respaldo legal— o denunciar la situación, que puede implicar consecuencias jurídicas para él."},
+      {type:"p", text:"Durán (2022) plantea que la ética profesional implica una responsabilidad humanística que va más allá del cumplimiento contractual. El profesional íntegro debe estar dispuesto a asumir costos personales para actuar con rectitud. En este sentido, los códigos de ética de las asociaciones de ingenieros —como la Asociación Colombiana de Ingenieros (ACIEM)— establecen el deber de reportar prácticas que pongan en riesgo el bienestar público, aun cuando esto pueda generar conflictos con la jerarquía institucional."},
+      {type:"svg", id:"svg-zonas-etica-ley"},
+      {type:"h2", text:"El vacío normativo digital: un espacio de responsabilidad ética ampliada"},
+      {type:"p", text:"Quizás el rasgo más característico del entorno digital es la existencia de enormes vacíos normativos. La velocidad del cambio tecnológico supera sistemáticamente la capacidad de los parlamentos y organismos reguladores para legislar. En estas zonas de vacío, la ética no es un complemento opcional: es el único sistema normativo disponible."},
+      {type:"p", text:"García López y Juan Pérez (2024) señalan que los jóvenes profesionales de la era digital enfrentan desafíos éticos para los que no existen todavía respuestas legales claras: el uso de inteligencia artificial generativa para producir desinformación, la explotación de datos biométricos, la vigilancia por drones en espacios públicos o la automatización de decisiones que afectan derechos fundamentales son solo algunos ejemplos. En todos estos casos, el criterio ético del profesional es la primera y, muchas veces, la única línea de defensa."},
+      {type:"p", text:"Esto sitúa al ingeniero en una posición de enorme responsabilidad. No basta con saber programar: es necesario desarrollar la capacidad de razonar éticamente, de anticipar consecuencias, de consultar con pares y de actuar con integridad aun cuando la norma jurídica no lo exija ni lo prohíba explícitamente."},
+      {type:"h2", text:"Conclusión: la ética como piso mínimo, no como techo máximo"},
+      {type:"p", text:"La relación entre ética y legalidad en el ejercicio de la ingeniería informática y electrónica es compleja y dinámica. Ambos sistemas normativos se necesitan mutuamente: la ley sin ética puede convertirse en un instrumento de injusticia; la ética sin ley puede carecer de mecanismos de enforcement que garanticen su cumplimiento. Sin embargo, para el profesional comprometido, la ética debe ser entendida no como un piso mínimo —lo que la ley exige—, sino como un horizonte de excelencia hacia el cual orientar continuamente la práctica."},
+      {type:"reflection", questions:["¿Puedes identificar ejemplos concretos en tu área donde algo sea legal pero éticamente cuestionable?","¿Qué harías si tu empleador te pidiera desarrollar una funcionalidad que no viola la ley pero que consideras manipuladora para los usuarios?","¿Tiene el ingeniero la obligación de conocer las implicaciones legales de su trabajo, o eso es responsabilidad de los abogados de la empresa?","¿Cómo debería actuar un profesional cuando detecta que su empresa opera en un vacío legal que le permite hacer daño sin ser sancionada?","¿Es posible construir tecnología verdaderamente ética en entornos corporativos donde la presión por el beneficio económico es dominante?"]},
+      {type:"refs", items:["Cortina, A. (2002). La dimensión pública de las éticas aplicadas. Revista Iberoamericana de Educación, 29, 45–64. https://doi.org/10.35362/rie290950","Montuschi, L. (2005). Aspectos éticos de las tecnologías de la información y de la comunicación: la ética de la computación, Internet y la World Wide Web (No. 298). Serie Documentos de Trabajo.","Arriola Rosales, C. R. (2024). La ética en la era digital. Revista Científica Internacional, 7(1), 135–153. https://doi.org/10.46734/revcientifica.v7i1.81","Durán, C. (2022). Ética profesional, una responsabilidad humanística. Revista Boletín Redipe, 11(6), 188–195.","García López, I. E., y Juan Pérez, J. I. (2024). Ética aplicada y valores en la era digital: perspectivas y desafíos en los jóvenes universitarios.","Balladares-Burgos, J. (2022). Valores para una ética digital a partir de las generaciones digitales y el uso de las redes sociales. 593 Digital Publisher CEIT, 7(1), 40–52. https://doi.org/10.33386/593dp.2022.1.747","Marín, J. C. (2006). La gestión ética y la responsabilidad social en la ingeniería. Rev. Técnica Ind, 262, 26–30.","Sguerra, S. (2019). Comité de Ética en la Asociación Colombiana de Ingenieros – ACIEM. Citado en Arriola Rosales (2024)."]}
     ]
   },
   {
     id: 4,
-    title: "Algoritmos con conciencia: ética en el desarrollo de IA",
-    subtitle: "Responsabilidad moral en el diseño de sistemas inteligentes",
-    category: "IA y Futuro",
-    author: "María Camila Rodríguez",
+    title: "El código deontológico como guía moral",
+    subtitle: "Principios, deberes y límites del ejercicio profesional en ingeniería",
+    category: "Deontología",
+    author: "Simón Jiménez",
     date: "Abril 2026",
-    readTime: "9 min",
-    excerpt: "Los sistemas de inteligencia artificial no son objetos inertes: son extensiones de las decisiones humanas. Cada algoritmo lleva impresa la visión —y los sesgos— de quienes lo diseñaron.",
+    readTime: "10 min",
+    excerpt: "Un código deontológico no es un simple reglamento de conducta: es la expresión escrita de los valores que una profesión considera irrenunciables. Para el ingeniero informático y electrónico, entender y aplicar estos principios es tan esencial como dominar cualquier lenguaje de programación.",
     blocks: [
-      {type:"lead", text:"Los sistemas de inteligencia artificial no son objetos inertes: son extensiones de las decisiones humanas. Cada algoritmo lleva impresa la visión —y los sesgos— de quienes lo diseñaron. Cuando un modelo de IA decide qué noticias mostrar, qué candidatos recomendar para un empleo, o qué pacientes priorizar en atención médica, está ejerciendo un poder que antes solo pertenecía a personas con nombre y responsabilidad."},
-      {type:"h2", text:"El problema del sesgo algorítmico"},
-      {type:"p", text:"Un algoritmo entrenado con datos históricos reproduce y amplifica las inequidades presentes en esos datos. Si los datos de contratación de una empresa históricamente favorecieron a hombres de determinado perfil, el modelo aprenderá a discriminar a quienes no encajen en ese molde —sin que nadie lo haya programado explícitamente para hacerlo."},
-      {type:"p", text:"Desde la perspectiva de la ética kantiana, este proceso viola el imperativo categórico: no se puede tratar a una persona como un dato estadístico, como medio y no como fin. La dignidad humana no es negociable, incluso cuando el sistema que la vulnera actúa en fracciones de segundo y a escala global."},
-      {type:"quote", text:"La responsabilidad debe ser imputada a personas que ejecutaron ciertas acciones. Difícilmente pueda imputarse responsabilidad a un aparato.", author:"Montuschi, L. (2005). Aspectos éticos de las TIC"},
-      {type:"h2", text:"Transparencia y explicabilidad como obligaciones éticas"},
-      {type:"p", text:"El principio de explicabilidad —la capacidad de un sistema de IA para justificar sus decisiones en términos comprensibles para los afectados— no es solo una buena práctica técnica. Es una obligación ética. Un ciudadano que recibe una negativa de crédito, una persona que no es convocada a una entrevista de trabajo: todos merecen saber por qué."},
-      {type:"p", text:"Esto demanda que el ingeniero informático no diseñe únicamente para la eficiencia, sino también para la rendición de cuentas. Construir sistemas auditables, con registros claros y mecanismos de apelación, es parte del ejercicio ético de la profesión."},
-      {type:"h2", text:"El rol del ingeniero como guardián ético"},
-      {type:"p", text:"La formación ética del ingeniero informático debe incluir la capacidad de plantear objeciones de conciencia. Si un sistema solicitado vulnera derechos fundamentales, el profesional tiene no solo el derecho, sino la obligación de señalarlo. La ética no es una restricción al trabajo técnico: es su condición de legitimidad."},
-      {type:"reflection", questions:["¿Puede un ingeniero eximirse de responsabilidad moral argumentando que 'solo siguió las instrucciones del cliente'?","¿Qué mecanismos concretos puede implementar un equipo de desarrollo para detectar y corregir sesgos algorítmicos?","¿Cómo equilibrar la innovación tecnológica con la protección de los derechos fundamentales?","¿Qué papel deben jugar los filósofos, juristas y científicos sociales en los equipos de desarrollo de IA?"]},
-      {type:"refs", items:["Montuschi, L. (2005). Aspectos éticos de las tecnologías de la información y de la comunicación. Serie Documentos de Trabajo, No. 298.","García López, I. E., y Juan Pérez, J. I. (2024). Ética aplicada y valores en la era digital.","Miñano Rubio, R. (2017). Integración de competencias de responsabilidad social, sostenibilidad y ética profesional en los grados de ingeniería informática."]}
+      {type:"lead", text:"Cuando un médico toma la decisión de no revelar un diagnóstico devastador de forma abrupta, cuando un abogado se niega a mentir ante un tribunal incluso para defender a su cliente, o cuando un ingeniero alerta sobre una vulnerabilidad de seguridad que nadie le pidió reportar, están actuando guiados por algo más que la ley: están siguiendo un código deontológico. La deontología profesional es el conjunto de principios y normas que regulan el deber ser del ejercicio de una profesión, y en el campo de la ingeniería informática y electrónica su relevancia es hoy mayor que nunca."},
+      {type:"h2", text:"¿Qué es un código deontológico y para qué sirve?"},
+      {type:"p", text:"Un código deontológico es un documento que recoge los deberes, obligaciones y principios éticos que deben guiar la conducta de los miembros de una profesión. No se trata de una lista de prohibiciones, sino de una declaración de valores: qué significa ejercer bien una profesión, qué compromisos implica con la sociedad, con los colegas, con los clientes y con uno mismo. Durán (2022) lo define como la expresión de la responsabilidad humanística inherente al ejercicio profesional: la profesión no es solo un medio de vida, sino un servicio a la comunidad que exige estándares morales específicos."},
+      {type:"p", text:"En ingeniería, los códigos deontológicos más influyentes a nivel internacional son los de la IEEE (Institute of Electrical and Electronics Engineers) y la ACM (Association for Computing Machinery). En Colombia, la Asociación Colombiana de Ingenieros (ACIEM) y la Ley 842 de 2003 establecen el régimen ético y disciplinario de los ingenieros matriculados. Estos documentos no son meramente simbólicos: en muchos países, su violación puede acarrear sanciones que van desde la amonestación hasta la pérdida de la matrícula profesional."},
+      {type:"svg", id:"svg-codigo-deontologico"},
+      {type:"h2", text:"Principios fundamentales: los pilares del deber profesional"},
+      {type:"p", text:"Los códigos deontológicos de ingeniería comparten un conjunto de principios nucleares que, con variaciones de forma, aparecen en todas las versiones: seguridad pública, honestidad, competencia, objetividad, confidencialidad, respeto por colegas y compromiso con el desarrollo profesional continuo. Marín (2006) sintetiza estos principios en tres grandes ejes: competencia técnica, confianza en las relaciones personales y respeto profundo a las personas y al medio ambiente."},
+      {type:"p", text:"El principio de seguridad pública es quizás el más exigente: establece que el bienestar de la sociedad debe estar por encima de los intereses del cliente, del empleador e incluso del propio profesional. Un ingeniero que descubre que el puente que está calculando tiene un margen de seguridad insuficiente, o que el sistema de control que está programando tiene una falla que podría causar accidentes, tiene la obligación deontológica de reportarlo aunque esto le genere conflictos laborales. En el ámbito digital, este principio se traduce en reportar vulnerabilidades, negarse a implementar sistemas que pongan en riesgo la privacidad masiva de usuarios o rechazar desarrollos armamentísticos que puedan causar daño indiscriminado."},
+      {type:"quote", text:"Como profesionales, los ingenieros deben buscar el hacer las cosas bien y esto se consigue cuando se tiene la suficiente competencia técnica, cuando las relaciones personales están basadas en la confianza y cuando se tiene un profundo respeto a las personas y al medio ambiente.", author:"Marín, J. C. (2006). La gestión ética y la responsabilidad social en la ingeniería"},
+      {type:"h2", text:"El principio de competencia: saber lo que se hace y hacer solo lo que se sabe"},
+      {type:"p", text:"Uno de los principios deontológicos más subestimados en ingeniería es el de competencia. Los códigos establecen que el profesional no debe aceptar encargos para los que no está suficientemente preparado, y que debe mantener sus conocimientos actualizados a lo largo de toda su vida profesional. En un campo como la informática, donde las tecnologías evolucionan a una velocidad sin precedentes, este principio adquiere una dimensión especialmente exigente."},
+      {type:"p", text:"Asumir proyectos de ciberseguridad sin la formación adecuada, implementar sistemas de inteligencia artificial sin comprender sus sesgos potenciales, o desarrollar infraestructuras críticas sin conocer los estándares de seguridad aplicables no son solo errores técnicos: son violaciones deontológicas. Miñano Rubio (2017) argumenta que la integración de la competencia ética y la competencia técnica es inseparable en la formación de los ingenieros informáticos: no se puede ser un buen ingeniero sin ser un ingeniero responsable, y no se puede ser responsable sin ser técnicamente solvente."},
+      {type:"h2", text:"Confidencialidad e integridad en el manejo de información"},
+      {type:"p", text:"El deber de confidencialidad es otro pilar central de los códigos deontológicos de ingeniería. Los profesionales tienen acceso, en el ejercicio de su trabajo, a información sensible de empresas, organizaciones y personas: arquitecturas de sistemas, datos personales, estrategias de negocio, vulnerabilidades de infraestructura. El código deontológico establece que esta información debe ser protegida y no puede ser divulgada ni utilizada en beneficio propio o de terceros sin autorización explícita."},
+      {type:"p", text:"En el entorno digital, donde la información circula con una facilidad y velocidad extraordinarias, este deber se vuelve especialmente crítico. Montuschi (2005) señala que la ética de la computación debe abordar de forma explícita los nuevos desafíos que plantea el manejo de datos en red: la reidentificación de datos supuestamente anónimos, la correlación de bases de datos para construir perfiles sin consentimiento, o la retención de información más allá de los períodos autorizados son prácticas que violan no solo normas legales sino el principio deontológico de integridad en el manejo de información."},
+      {type:"svg", id:"svg-principios-deonto"},
+      {type:"h2", text:"El código deontológico frente a los dilemas del mundo real"},
+      {type:"p", text:"La principal crítica a los códigos deontológicos es su carácter abstracto: establecen principios generales pero no siempre ofrecen guías claras para resolver los dilemas concretos que enfrenta el profesional en su día a día. ¿Qué hace un ingeniero cuando su jefe le pide implementar una funcionalidad que considera manipuladora pero que no viola ninguna ley? ¿Cómo actúa cuando detecta una vulnerabilidad en el sistema de un cliente que ya ha cerrado el contrato? ¿Puede participar en el desarrollo de tecnología de vigilancia para un cliente gubernamental cuyas prácticas son cuestionables?"},
+      {type:"p", text:"Estos dilemas no tienen respuestas simples, y ningún código deontológico puede anticiparlos todos. Lo que sí puede hacer el código —y esta es su función más valiosa— es proporcionar un marco de referencia, un conjunto de valores internalizados que permiten al profesional razonar éticamente frente a la novedad. García López y Juan Pérez (2024) destacan que la alfabetización ética no consiste en memorizar normas, sino en desarrollar la capacidad de aplicar principios en contextos cambiantes, lo que requiere formación continua y reflexión crítica."},
+      {type:"h2", text:"La deontología como cultura profesional colectiva"},
+      {type:"p", text:"El código deontológico no es solo un instrumento individual: es la expresión de una cultura profesional compartida. Cuando los ingenieros de una organización comparten y practican los mismos principios, se crea un entorno en el que la presión hacia el comportamiento ético es colectiva y sostenida. Balladares-Burgos (2022) señala que los valores para una ética digital se construyen en comunidad: los jóvenes profesionales aprenden a actuar éticamente no solo de los libros o los cursos, sino de la observación de referentes, del diálogo con colegas y de la experiencia acumulada en entornos donde la integridad es una norma cultural."},
+      {type:"p", text:"En este sentido, promover la ética profesional en la ingeniería no es solo responsabilidad de las asociaciones gremiales o de los docentes universitarios: es tarea de cada ingeniero en activo. Quien actúa con integridad en su entorno laboral está contribuyendo a construir la cultura deontológica de su profesión. Y quien mira hacia otro lado cuando observa prácticas cuestionables está contribuyendo a erosionarla."},
+      {type:"h2", text:"Conclusión: el código deontológico como brújula, no como jaula"},
+      {type:"p", text:"Entender el código deontológico como una restricción externa —una serie de prohibiciones que limitan la libertad del profesional— es malinterpretar su naturaleza. El código es, antes que nada, una brújula: un instrumento que ayuda al profesional a orientarse en el terreno complejo e incierto de los dilemas éticos que todo ejercicio profesional plantea. En el campo de la ingeniería informática y electrónica, donde las decisiones técnicas tienen consecuencias cada vez más amplias y profundas sobre la vida de millones de personas, contar con esa brújula no es un lujo: es una necesidad ineludible."},
+      {type:"reflection", questions:["¿Conoces el código deontológico que rige el ejercicio de la ingeniería en Colombia? ¿Cuáles son sus principios fundamentales?","¿En qué situaciones concretas de tu futura práctica profesional podría entrar en conflicto el principio de seguridad pública con los intereses de tu empleador?","¿Es posible aplicar un código deontológico en entornos donde la presión por los resultados económicos es muy alta? ¿Cómo?","¿Qué diferencia existe entre cumplir un código deontológico por obligación y hacerlo por convicción? ¿Importa esa diferencia?","¿Debería existir un código deontológico específico para los ingenieros que trabajan en inteligencia artificial? ¿Qué principios incluirías?"]},
+      {type:"refs", items:["Durán, C. (2022). Ética profesional, una responsabilidad humanística. Revista Boletín Redipe, 11(6), 188–195.","Marín, J. C. (2006). La gestión ética y la responsabilidad social en la ingeniería. Rev. Técnica Ind, 262, 26–30.","Miñano Rubio, R. (2017). Integración de competencias de responsabilidad social, sostenibilidad y ética profesional en los grados de ingeniería informática.","Montuschi, L. (2005). Aspectos éticos de las tecnologías de la información y de la comunicación: la ética de la computación, Internet y la World Wide Web (No. 298). Serie Documentos de Trabajo.","Arriola Rosales, C. R. (2024). La ética en la era digital. Revista Científica Internacional, 7(1), 135–153. https://doi.org/10.46734/revcientifica.v7i1.81","García López, I. E., y Juan Pérez, J. I. (2024). Ética aplicada y valores en la era digital: perspectivas y desafíos en los jóvenes universitarios.","Balladares-Burgos, J. (2022). Valores para una ética digital a partir de las generaciones digitales y el uso de las redes sociales. 593 Digital Publisher CEIT, 7(1), 40–52. https://doi.org/10.33386/593dp.2022.1.747","Cortina, A. (2002). La dimensión pública de las éticas aplicadas. Revista Iberoamericana de Educación, 29, 45–64. https://doi.org/10.35362/rie290950","Sguerra, S. (2019). Comité de Ética en la Asociación Colombiana de Ingenieros – ACIEM. Citado en Arriola Rosales (2024)."]}
     ]
   },
   {
@@ -540,6 +960,444 @@ const BADGE_CLASS = {
 
 let currentFilter = "Todos";
 
+const SVGS = {
+  /* ── DIAGRAM 1: Responsabilidad tecnológica (pág. 4) ── */
+  "svg-resp-tecnologica": {
+    title: "Responsabilidad tecnológica",
+    svg: `<svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" font-family="'Source Serif 4', Georgia, serif">
+      <defs>
+        <linearGradient id="g1a" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#1a4a7a"/><stop offset="100%" stop-color="#2d6a9a"/>
+        </linearGradient>
+        <linearGradient id="g1b" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#0d6e6e"/><stop offset="100%" stop-color="#1a9a9a"/>
+        </linearGradient>
+      </defs>
+      <!-- Left card: Responsabilidad humana -->
+      <rect x="30" y="30" width="280" height="200" rx="12" fill="url(#g1a)"/>
+      <!-- Wrench+person icon area -->
+      <circle cx="170" cy="90" r="32" fill="rgba(255,255,255,.15)"/>
+      <!-- Person icon -->
+      <circle cx="162" cy="80" r="10" fill="white" opacity=".85"/>
+      <path d="M148 110 Q162 100 176 110 L176 108 Q162 96 148 108Z" fill="white" opacity=".85"/>
+      <!-- Wrench icon -->
+      <rect x="176" y="82" width="18" height="5" rx="2" fill="white" opacity=".7" transform="rotate(45 185 84)"/>
+      <circle cx="176" cy="82" r="5" fill="white" opacity=".7"/>
+      <!-- Title -->
+      <text x="170" y="142" text-anchor="middle" font-size="14" font-weight="700" fill="white">Responsabilidad</text>
+      <text x="170" y="160" text-anchor="middle" font-size="14" font-weight="700" fill="white">humana</text>
+      <!-- Description -->
+      <foreignObject x="44" y="172" width="252" height="46">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:11px;color:rgba(255,255,255,.8);text-align:center;line-height:1.5;">
+          La responsabilidad recae en las personas que ejecutan acciones, no en la tecnología.
+        </div>
+      </foreignObject>
+      <!-- Right card: Responsabilidad del ingeniero -->
+      <rect x="370" y="30" width="280" height="200" rx="12" fill="url(#g1b)"/>
+      <!-- Gear icon area -->
+      <circle cx="510" cy="90" r="32" fill="rgba(255,255,255,.15)"/>
+      <!-- Gear -->
+      <circle cx="510" cy="90" r="16" fill="none" stroke="white" stroke-width="3" opacity=".85"/>
+      <circle cx="510" cy="90" r="7" fill="white" opacity=".85"/>
+      <rect x="507" y="70" width="6" height="8" rx="2" fill="white" opacity=".85"/>
+      <rect x="507" y="102" width="6" height="8" rx="2" fill="white" opacity=".85"/>
+      <rect x="490" y="87" width="8" height="6" rx="2" fill="white" opacity=".85"/>
+      <rect x="522" y="87" width="8" height="6" rx="2" fill="white" opacity=".85"/>
+      <!-- Title -->
+      <text x="510" y="142" text-anchor="middle" font-size="14" font-weight="700" fill="white">Responsabilidad</text>
+      <text x="510" y="160" text-anchor="middle" font-size="14" font-weight="700" fill="white">del ingeniero</text>
+      <!-- Description -->
+      <foreignObject x="384" y="172" width="252" height="46">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:11px;color:rgba(255,255,255,.8);text-align:center;line-height:1.5;">
+          Los ingenieros deben asumir las consecuencias de los sistemas que diseñan e implementan.
+        </div>
+      </foreignObject>
+      <!-- Arrow between -->
+      <line x1="318" y1="130" x2="362" y2="130" stroke="#4a9ec0" stroke-width="2" stroke-dasharray="4,3"/>
+      <polygon points="362,126 370,130 362,134" fill="#4a9ec0"/>
+      <!-- Top label -->
+      <text x="340" y="22" text-anchor="middle" font-size="11" font-family="'JetBrains Mono', monospace" fill="#7a9bc0" letter-spacing="1">RESPONSABILIDAD TECNOLÓGICA</text>
+    </svg>`
+  },
+
+  /* ── DIAGRAM 2: Formación y compromiso profesional en ingeniería (pág. 6) ── */
+  "svg-formacion-ingenieria": {
+    title: "Formación y compromiso profesional en ingeniería",
+    svg: `<svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" font-family="'Source Serif 4', Georgia, serif">
+      <defs>
+        <linearGradient id="g2arrow" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#1a4a7a"/><stop offset="100%" stop-color="#4a9ec0"/>
+        </linearGradient>
+      </defs>
+      <!-- Background arrow / ramp shape -->
+      <polygon points="30,240 640,240 640,180 560,140 480,110 400,90 320,80 240,85 160,100 30,240"
+               fill="rgba(26,74,122,.08)" stroke="none"/>
+      <!-- Step 1 block: Escasa formación humanística -->
+      <rect x="30" y="170" width="140" height="70" rx="8" fill="#e8a030"/>
+      <text x="100" y="193" text-anchor="middle" font-size="11" font-weight="700" fill="white">Escasa formación</text>
+      <text x="100" y="208" text-anchor="middle" font-size="11" font-weight="700" fill="white">humanística</text>
+      <text x="100" y="225" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.85)">Carencia de habilidades</text>
+      <text x="100" y="237" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.85)">sociales y éticas</text>
+      <!-- Connector icon: book -->
+      <rect x="84" y="145" width="32" height="22" rx="3" fill="#e8a030" opacity=".7"/>
+      <line x1="100" y1="145" x2="100" y2="167" stroke="white" stroke-width="1.5"/>
+      <!-- Step 2 block: Impacto digital -->
+      <rect x="185" y="140" width="140" height="70" rx="8" fill="#4a9ec0"/>
+      <text x="255" y="163" text-anchor="middle" font-size="11" font-weight="700" fill="white">Impacto digital</text>
+      <text x="255" y="192" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.85)">Decisiones técnicas con</text>
+      <text x="255" y="204" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.85)">consecuencias significativas</text>
+      <!-- Connector icon: screen -->
+      <rect x="239" y="115" width="32" height="22" rx="3" fill="#4a9ec0" opacity=".7"/>
+      <rect x="244" y="119" width="22" height="14" rx="2" fill="none" stroke="white" stroke-width="1.2"/>
+      <!-- Step 3 block: Falta de regulación -->
+      <rect x="340" y="110" width="140" height="70" rx="8" fill="#0d6e6e"/>
+      <text x="410" y="133" text-anchor="middle" font-size="11" font-weight="700" fill="white">Falta de regulación</text>
+      <text x="410" y="158" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.85)">Riesgos asociados</text>
+      <text x="410" y="170" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.85)">al uso de la tecnología</text>
+      <!-- Connector icon: scale -->
+      <line x1="410" y1="85" x2="410" y2="110" stroke="#0d6e6e" stroke-width="1.5"/>
+      <line x1="394" y1="93" x2="426" y2="93" stroke="#0d6e6e" stroke-width="1.5"/>
+      <circle cx="394" cy="98" r="7" fill="none" stroke="#0d6e6e" stroke-width="1.5"/>
+      <circle cx="426" cy="98" r="7" fill="none" stroke="#0d6e6e" stroke-width="1.5"/>
+      <!-- Step 4 block: Deterioro de valores -->
+      <rect x="495" y="80" width="155" height="70" rx="8" fill="#1a4a7a"/>
+      <text x="572" y="103" text-anchor="middle" font-size="11" font-weight="700" fill="white">Deterioro de valores</text>
+      <text x="572" y="128" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.85)">El desarrollo tecnológico</text>
+      <text x="572" y="140" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,.85)">amenaza valores humanos</text>
+      <!-- Connector icon: group -->
+      <circle cx="563" cy="55" r="8" fill="none" stroke="#1a4a7a" stroke-width="1.5"/>
+      <circle cx="581" cy="55" r="8" fill="none" stroke="#1a4a7a" stroke-width="1.5"/>
+      <line x1="572" y1="63" x2="572" y2="80" stroke="#1a4a7a" stroke-width="1.5"/>
+      <!-- Arrow top right -->
+      <polygon points="630,65 650,75 630,85" fill="#1a4a7a" opacity=".5"/>
+      <line x1="640" y1="75" x2="660" y2="55" stroke="#4a9ec0" stroke-width="2"/>
+      <polygon points="655,48 668,52 660,63" fill="#4a9ec0"/>
+      <!-- Bottom label -->
+      <text x="340" y="275" text-anchor="middle" font-size="10" font-family="'JetBrains Mono', monospace" fill="#7a9bc0" letter-spacing="1">FORMACIÓN Y COMPROMISO PROFESIONAL EN INGENIERÍA</text>
+    </svg>`
+  },
+
+  /* ── DIAGRAM 3a: El puente de la veracidad y el bien común (pág. 7) ── */
+  "svg-puente-veracidad": {
+    title: "El puente de la veracidad y el bien común",
+    svg: `<svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" font-family="'Source Serif 4', Georgia, serif">
+      <defs>
+        <linearGradient id="g3bridge" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#1a4a7a"/><stop offset="100%" stop-color="#0d6e6e"/>
+        </linearGradient>
+      </defs>
+      <!-- Left pillar: El Profesional -->
+      <rect x="30" y="50" width="150" height="150" rx="10" fill="#1a4a7a"/>
+      <!-- Scale icon -->
+      <line x1="105" y1="80" x2="105" y2="110" stroke="white" stroke-width="2"/>
+      <line x1="85" y1="88" x2="125" y2="88" stroke="white" stroke-width="2"/>
+      <circle cx="85" cy="98" r="10" fill="none" stroke="white" stroke-width="1.8"/>
+      <circle cx="125" cy="98" r="10" fill="none" stroke="white" stroke-width="1.8"/>
+      <text x="105" y="130" text-anchor="middle" font-size="12" font-weight="700" fill="white">El Profesional</text>
+      <!-- Badge: Compromiso ético y veracidad -->
+      <rect x="38" y="160" width="134" height="30" rx="6" fill="rgba(255,255,255,.12)"/>
+      <text x="105" y="170" text-anchor="middle" font-size="8.5" fill="rgba(255,255,255,.75)">Compromiso ético</text>
+      <text x="105" y="182" text-anchor="middle" font-size="8.5" fill="rgba(255,255,255,.75)">y veracidad</text>
+
+      <!-- Bridge / middle: Confianza -->
+      <rect x="200" y="90" width="280" height="80" rx="10" fill="url(#g3bridge)"/>
+      <!-- Bridge arch lines -->
+      <path d="M210 170 Q340 70 470 170" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+      <!-- Lock icon in center -->
+      <rect x="325" y="108" width="30" height="26" rx="4" fill="rgba(255,255,255,.25)"/>
+      <path d="M332 108 L332 102 Q332 96 340 96 Q348 96 348 102 L348 108" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="340" cy="120" r="5" fill="rgba(11,23,41,.4)"/>
+      <text x="340" y="148" text-anchor="middle" font-size="13" font-weight="700" fill="white">CONFIANZA</text>
+
+      <!-- Right pillar: Usuarios y Sociedad -->
+      <rect x="500" y="50" width="150" height="150" rx="10" fill="#0d6e6e"/>
+      <!-- Group icon -->
+      <circle cx="560" cy="88" r="10" fill="rgba(255,255,255,.7)"/>
+      <circle cx="580" cy="88" r="10" fill="rgba(255,255,255,.7)"/>
+      <path d="M546 108 Q560 100 574 108" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M566 108 Q580 100 594 108" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-linecap="round"/>
+      <text x="575" y="130" text-anchor="middle" font-size="12" font-weight="700" fill="white">Usuarios y</text>
+      <text x="575" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="white">Sociedad</text>
+      <!-- Badge: Prioridad del bien común -->
+      <rect x="508" y="160" width="134" height="30" rx="6" fill="rgba(255,255,255,.12)"/>
+      <text x="575" y="170" text-anchor="middle" font-size="8.5" fill="rgba(255,255,255,.75)">Prioridad del bien</text>
+      <text x="575" y="182" text-anchor="middle" font-size="8.5" fill="rgba(255,255,255,.75)">común y equidad</text>
+
+      <!-- Arrows -->
+      <polygon points="192,125 202,130 192,135" fill="rgba(255,255,255,.5)"/>
+      <polygon points="488,125 498,130 488,135" fill="rgba(255,255,255,.5)"/>
+      <!-- Labels top -->
+      <text x="105" y="44" text-anchor="middle" font-size="9" font-family="'JetBrains Mono',monospace" fill="#7a9bc0">EL PROFESIONAL</text>
+      <text x="575" y="44" text-anchor="middle" font-size="9" font-family="'JetBrains Mono',monospace" fill="#7a9bc0">USUARIOS Y SOCIEDAD</text>
+    </svg>`
+  },
+
+  /* ── DIAGRAM 3b: El puente de la veracidad y el bien común v2 (pág. 8) ── */
+  "svg-puente-veracidad-2": {
+    title: "El puente de la veracidad y el bien común — gobernanza global",
+    svg: `<svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" font-family="'Source Serif 4', Georgia, serif">
+      <defs>
+        <radialGradient id="g4globe" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#1a4a7a" stop-opacity=".9"/>
+          <stop offset="100%" stop-color="#0b1729" stop-opacity=".7"/>
+        </radialGradient>
+      </defs>
+      <!-- Central globe -->
+      <circle cx="340" cy="130" r="80" fill="url(#g4globe)" stroke="#4a9ec0" stroke-width="1.5"/>
+      <!-- Globe grid lines -->
+      <ellipse cx="340" cy="130" rx="80" ry="30" fill="none" stroke="rgba(74,158,192,.3)" stroke-width="1"/>
+      <line x1="340" y1="50" x2="340" y2="210" stroke="rgba(74,158,192,.25)" stroke-width="1"/>
+      <line x1="265" y1="80" x2="415" y2="80" stroke="rgba(74,158,192,.2)" stroke-width="1"/>
+      <line x1="260" y1="130" x2="420" y2="130" stroke="rgba(74,158,192,.2)" stroke-width="1"/>
+      <line x1="265" y1="180" x2="415" y2="180" stroke="rgba(74,158,192,.2)" stroke-width="1"/>
+      <!-- Scale icon on globe -->
+      <line x1="340" y1="105" x2="340" y2="125" stroke="white" stroke-width="1.8"/>
+      <line x1="322" y1="112" x2="358" y2="112" stroke="white" stroke-width="1.8"/>
+      <circle cx="322" cy="120" r="8" fill="none" stroke="white" stroke-width="1.5"/>
+      <circle cx="358" cy="120" r="8" fill="none" stroke="white" stroke-width="1.5"/>
+      <text x="340" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="white">Ética</text>
+      <text x="340" y="166" text-anchor="middle" font-size="12" font-weight="700" fill="white">Global</text>
+
+      <!-- People arc around globe -->
+      <!-- Left cluster -->
+      <circle cx="80" cy="130" r="24" fill="rgba(26,74,122,.5)" stroke="#4a9ec0" stroke-width="1"/>
+      <circle cx="73" cy="122" r="7" fill="rgba(255,255,255,.7)"/>
+      <circle cx="87" cy="122" r="7" fill="rgba(255,255,255,.7)"/>
+      <path d="M62 140 Q80 132 98 140" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.8" stroke-linecap="round"/>
+      <text x="80" y="168" text-anchor="middle" font-size="10" fill="#7aaacf">Profesionales</text>
+
+      <!-- Right cluster -->
+      <circle cx="600" cy="130" r="24" fill="rgba(13,110,110,.5)" stroke="#0d6e6e" stroke-width="1"/>
+      <circle cx="593" cy="122" r="7" fill="rgba(255,255,255,.7)"/>
+      <circle cx="607" cy="122" r="7" fill="rgba(255,255,255,.7)"/>
+      <path d="M582 140 Q600 132 618 140" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.8" stroke-linecap="round"/>
+      <text x="600" y="168" text-anchor="middle" font-size="10" fill="#7aaacf">Sociedad</text>
+
+      <!-- Top cluster -->
+      <circle cx="340" cy="30" r="20" fill="rgba(74,158,192,.3)" stroke="#4a9ec0" stroke-width="1"/>
+      <circle cx="333" cy="23" r="6" fill="rgba(255,255,255,.7)"/>
+      <circle cx="347" cy="23" r="6" fill="rgba(255,255,255,.7)"/>
+      <path d="M326 36 Q340 29 354 36" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <text x="340" y="18" text-anchor="middle" font-size="10" fill="#7aaacf">Instituciones</text>
+
+      <!-- Bottom cluster -->
+      <circle cx="340" cy="230" r="20" fill="rgba(240,192,96,.25)" stroke="#f0c060" stroke-width="1"/>
+      <line x1="336" y1="224" x2="344" y2="216" stroke="rgba(240,192,96,.8)" stroke-width="1.5"/>
+      <circle cx="340" cy="220" r="5" fill="none" stroke="rgba(240,192,96,.8)" stroke-width="1.5"/>
+      <text x="340" y="256" text-anchor="middle" font-size="10" fill="#c0a050">Regulación</text>
+
+      <!-- Connector lines -->
+      <line x1="104" y1="130" x2="260" y2="130" stroke="rgba(74,158,192,.4)" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <line x1="420" y1="130" x2="576" y2="130" stroke="rgba(74,158,192,.4)" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <line x1="340" y1="50" x2="340" y2="76" stroke="rgba(74,158,192,.4)" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <line x1="340" y1="210" x2="340" y2="216" stroke="rgba(240,192,96,.4)" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+      <!-- Label -->
+      <text x="340" y="252" text-anchor="middle" font-size="0" fill="none"/>
+    </svg>`
+  },
+
+  /* ── DIAGRAM 5: Ética vs Legalidad — mapa de zonas (art. 3) ── */
+  "svg-etica-legalidad": {
+    title: "Ética y legalidad: zonas de relación",
+    svg: `<svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" font-family="'Source Serif 4', Georgia, serif">
+      <defs>
+        <clipPath id="clipLegal"><ellipse cx="240" cy="140" rx="170" ry="110"/></clipPath>
+        <clipPath id="clipEtica"><ellipse cx="440" cy="140" rx="170" ry="110"/></clipPath>
+      </defs>
+      <!-- Left circle: Legalidad -->
+      <ellipse cx="240" cy="140" rx="170" ry="110" fill="rgba(26,74,122,.18)" stroke="#1a4a7a" stroke-width="2"/>
+      <!-- Right circle: Ética -->
+      <ellipse cx="440" cy="140" rx="170" ry="110" fill="rgba(13,110,110,.18)" stroke="#0d6e6e" stroke-width="2"/>
+      <!-- Intersection fill -->
+      <ellipse cx="440" cy="140" rx="170" ry="110" fill="rgba(74,158,192,.22)" clip-path="url(#clipLegal)"/>
+      <!-- Left zone label -->
+      <text x="155" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#1a4a7a">Solo Legal</text>
+      <text x="155" y="122" text-anchor="middle" font-size="9" fill="#3a5a8a">Cumple la norma</text>
+      <text x="155" y="136" text-anchor="middle" font-size="9" fill="#3a5a8a">pero puede ser</text>
+      <text x="155" y="150" text-anchor="middle" font-size="9" fill="#3a5a8a">éticamente cuestionable</text>
+      <!-- Examples left -->
+      <text x="155" y="172" text-anchor="middle" font-size="8.5" fill="#5a7aaa" font-style="italic">Dark patterns,</text>
+      <text x="155" y="184" text-anchor="middle" font-size="8.5" fill="#5a7aaa" font-style="italic">obsolescencia programada</text>
+      <!-- Center zone label -->
+      <text x="340" y="118" text-anchor="middle" font-size="11" font-weight="700" fill="#0b3a5a">Coincidencia</text>
+      <text x="340" y="135" text-anchor="middle" font-size="9" fill="#1a4a6a">Legal y</text>
+      <text x="340" y="149" text-anchor="middle" font-size="9" fill="#1a4a6a">éticamente correcto</text>
+      <text x="340" y="168" text-anchor="middle" font-size="8.5" fill="#2a5a7a" font-style="italic">Protección de datos,</text>
+      <text x="340" y="180" text-anchor="middle" font-size="8.5" fill="#2a5a7a" font-style="italic">no causar daño</text>
+      <!-- Right zone label -->
+      <text x="525" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#0d6e6e">Solo Ético</text>
+      <text x="525" y="122" text-anchor="middle" font-size="9" fill="#1a6a5a">Exige más</text>
+      <text x="525" y="136" text-anchor="middle" font-size="9" fill="#1a6a5a">que la ley:</text>
+      <text x="525" y="150" text-anchor="middle" font-size="9" fill="#1a6a5a">objeción de conciencia</text>
+      <text x="525" y="172" text-anchor="middle" font-size="8.5" fill="#2a8a6a" font-style="italic">Reportar vacíos</text>
+      <text x="525" y="184" text-anchor="middle" font-size="8.5" fill="#2a8a6a" font-style="italic">normativos digitales</text>
+      <!-- Top labels -->
+      <text x="240" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#1a4a7a">LEGALIDAD</text>
+      <text x="440" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#0d6e6e">ÉTICA</text>
+      <!-- Bottom note -->
+      <text x="340" y="265" text-anchor="middle" font-size="9" font-family="'JetBrains Mono',monospace" fill="#7a9bc0" letter-spacing="0.5">La ética debe ser el horizonte; la legalidad, el piso mínimo</text>
+    </svg>`
+  },
+
+  /* ── DIAGRAM 6: Zonas ética-ley con ejemplos digitales (art. 3) ── */
+  "svg-zonas-etica-ley": {
+    title: "Vacíos normativos digitales: donde solo la ética guía",
+    svg: `<svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" font-family="'Source Serif 4', Georgia, serif">
+      <defs>
+        <linearGradient id="gVacio" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#1a4a7a"/><stop offset="50%" stop-color="#4a9ec0"/><stop offset="100%" stop-color="#0d6e6e"/>
+        </linearGradient>
+      </defs>
+      <!-- Timeline arrow -->
+      <line x1="40" y1="130" x2="640" y2="130" stroke="#dde5f5" stroke-width="2"/>
+      <polygon points="636,124 648,130 636,136" fill="#4a9ec0"/>
+      <text x="648" y="148" font-size="9" font-family="'JetBrains Mono',monospace" fill="#7a9bc0">Tiempo</text>
+      <!-- Law zone bar -->
+      <rect x="40" y="100" width="280" height="22" rx="4" fill="rgba(26,74,122,.25)" stroke="#1a4a7a" stroke-width="1.2"/>
+      <text x="180" y="115" text-anchor="middle" font-size="10" font-weight="700" fill="#1a4a7a">Marco Legal Existente</text>
+      <!-- Gap zone -->
+      <rect x="320" y="100" width="280" height="22" rx="4" fill="rgba(240,192,96,.2)" stroke="#f0c060" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="460" y="115" text-anchor="middle" font-size="10" font-weight="700" fill="#b08020">Vacío Normativo Digital</text>
+      <!-- Ethics zone bar -->
+      <rect x="40" y="148" width="560" height="22" rx="4" fill="url(#gVacio)" opacity=".25"/>
+      <rect x="40" y="148" width="560" height="22" rx="4" fill="none" stroke="#4a9ec0" stroke-width="1.2"/>
+      <text x="320" y="163" text-anchor="middle" font-size="10" font-weight="700" fill="#1a4a7a">Ética Profesional — cubre todo el espectro</text>
+      <!-- Examples in gap -->
+      <g font-size="8.5" fill="#8a6020">
+        <text x="335" y="208">• IA generativa y desinformación</text>
+        <text x="335" y="222">• Datos biométricos sin regulación</text>
+        <text x="335" y="236">• Vigilancia por drones</text>
+        <text x="335" y="250">• Automatización de derechos fundamentales</text>
+      </g>
+      <!-- Vertical divider -->
+      <line x1="320" y1="80" x2="320" y2="200" stroke="#f0c060" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="320" y="75" text-anchor="middle" font-size="8" font-family="'JetBrains Mono',monospace" fill="#b08020">Frontera regulatoria actual</text>
+      <!-- Labels -->
+      <text x="40" y="88" font-size="9" font-family="'JetBrains Mono',monospace" fill="#7a9bc0">COBERTURA NORMATIVA</text>
+    </svg>`
+  },
+
+  /* ── DIAGRAM 7: Código deontológico — estructura de principios (art. 4) ── */
+  "svg-codigo-deontologico": {
+    title: "Estructura del código deontológico en ingeniería",
+    svg: `<svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" font-family="'Source Serif 4', Georgia, serif">
+      <defs>
+        <linearGradient id="gCentro" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#1a4a7a"/><stop offset="100%" stop-color="#0d6e6e"/>
+        </linearGradient>
+      </defs>
+      <!-- Central hexagon -->
+      <polygon points="340,40 400,73 400,140 340,173 280,140 280,73" fill="url(#gCentro)" stroke="#4a9ec0" stroke-width="2"/>
+      <text x="340" y="97" text-anchor="middle" font-size="11" font-weight="700" fill="white">CÓDIGO</text>
+      <text x="340" y="113" text-anchor="middle" font-size="11" font-weight="700" fill="white">DEONTO-</text>
+      <text x="340" y="129" text-anchor="middle" font-size="11" font-weight="700" fill="white">LÓGICO</text>
+      <!-- 6 satellite hexagons -->
+      <!-- Top: Seguridad pública -->
+      <polygon points="340,8 362,20 362,46 340,58 318,46 318,20" fill="rgba(26,74,122,.85)" stroke="#4a9ec0" stroke-width="1.5"/>
+      <text x="340" y="30" text-anchor="middle" font-size="8" font-weight="700" fill="white">Seguridad</text>
+      <text x="340" y="42" text-anchor="middle" font-size="8" font-weight="700" fill="white">Pública</text>
+      <line x1="340" y1="58" x2="340" y2="73" stroke="#4a9ec0" stroke-width="1.2"/>
+      <!-- Top-right: Competencia -->
+      <polygon points="410,48 432,60 432,86 410,98 388,86 388,60" fill="rgba(13,110,110,.85)" stroke="#4a9ec0" stroke-width="1.5"/>
+      <text x="410" y="72" text-anchor="middle" font-size="8" font-weight="700" fill="white">Competencia</text>
+      <text x="410" y="84" text-anchor="middle" font-size="8" font-weight="700" fill="white">Técnica</text>
+      <line x1="395" y1="86" x2="385" y2="95" stroke="#4a9ec0" stroke-width="1.2"/>
+      <!-- Bottom-right: Confidencialidad -->
+      <polygon points="410,150 432,162 432,188 410,200 388,188 388,162" fill="rgba(26,74,122,.85)" stroke="#4a9ec0" stroke-width="1.5"/>
+      <text x="410" y="172" text-anchor="middle" font-size="8" font-weight="700" fill="white">Confiden-</text>
+      <text x="410" y="184" text-anchor="middle" font-size="8" font-weight="700" fill="white">cialidad</text>
+      <line x1="395" y1="162" x2="385" y2="152" stroke="#4a9ec0" stroke-width="1.2"/>
+      <!-- Bottom: Honestidad -->
+      <polygon points="340,186 362,198 362,224 340,236 318,224 318,198" fill="rgba(13,110,110,.85)" stroke="#4a9ec0" stroke-width="1.5"/>
+      <text x="340" y="208" text-anchor="middle" font-size="8" font-weight="700" fill="white">Honestidad</text>
+      <text x="340" y="220" text-anchor="middle" font-size="8" font-weight="700" fill="white">e Integridad</text>
+      <line x1="340" y1="186" x2="340" y2="173" stroke="#4a9ec0" stroke-width="1.2"/>
+      <!-- Bottom-left: Respeto -->
+      <polygon points="270,150 292,162 292,188 270,200 248,188 248,162" fill="rgba(26,74,122,.85)" stroke="#4a9ec0" stroke-width="1.5"/>
+      <text x="270" y="172" text-anchor="middle" font-size="8" font-weight="700" fill="white">Respeto a</text>
+      <text x="270" y="184" text-anchor="middle" font-size="8" font-weight="700" fill="white">Personas</text>
+      <line x1="285" y1="162" x2="295" y2="152" stroke="#4a9ec0" stroke-width="1.2"/>
+      <!-- Top-left: Formación continua -->
+      <polygon points="270,48 292,60 292,86 270,98 248,86 248,60" fill="rgba(13,110,110,.85)" stroke="#4a9ec0" stroke-width="1.5"/>
+      <text x="270" y="70" text-anchor="middle" font-size="8" font-weight="700" fill="white">Formación</text>
+      <text x="270" y="82" text-anchor="middle" font-size="8" font-weight="700" fill="white">Continua</text>
+      <line x1="285" y1="86" x2="295" y2="95" stroke="#4a9ec0" stroke-width="1.2"/>
+      <!-- References IEEE/ACM/ACIEM -->
+      <rect x="30" y="250" width="180" height="36" rx="6" fill="rgba(26,74,122,.12)" stroke="#1a4a7a" stroke-width="1"/>
+      <text x="120" y="264" text-anchor="middle" font-size="9" font-weight="700" fill="#1a4a7a">IEEE Code of Ethics</text>
+      <text x="120" y="278" text-anchor="middle" font-size="8" fill="#3a5a8a">Institute of Electrical and</text>
+      <text x="120" y="288" text-anchor="middle" font-size="8" fill="#3a5a8a">Electronics Engineers</text>
+      <rect x="250" y="250" width="180" height="36" rx="6" fill="rgba(13,110,110,.12)" stroke="#0d6e6e" stroke-width="1"/>
+      <text x="340" y="264" text-anchor="middle" font-size="9" font-weight="700" fill="#0d6e6e">ACM Code of Ethics</text>
+      <text x="340" y="278" text-anchor="middle" font-size="8" fill="#1a6a5a">Association for</text>
+      <text x="340" y="288" text-anchor="middle" font-size="8" fill="#1a6a5a">Computing Machinery</text>
+      <rect x="470" y="250" width="180" height="36" rx="6" fill="rgba(74,158,192,.12)" stroke="#4a9ec0" stroke-width="1"/>
+      <text x="560" y="264" text-anchor="middle" font-size="9" font-weight="700" fill="#1a4a7a">ACIEM Colombia</text>
+      <text x="560" y="278" text-anchor="middle" font-size="8" fill="#3a5a8a">Asociación Colombiana</text>
+      <text x="560" y="288" text-anchor="middle" font-size="8" fill="#3a5a8a">de Ingenieros — Ley 842/03</text>
+    </svg>`
+  },
+
+  /* ── DIAGRAM 8: Principios deontológicos en acción (art. 4) ── */
+  "svg-principios-deonto": {
+    title: "Del principio a la acción: deontología aplicada",
+    svg: `<svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" font-family="'Source Serif 4', Georgia, serif">
+      <!-- Header row -->
+      <rect x="30" y="20" width="190" height="30" rx="4" fill="#1a4a7a"/>
+      <rect x="245" y="20" width="190" height="30" rx="4" fill="#0d6e6e"/>
+      <rect x="460" y="20" width="190" height="30" rx="4" fill="#1a4a7a"/>
+      <text x="125" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="white">Principio</text>
+      <text x="340" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="white">Dilema típico</text>
+      <text x="555" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="white">Acción deontológica</text>
+      <!-- Row 1 -->
+      <rect x="30" y="58" width="190" height="44" rx="3" fill="rgba(26,74,122,.08)" stroke="#dde5f5" stroke-width="1"/>
+      <rect x="245" y="58" width="190" height="44" rx="3" fill="rgba(13,110,110,.06)" stroke="#dde5f5" stroke-width="1"/>
+      <rect x="460" y="58" width="190" height="44" rx="3" fill="rgba(26,74,122,.06)" stroke="#dde5f5" stroke-width="1"/>
+      <text x="125" y="76" text-anchor="middle" font-size="10" font-weight="700" fill="#1a4a7a">Seguridad pública</text>
+      <text x="125" y="91" text-anchor="middle" font-size="8.5" fill="#3a5a8a">sobre interés del cliente</text>
+      <text x="340" y="74" text-anchor="middle" font-size="8.5" fill="#1a6a5a">Sistema con vulnerabilidad</text>
+      <text x="340" y="86" text-anchor="middle" font-size="8.5" fill="#1a6a5a">de seguridad conocida</text>
+      <text x="340" y="98" text-anchor="middle" font-size="8.5" fill="#1a6a5a">en producción</text>
+      <text x="555" y="74" text-anchor="middle" font-size="8.5" fill="#1a4a7a">Reportar al cliente</text>
+      <text x="555" y="86" text-anchor="middle" font-size="8.5" fill="#1a4a7a">aunque implique</text>
+      <text x="555" y="98" text-anchor="middle" font-size="8.5" fill="#1a4a7a">retrasar la entrega</text>
+      <!-- Row 2 -->
+      <rect x="30" y="108" width="190" height="44" rx="3" fill="rgba(26,74,122,.08)" stroke="#dde5f5" stroke-width="1"/>
+      <rect x="245" y="108" width="190" height="44" rx="3" fill="rgba(13,110,110,.06)" stroke="#dde5f5" stroke-width="1"/>
+      <rect x="460" y="108" width="190" height="44" rx="3" fill="rgba(26,74,122,.06)" stroke="#dde5f5" stroke-width="1"/>
+      <text x="125" y="126" text-anchor="middle" font-size="10" font-weight="700" fill="#1a4a7a">Competencia</text>
+      <text x="125" y="141" text-anchor="middle" font-size="8.5" fill="#3a5a8a">solo aceptar encargos</text>
+      <text x="125" y="153" text-anchor="middle" font-size="8.5" fill="#3a5a8a">para los que se está listo</text>
+      <text x="340" y="124" text-anchor="middle" font-size="8.5" fill="#1a6a5a">Proyecto de IA sin</text>
+      <text x="340" y="136" text-anchor="middle" font-size="8.5" fill="#1a6a5a">formación previa en</text>
+      <text x="340" y="148" text-anchor="middle" font-size="8.5" fill="#1a6a5a">sesgos algorítmicos</text>
+      <text x="555" y="124" text-anchor="middle" font-size="8.5" fill="#1a4a7a">Declinar o formarse</text>
+      <text x="555" y="136" text-anchor="middle" font-size="8.5" fill="#1a4a7a">antes de aceptar;</text>
+      <text x="555" y="148" text-anchor="middle" font-size="8.5" fill="#1a4a7a">ser transparente</text>
+      <!-- Row 3 -->
+      <rect x="30" y="158" width="190" height="44" rx="3" fill="rgba(26,74,122,.08)" stroke="#dde5f5" stroke-width="1"/>
+      <rect x="245" y="158" width="190" height="44" rx="3" fill="rgba(13,110,110,.06)" stroke="#dde5f5" stroke-width="1"/>
+      <rect x="460" y="158" width="190" height="44" rx="3" fill="rgba(26,74,122,.06)" stroke="#dde5f5" stroke-width="1"/>
+      <text x="125" y="176" text-anchor="middle" font-size="10" font-weight="700" fill="#1a4a7a">Confidencialidad</text>
+      <text x="125" y="191" text-anchor="middle" font-size="8.5" fill="#3a5a8a">proteger información</text>
+      <text x="125" y="203" text-anchor="middle" font-size="8.5" fill="#3a5a8a">de clientes y usuarios</text>
+      <text x="340" y="174" text-anchor="middle" font-size="8.5" fill="#1a6a5a">Exjefe pide datos de</text>
+      <text x="340" y="186" text-anchor="middle" font-size="8.5" fill="#1a6a5a">arquitectura del sistema</text>
+      <text x="340" y="198" text-anchor="middle" font-size="8.5" fill="#1a6a5a">de un cliente anterior</text>
+      <text x="555" y="174" text-anchor="middle" font-size="8.5" fill="#1a4a7a">Negar la información</text>
+      <text x="555" y="186" text-anchor="middle" font-size="8.5" fill="#1a4a7a">sin importar la relación</text>
+      <text x="555" y="198" text-anchor="middle" font-size="8.5" fill="#1a4a7a">personal o laboral</text>
+    </svg>`
+  }
+};
+
+function svgBlock(id) {
+  const d = SVGS[id];
+  if (!d) return '';
+  return `<div class="c-diagram"><div class="c-diagram-title">${d.title}</div>${d.svg}</div>`;
+}
+
 function badge(cat) {
   return `<span class="badge ${BADGE_CLASS[cat] || ''}">${cat}</span>`;
 }
@@ -582,6 +1440,7 @@ function renderBlocks(blocks) {
         <div class="c-reflection-title">Preguntas para la reflexión</div>
         <ul>${b.questions.map(q => `<li>${q}</li>`).join('')}</ul>
       </div>`;
+    if (b.type === 'svg')  return svgBlock(b.id);
     if (b.type === 'refs') return `
       <div class="c-refs">
         <div class="c-refs-title">Referencias (APA 7ª ed.)</div>
