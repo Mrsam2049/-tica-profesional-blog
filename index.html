@@ -100,7 +100,7 @@
      HERO
   ───────────────────────────────────────────── */
   .hero {
-    padding: 140px 40px 80px;
+    padding: 110px 40px 20px;
     max-width: var(--max);
     margin: 0 auto;
     text-align: center;
@@ -151,7 +151,7 @@
     font-weight: 400;
     line-height: 1.55;
     max-width: 56ch;
-    margin: 0 auto 44px;
+    margin: 0 auto 28px;
     text-wrap: pretty;
   }
 
@@ -173,49 +173,41 @@
   .btn-primary:hover svg, .btn-ghost:hover svg { transform: translateX(3px); }
 
   /* ─────────────────────────────────────────────
-     HERO VISUAL (2.5:1) — Manos + Balanza
+     HERO VISUAL — imagen camuflada con el fondo
+     El PNG tiene fondo negro puro. mix-blend-mode: lighten
+     lo hace desaparecer dejando solo las manos y la balanza
+     flotando sobre el fondo de la página. La mascara difumina
+     los bordes para que se disuelva sin recortes visibles.
   ───────────────────────────────────────────── */
   .hero-visual {
     position: relative;
-    margin: 70px auto 0;
-    max-width: var(--max);
+    margin: -20px auto 0;
+    width: min(1200px, 100%);
     aspect-ratio: 2.5 / 1;
-    border-radius: 22px;
-    overflow: hidden;
-    background:
-      radial-gradient(ellipse at 30% 50%, rgba(77,168,255,0.18) 0%, transparent 55%),
-      radial-gradient(ellipse at 70% 60%, rgba(30,99,214,0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 60%, #0a1828 0%, #050a14 55%, #000308 100%);
-    border: 1px solid var(--line);
-    box-shadow: 0 0 60px -20px rgba(77,168,255,0.15), inset 0 0 0 1px rgba(77,168,255,0.05);
-  }
-  .hero-visual::before {
-    /* grid backdrop */
-    content: ''; position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
-    -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
-  }
-  .hero-visual::after {
-    /* vignette + subtle wash */
-    content: ''; position: absolute; inset: 0;
-    background:
-      radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.55) 100%),
-      linear-gradient(180deg, rgba(0,0,0,0.15) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.35) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 0;
+    overflow: visible;
     pointer-events: none;
-    z-index: 2;
   }
-  .hero-video {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    z-index: 1;
-    filter: contrast(1.05) saturate(0.85);
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background: transparent;
+    mix-blend-mode: lighten;
+    -webkit-mask-image:
+      radial-gradient(ellipse 80% 90% at center, #000 60%, transparent 100%),
+      linear-gradient(180deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    -webkit-mask-composite: source-in;
+            mask-image:
+      radial-gradient(ellipse 80% 90% at center, #000 60%, transparent 100%),
+      linear-gradient(180deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
+    mask-composite: intersect;
   }
-  .hero-visual svg { position: relative; width: 100%; height: 100%; display: block; }
 
   /* SVG animations */
   @keyframes float-left {
@@ -262,6 +254,86 @@
   .circuit-dot:nth-child(3) { animation-delay: .6s; }
   .circuit-dot:nth-child(4) { animation-delay: .9s; }
   #central-glow { animation: glow-breathe 4s var(--ease) infinite; }
+
+  /* ─────────────────────────────────────────────
+     VIDEO EDITORIAL — embedded YouTube
+  ───────────────────────────────────────────── */
+  .video-section {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 40px 40px 100px;
+  }
+  .video-inner { display: flex; flex-direction: column; gap: 40px; }
+  .video-frame {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--line-strong);
+    background: #000;
+    box-shadow: 0 30px 80px -30px rgba(77,168,255,0.25), 0 0 0 1px rgba(77,168,255,0.06);
+    cursor: pointer;
+    transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
+  }
+  .video-frame:hover {
+    transform: translateY(-3px);
+    border-color: rgba(77,168,255,0.45);
+    box-shadow: 0 40px 100px -30px rgba(77,168,255,0.4), 0 0 0 1px rgba(77,168,255,0.15);
+  }
+  .video-thumb {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .6s var(--ease), filter .35s var(--ease);
+  }
+  .video-frame:hover .video-thumb {
+    transform: scale(1.03);
+    filter: brightness(0.85);
+  }
+  .video-overlay {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 100%),
+      linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.6) 100%);
+    pointer-events: none;
+  }
+  .video-play {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform .35s var(--ease), opacity .35s var(--ease);
+    filter: drop-shadow(0 6px 24px rgba(0,0,0,0.5));
+    opacity: 0.92;
+  }
+  .video-frame:hover .video-play {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 1;
+  }
+  .video-cta {
+    position: absolute;
+    bottom: 18px; right: 18px;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    background: rgba(0, 3, 8, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 999px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: background .25s var(--ease), border-color .25s var(--ease);
+  }
+  .video-frame:hover .video-cta {
+    background: rgba(77,168,255,0.18);
+    border-color: rgba(77,168,255,0.4);
+  }
+  @media (max-width: 720px) {
+    .video-section { padding: 30px 20px 80px; }
+  }
 
   /* ─────────────────────────────────────────────
      SECTION SHELL
@@ -633,6 +705,38 @@
   content:'→'; position:absolute; left:0;
   color:var(--accent); font-family:'JetBrains Mono',monospace; font-size:12px;
 }
+.c-h3 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+  font-weight: 500; letter-spacing: -0.015em;
+  color: var(--text); margin: 32px 0 14px;
+}
+.c-list {
+  list-style: none; margin: 18px 0 26px; padding: 0;
+}
+.c-list li {
+  font-size: 15px; color: var(--text-mid);
+  line-height: 1.7; padding: 6px 0 6px 22px;
+  position: relative;
+}
+.c-list li::before {
+  content:'•'; position:absolute; left:6px; top:6px;
+  color:var(--accent); font-size:14px;
+}
+.c-qa {
+  margin: 22px 0; padding: 18px 22px;
+  border-left: 2px solid var(--accent);
+  background: rgba(77,168,255,0.04);
+  border-radius: 0 8px 8px 0;
+}
+.c-qa-q {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 15px; font-weight: 600;
+  color: var(--text); line-height: 1.5; margin-bottom: 8px;
+}
+.c-qa-a {
+  font-size: 15px; color: var(--text-mid); line-height: 1.65;
+}
 .c-refs {
   background: var(--bg-elev);
   border: 1px solid var(--line);
@@ -688,6 +792,14 @@
   display: flex; align-items: center; justify-content: center;
   font-size: 15px; font-weight: 600; color: #001022;
   margin-bottom: 16px;
+}
+.author-avatar--photo {
+  width: 64px; height: 64px;
+  background-size: cover;
+  background-position: center 20%;
+  background-repeat: no-repeat;
+  border: 2px solid rgba(77,168,255,0.35);
+  box-shadow: 0 6px 18px -6px rgba(77,168,255,0.45), inset 0 0 0 1px rgba(255,255,255,0.05);
 }
 .author-name {
   font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px;
@@ -872,255 +984,9 @@
     <a href="#manifesto" class="btn-ghost">Manifiesto editorial</a>
   </div>
 
-  <!-- Hero Visual: 2.5:1 cinematic video -->
+  <!-- Hero Visual: imagen camuflada con el fondo -->
   <div class="hero-visual reveal delay-4" aria-hidden="true">
-    <svg viewBox="0 0 1200 480" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;display:block">
-      <defs>
-        <!-- Background gradients -->
-        <radialGradient id="bg-glow" cx="50%" cy="50%" r="70%">
-          <stop offset="0%" stop-color="#0d2140" stop-opacity="1"/>
-          <stop offset="100%" stop-color="#000308" stop-opacity="1"/>
-        </radialGradient>
-        <radialGradient id="node-glow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#4DA8FF" stop-opacity="0.9"/>
-          <stop offset="100%" stop-color="#4DA8FF" stop-opacity="0"/>
-        </radialGradient>
-        <radialGradient id="center-glow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#6FE3FF" stop-opacity="1"/>
-          <stop offset="60%" stop-color="#1E63D6" stop-opacity="0.6"/>
-          <stop offset="100%" stop-color="#000308" stop-opacity="0"/>
-        </radialGradient>
-        <radialGradient id="lock-body" cx="50%" cy="30%" r="70%">
-          <stop offset="0%" stop-color="#6FE3FF"/>
-          <stop offset="100%" stop-color="#1E63D6"/>
-        </radialGradient>
-        <filter id="glow-sm">
-          <feGaussianBlur stdDeviation="3" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <filter id="glow-lg">
-          <feGaussianBlur stdDeviation="8" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <!-- Animated dash patterns -->
-        <marker id="arrow-blue" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-          <circle cx="3" cy="3" r="2" fill="#4DA8FF" opacity="0.7"/>
-        </marker>
-      </defs>
-
-      <!-- Base background -->
-      <rect width="1200" height="480" fill="url(#bg-glow)"/>
-
-      <!-- Fine grid -->
-      <g stroke="rgba(77,168,255,0.05)" stroke-width="1">
-        <line x1="0" y1="60" x2="1200" y2="60"/><line x1="0" y1="120" x2="1200" y2="120"/>
-        <line x1="0" y1="180" x2="1200" y2="180"/><line x1="0" y1="240" x2="1200" y2="240"/>
-        <line x1="0" y1="300" x2="1200" y2="300"/><line x1="0" y1="360" x2="1200" y2="360"/>
-        <line x1="0" y1="420" x2="1200" y2="420"/>
-        <line x1="100" y1="0" x2="100" y2="480"/><line x1="200" y1="0" x2="200" y2="480"/>
-        <line x1="300" y1="0" x2="300" y2="480"/><line x1="400" y1="0" x2="400" y2="480"/>
-        <line x1="500" y1="0" x2="500" y2="480"/><line x1="600" y1="0" x2="600" y2="480"/>
-        <line x1="700" y1="0" x2="700" y2="480"/><line x1="800" y1="0" x2="800" y2="480"/>
-        <line x1="900" y1="0" x2="900" y2="480"/><line x1="1000" y1="0" x2="1000" y2="480"/>
-        <line x1="1100" y1="0" x2="1100" y2="480"/>
-      </g>
-
-      <!-- ── CIRCUIT TRACES — animated flowing dashes ── -->
-      <!-- Main horizontal spine -->
-      <line x1="0" y1="240" x2="440" y2="240" stroke="rgba(77,168,255,0.18)" stroke-width="1.5" stroke-dasharray="6 4">
-        <animate attributeName="stroke-dashoffset" from="0" to="-200" dur="4s" repeatCount="indefinite"/>
-      </line>
-      <line x1="760" y1="240" x2="1200" y2="240" stroke="rgba(77,168,255,0.18)" stroke-width="1.5" stroke-dasharray="6 4">
-        <animate attributeName="stroke-dashoffset" from="-200" to="0" dur="4s" repeatCount="indefinite"/>
-      </line>
-
-      <!-- Left arm — top branch -->
-      <polyline points="200,240 200,160 280,80 420,80 440,100" stroke="rgba(77,168,255,0.2)" stroke-width="1.5" fill="none" stroke-dasharray="5 4">
-        <animate attributeName="stroke-dashoffset" from="0" to="-160" dur="5s" repeatCount="indefinite"/>
-      </polyline>
-      <!-- Left arm — bottom branch -->
-      <polyline points="200,240 200,320 280,400 420,400 440,380" stroke="rgba(77,168,255,0.2)" stroke-width="1.5" fill="none" stroke-dasharray="5 4">
-        <animate attributeName="stroke-dashoffset" from="0" to="-160" dur="6s" repeatCount="indefinite"/>
-      </polyline>
-
-      <!-- Right arm — top branch -->
-      <polyline points="1000,240 1000,160 920,80 780,80 760,100" stroke="rgba(77,168,255,0.2)" stroke-width="1.5" fill="none" stroke-dasharray="5 4">
-        <animate attributeName="stroke-dashoffset" from="-160" to="0" dur="5s" repeatCount="indefinite"/>
-      </polyline>
-      <!-- Right arm — bottom branch -->
-      <polyline points="1000,240 1000,320 920,400 780,400 760,380" stroke="rgba(77,168,255,0.2)" stroke-width="1.5" fill="none" stroke-dasharray="5 4">
-        <animate attributeName="stroke-dashoffset" from="-160" to="0" dur="6s" repeatCount="indefinite"/>
-      </polyline>
-
-      <!-- Diagonal connectors -->
-      <line x1="300" y1="240" x2="300" y2="160" stroke="rgba(77,168,255,0.12)" stroke-width="1" stroke-dasharray="4 5">
-        <animate attributeName="stroke-dashoffset" from="0" to="-60" dur="3s" repeatCount="indefinite"/>
-      </line>
-      <line x1="300" y1="240" x2="300" y2="320" stroke="rgba(77,168,255,0.12)" stroke-width="1" stroke-dasharray="4 5">
-        <animate attributeName="stroke-dashoffset" from="0" to="60" dur="3.5s" repeatCount="indefinite"/>
-      </line>
-      <line x1="900" y1="240" x2="900" y2="160" stroke="rgba(77,168,255,0.12)" stroke-width="1" stroke-dasharray="4 5">
-        <animate attributeName="stroke-dashoffset" from="-60" to="0" dur="3s" repeatCount="indefinite"/>
-      </line>
-      <line x1="900" y1="240" x2="900" y2="320" stroke="rgba(77,168,255,0.12)" stroke-width="1" stroke-dasharray="4 5">
-        <animate attributeName="stroke-dashoffset" from="60" to="0" dur="3.5s" repeatCount="indefinite"/>
-      </line>
-
-      <!-- ── CHIP components — left ── -->
-      <rect x="80" y="210" width="60" height="60" rx="6" fill="rgba(5,8,15,0.9)" stroke="rgba(77,168,255,0.35)" stroke-width="1.2"/>
-      <text x="110" y="238" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(77,168,255,0.5)" letter-spacing="0.5">CPU</text>
-      <text x="110" y="250" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(77,168,255,0.3)">IUE</text>
-      <!-- chip pins left -->
-      <g stroke="rgba(77,168,255,0.3)" stroke-width="1.2">
-        <line x1="80" y1="225" x2="68" y2="225"/><line x1="80" y1="240" x2="68" y2="240"/>
-        <line x1="80" y1="255" x2="68" y2="255"/>
-        <line x1="140" y1="225" x2="152" y2="225"/><line x1="140" y1="240" x2="152" y2="240"/>
-        <line x1="140" y1="255" x2="152" y2="255"/>
-      </g>
-
-      <!-- Chip — bottom left -->
-      <rect x="280" y="370" width="50" height="40" rx="5" fill="rgba(5,8,15,0.9)" stroke="rgba(77,168,255,0.3)" stroke-width="1"/>
-      <text x="305" y="393" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(77,168,255,0.45)">ETH</text>
-      <g stroke="rgba(77,168,255,0.25)" stroke-width="1">
-        <line x1="280" y1="382" x2="270" y2="382"/><line x1="280" y1="395" x2="270" y2="395"/>
-        <line x1="330" y1="382" x2="340" y2="382"/><line x1="330" y1="395" x2="340" y2="395"/>
-      </g>
-
-      <!-- Chip — top left -->
-      <rect x="280" y="68" width="50" height="40" rx="5" fill="rgba(5,8,15,0.9)" stroke="rgba(77,168,255,0.3)" stroke-width="1"/>
-      <text x="305" y="91" text-anchor="middle" font-family="monospace" font-size="7.5" fill="rgba(77,168,255,0.45)">AI</text>
-
-      <!-- Chip — right -->
-      <rect x="1060" y="210" width="60" height="60" rx="6" fill="rgba(5,8,15,0.9)" stroke="rgba(77,168,255,0.35)" stroke-width="1.2"/>
-      <text x="1090" y="238" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(77,168,255,0.5)" letter-spacing="0.5">OUT</text>
-      <g stroke="rgba(77,168,255,0.3)" stroke-width="1.2">
-        <line x1="1060" y1="225" x2="1048" y2="225"/><line x1="1060" y1="240" x2="1048" y2="240"/>
-        <line x1="1060" y1="255" x2="1048" y2="255"/>
-        <line x1="1120" y1="225" x2="1132" y2="225"/><line x1="1120" y1="240" x2="1132" y2="240"/>
-      </g>
-
-      <!-- ── CIRCUIT NODES — pulsing dots ── -->
-      <!-- Left side -->
-      <circle cx="200" cy="240" r="5" fill="#4DA8FF" opacity="0.7" filter="url(#glow-sm)">
-        <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
-        <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="300" cy="240" r="4" fill="#4DA8FF" opacity="0.5">
-        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.5s" begin="0.4s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="280" cy="80" r="3.5" fill="#6FE3FF" opacity="0.6">
-        <animate attributeName="opacity" values="0.2;0.9;0.2" dur="3s" begin="0.8s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="280" cy="400" r="3.5" fill="#6FE3FF" opacity="0.6">
-        <animate attributeName="opacity" values="0.2;0.9;0.2" dur="2.8s" begin="1.2s" repeatCount="indefinite"/>
-      </circle>
-      <!-- Right side -->
-      <circle cx="1000" cy="240" r="5" fill="#4DA8FF" opacity="0.7" filter="url(#glow-sm)">
-        <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" begin="1s" repeatCount="indefinite"/>
-        <animate attributeName="r" values="4;6;4" dur="2s" begin="1s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="900" cy="240" r="4" fill="#4DA8FF" opacity="0.5">
-        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.5s" begin="1.4s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="920" cy="80" r="3.5" fill="#6FE3FF" opacity="0.6">
-        <animate attributeName="opacity" values="0.2;0.9;0.2" dur="3s" begin="0.3s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="920" cy="400" r="3.5" fill="#6FE3FF" opacity="0.6">
-        <animate attributeName="opacity" values="0.2;0.9;0.2" dur="2.8s" begin="0.7s" repeatCount="indefinite"/>
-      </circle>
-
-      <!-- ── CENTRAL GLOW ── -->
-      <circle cx="600" cy="240" r="120" fill="url(#center-glow)" opacity="0.25">
-        <animate attributeName="opacity" values="0.15;0.35;0.15" dur="4s" repeatCount="indefinite"/>
-        <animate attributeName="r" values="110;130;110" dur="4s" repeatCount="indefinite"/>
-      </circle>
-
-      <!-- ── CENTRAL HEXAGON + LOCK ── -->
-      <g transform="translate(600,240)">
-        <!-- Outer hex -->
-        <polygon points="0,-95 82,-47.5 82,47.5 0,95 -82,47.5 -82,-47.5"
-          stroke="rgba(77,168,255,0.35)" stroke-width="1.5" fill="rgba(10,30,60,0.6)">
-          <animateTransform attributeName="transform" type="rotate"
-            from="0" to="360" dur="60s" repeatCount="indefinite"/>
-        </polygon>
-        <!-- Inner hex -->
-        <polygon points="0,-66 57,-33 57,33 0,66 -57,33 -57,-33"
-          stroke="rgba(111,227,255,0.5)" stroke-width="1" fill="rgba(5,15,40,0.7)"/>
-        <!-- Hex corner glows -->
-        <circle cx="0" cy="-66" r="3" fill="#6FE3FF" opacity="0.8">
-          <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite"/>
-        </circle>
-        <circle cx="57" cy="-33" r="3" fill="#6FE3FF" opacity="0.8">
-          <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" begin="0.25s" repeatCount="indefinite"/>
-        </circle>
-        <circle cx="57" cy="33" r="3" fill="#6FE3FF" opacity="0.8">
-          <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" begin="0.5s" repeatCount="indefinite"/>
-        </circle>
-        <circle cx="0" cy="66" r="3" fill="#6FE3FF" opacity="0.8">
-          <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" begin="0.75s" repeatCount="indefinite"/>
-        </circle>
-        <circle cx="-57" cy="33" r="3" fill="#6FE3FF" opacity="0.8">
-          <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" begin="1s" repeatCount="indefinite"/>
-        </circle>
-        <circle cx="-57" cy="-33" r="3" fill="#6FE3FF" opacity="0.8">
-          <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" begin="1.25s" repeatCount="indefinite"/>
-        </circle>
-        <!-- Lock body -->
-        <rect x="-20" y="-5" width="40" height="30" rx="5" fill="url(#lock-body)" opacity="0.9" filter="url(#glow-sm)"/>
-        <!-- Lock shackle -->
-        <path d="M-12-5 L-12-20 Q-12-34 0-34 Q12-34 12-20 L12-5"
-          fill="none" stroke="#6FE3FF" stroke-width="3" stroke-linecap="round"/>
-        <!-- Keyhole -->
-        <circle cx="0" cy="8" r="5.5" fill="rgba(0,3,8,0.9)"/>
-        <rect x="-2.5" y="8" width="5" height="9" rx="1" fill="rgba(0,3,8,0.9)"/>
-        <!-- Scale of justice above -->
-        <g opacity="0.6">
-          <line x1="0" y1="-40" x2="0" y2="-50" stroke="#e8b84b" stroke-width="1.2"/>
-          <line x1="-16" y1="-50" x2="16" y2="-50" stroke="#e8b84b" stroke-width="1.2"/>
-          <circle cx="-16" cy="-55" r="7" fill="none" stroke="#e8b84b" stroke-width="1.2"/>
-          <circle cx="16" cy="-55" r="7" fill="none" stroke="#e8b84b" stroke-width="1.2"/>
-        </g>
-      </g>
-
-      <!-- ── FLOATING CODE LABELS ── -->
-      <g font-family="'JetBrains Mono', 'Courier New', monospace" font-size="11">
-        <text x="100" y="190" fill="rgba(77,168,255,0.35)">
-          ethics.apply()
-          <animate attributeName="opacity" values="0.2;0.5;0.2" dur="4s" repeatCount="indefinite"/>
-        </text>
-        <text x="100" y="295" fill="rgba(77,168,255,0.3)">
-          // responsabilidad social
-          <animate attributeName="opacity" values="0.15;0.45;0.15" dur="5s" begin="1s" repeatCount="indefinite"/>
-        </text>
-        <text x="840" y="190" fill="rgba(77,168,255,0.35)">
-          if (integrity) {"{"}
-          <animate attributeName="opacity" values="0.2;0.5;0.2" dur="4.5s" begin="0.5s" repeatCount="indefinite"/>
-        </text>
-        <text x="860" y="207" fill="rgba(77,168,255,0.25)">
-          return trust;
-          <animate attributeName="opacity" values="0.1;0.4;0.1" dur="4.5s" begin="1s" repeatCount="indefinite"/>
-        </text>
-        <text x="840" y="224" fill="rgba(77,168,255,0.35)">
-          {"}"}
-          <animate attributeName="opacity" values="0.2;0.5;0.2" dur="4.5s" begin="0.5s" repeatCount="indefinite"/>
-        </text>
-        <text x="100" y="430" fill="rgba(77,168,255,0.2)" font-size="9.5">
-          01001001 01010101 01000101 — Conciencia y Profesión · 2026
-          <animate attributeName="opacity" values="0.1;0.3;0.1" dur="6s" repeatCount="indefinite"/>
-        </text>
-      </g>
-
-      <!-- ── SCANLINE ── -->
-      <line x1="0" x2="1200" stroke="rgba(77,168,255,0.15)" stroke-width="1.5">
-        <animate attributeName="y1" values="0;480;0" dur="7s" repeatCount="indefinite"/>
-        <animate attributeName="y2" values="0;480;0" dur="7s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="0;0.4;0" dur="7s" repeatCount="indefinite"/>
-      </line>
-
-      <!-- Vignette overlay -->
-      <rect width="1200" height="480" fill="url(#bg-glow)" opacity="0.3"/>
-      <rect width="200" height="480" fill="linear-gradient(to right, #000308, transparent)" opacity="0.6"/>
-    </svg>
+    <img class="hero-image" src="hero.png" alt="">
   </div>
 </header>
 
@@ -1168,6 +1034,33 @@
 
   <div class="feed-grid" id="feed-grid">
     <!-- cards injected via JS -->
+  </div>
+</section>
+
+<!-- ═══════════════════════ VIDEO EDITORIAL ═══════════════════════ -->
+<section class="video-section" id="video">
+  <div class="video-inner">
+    <div class="section-head reveal">
+      <div>
+        <div class="section-label">Video editorial</div>
+        <h2 class="section-title">La ética en la informática, en imagen y voz.</h2>
+      </div>
+      <div class="section-meta">YouTube · Conciencia y Profesión</div>
+    </div>
+    <a class="video-frame reveal delay-1" href="https://youtu.be/QtmrJ4cmwWU" target="_blank" rel="noopener noreferrer" aria-label="Ver el video editorial en YouTube">
+      <img class="video-thumb" src="https://img.youtube.com/vi/QtmrJ4cmwWU/maxresdefault.jpg" alt="Video editorial — Conciencia y Profesión" loading="lazy" onerror="this.src='https://img.youtube.com/vi/QtmrJ4cmwWU/hqdefault.jpg'">
+      <div class="video-overlay"></div>
+      <div class="video-play" aria-hidden="true">
+        <svg viewBox="0 0 68 48" width="68" height="48">
+          <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.64 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#FF0000"/>
+          <path d="M 45,24 27,14 27,34" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="video-cta">
+        <span>Ver en YouTube</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+      </div>
+    </a>
   </div>
 </section>
 
@@ -1228,34 +1121,34 @@
     </div>
     <div class="authors-grid">
       <div class="author-card reveal delay-1">
-        <div class="author-avatar" style="background:linear-gradient(135deg,#6FE3FF,#1E63D6)">SJ</div>
+        <div class="author-avatar author-avatar--photo" style="background-image:url('simon.jpg')"></div>
         <div class="author-name">Simón Jiménez</div>
-        <div class="author-role">Ingeniería Informática</div>
-        <p class="author-bio">Estudiante de Ingeniería Informática en la IUE. Le interesa entender cómo funcionan las tecnologías desde adentro y aplicarlas para resolver problemas de forma práctica y eficiente.</p>
+        <div class="author-role">Ingeniería Informática · 21 años</div>
+        <p class="author-bio">Soy Simón Jiménez, tengo 21 años y estudio Ingeniería Informática en la Institución Universitaria de Envigado (IUE). Me interesa entender cómo funcionan las tecnologías desde adentro y cómo pueden aplicarse para resolver problemas de forma práctica y eficiente.<br><br>Considero que la ingeniería informática es un campo en constante evolución, por lo que es clave mantenerse actualizado y abierto al cambio. Mi objetivo es seguir creciendo tanto a nivel técnico como personal, aportando con ideas y soluciones que tengan un impacto real.</p>
       </div>
       <div class="author-card reveal delay-2">
-        <div class="author-avatar" style="background:linear-gradient(135deg,#6FE3FF,#0d6e6e)">SM</div>
-        <div class="author-name">Santiago Muñoz</div>
+        <div class="author-avatar author-avatar--photo" style="background-image:url('santiago.png')"></div>
+        <div class="author-name">Santiago Muñoz Jiménez</div>
         <div class="author-role">Ingeniería Electrónica</div>
-        <p class="author-bio">Estudiante de Ingeniería Electrónica en proceso de formación profesional. Cree en el trabajo en equipo como parte fundamental del crecimiento y en la responsabilidad ética del ingeniero.</p>
+        <p class="author-bio">Soy Santiago Muñoz Jiménez, estudiante de Ingeniería Electrónica. Actualmente me encuentro en proceso de formación profesional, fortaleciendo tanto mis conocimientos técnicos como los aspectos éticos necesarios para el ejercicio de la ingeniería.<br><br>Creo en el trabajo en equipo como una parte fundamental del crecimiento, puesto que considero que cada persona tiene algo valioso que aportar. Pienso que el aprendizaje no solo es individual, sino también colectivo, y que compartir ideas y conocimientos permite lograr mejores resultados.<br><br>Considero que como futuros ingenieros es importante no solo enfocarse en lo técnico, sino también en actuar con responsabilidad, compromiso y criterio frente a las decisiones que puedan impactar a la sociedad.</p>
       </div>
       <div class="author-card reveal delay-3">
-        <div class="author-avatar" style="background:linear-gradient(135deg,#4DA8FF,#1E63D6)">SR</div>
-        <div class="author-name">Samuel Romero</div>
+        <div class="author-avatar author-avatar--photo" style="background-image:url('samuel.jpg')"></div>
+        <div class="author-name">Samuel Romero Ruiz</div>
         <div class="author-role">Ingeniería Informática — 7° semestre</div>
-        <p class="author-bio">Enfocado en desarrollo de software, inteligencia artificial y ciberseguridad. Considera que la ética profesional es fundamental en la informática para construir sistemas seguros y confiables.</p>
+        <p class="author-bio">Soy Samuel Romero Ruiz, estudiante de Ingeniería Informática en la Institución Universitaria de Envigado, actualmente en séptimo semestre. Me interesa especialmente el desarrollo de software, la inteligencia artificial y la ciberseguridad, áreas en las que he venido fortaleciendo mis conocimientos y en las que veo un gran potencial para generar impacto en la sociedad.<br><br>Considero que la ética profesional juega un papel fundamental en la informática, ya que como futuros ingenieros tenemos la responsabilidad de construir sistemas seguros, confiables y que realmente aporten al bienestar de las personas. Por eso, valores como la responsabilidad, la integridad y el compromiso son parte esencial de mi proceso de formación.</p>
       </div>
       <div class="author-card reveal delay-4">
-        <div class="author-avatar" style="background:linear-gradient(135deg,#4DA8FF,#0d5a6a)">SC</div>
-        <div class="author-name">Sebastián Calderón</div>
-        <div class="author-role">Ingeniería Informática — 7° semestre</div>
-        <p class="author-bio">Enfocado en el desarrollo de software y la creación de soluciones reales. Persona responsable, analítica y comprometida que actúa con criterio y ética en cada proceso.</p>
+        <div class="author-avatar author-avatar--photo" style="background-image:url('sebastian.jpg')"></div>
+        <div class="author-name">Sebastián Calderón Rincón</div>
+        <div class="author-role">Ingeniería Informática — 7° semestre · 21 años</div>
+        <p class="author-bio">Soy Sebastián Calderón Rincón, tengo 21 años y curso séptimo semestre de Ingeniería Informática. Actualmente estoy enfocado en fortalecer mis conocimientos en el desarrollo de software y en la creación de soluciones que respondan a necesidades reales, con especial interés en el aprendizaje constante y la mejora de mis habilidades. Me considero una persona responsable, analítica y comprometida, que valora el trabajo en equipo como una oportunidad para aprender de otros y aportar nuevas ideas.<br><br>Además, entiendo que como futuro ingeniero tengo una responsabilidad importante frente a la sociedad, por lo que procuro actuar con criterio y ética en cada proceso, buscando que las soluciones que desarrolle sean útiles, seguras y aporten de manera positiva al entorno.</p>
       </div>
       <div class="author-card reveal delay-5">
-        <div class="author-avatar" style="background:linear-gradient(135deg,#6FE3FF,#5b1fa8)">MC</div>
+        <div class="author-avatar author-avatar--photo" style="background-image:url('camila.png')"></div>
         <div class="author-name">María Camila Rodríguez</div>
-        <div class="author-role">Ingeniería Informática — 7° semestre</div>
-        <p class="author-bio">Especializada en inteligencia artificial y robótica. Entiende que la ingeniería no solo implica desarrollar tecnología, sino hacerlo con responsabilidad y compromiso ético.</p>
+        <div class="author-role">Ingeniería Informática — 7° semestre · 20 años</div>
+        <p class="author-bio">Mi nombre es María Camila Rodríguez, tengo 20 años y curso séptimo semestre de Ingeniería Informática en la Institución Universitaria de Envigado. Me enfoco principalmente en inteligencia artificial y robótica, áreas que me motivan por su potencial para crear soluciones innovadoras.<br><br>Durante mi formación he fortalecido mis conocimientos tanto teóricos como prácticos, entendiendo que la ingeniería no solo implica desarrollar tecnología, sino hacerlo con responsabilidad. Por ello, valores como el compromiso y la ética son fundamentales en mi proceso académico y profesional.</p>
       </div>
     </div>
     <div class="supervisor-box reveal">
@@ -1463,47 +1356,573 @@ const ARTICLES = [
   },
   {
     id: 5,
-    title: "Ciberseguridad como imperativo moral",
-    subtitle: "Proteger la dignidad humana en el espacio digital",
+    title: "5 códigos éticos en la informática",
+    subtitle: "Principios fundamentales para el ejercicio responsable de la profesión",
     category: "Deontología",
-    author: "Santiago Muñoz",
-    date: "Abril 2026",
-    readTime: "8 min",
-    excerpt: "Cada brecha de seguridad no es solo un fallo técnico: es una violación de la confianza depositada en quienes construyen los sistemas que custodian la vida digital de las personas.",
+    author: "Sebastián Calderón",
+    date: "Mayo 2026",
+    readTime: "6 min",
+    excerpt: "Una mirada cercana a los cinco principios éticos que todo ingeniero informático debería interiorizar: privacidad, honestidad, uso responsable, propiedad intelectual y compromiso con la sociedad.",
     blocks: [
-      {type:"lead", text:"Cada brecha de seguridad no es solo un fallo técnico: es una violación de la confianza depositada en quienes construyen los sistemas que custodian la vida digital de las personas. Datos de salud, conversaciones privadas, información financiera, identidades: todo esto habita en servidores y sistemas diseñados —o mal diseñados— por ingenieros."},
-      {type:"h2", text:"La privacidad como derecho fundamental"},
-      {type:"p", text:"La privacidad no es un privilegio técnico. Es un derecho humano reconocido internacionalmente y una condición necesaria para el ejercicio de la autonomía, la libertad de pensamiento y la dignidad personal. Desde la ética aristotélica, la vida buena requiere espacios de intimidad donde la persona pueda desarrollarse sin vigilancia ni coerción."},
-      {type:"p", text:"Cuando un sistema informático es diseñado con medidas de seguridad insuficientes —ya sea por negligencia, por recorte de costos o por presión de tiempos— el ingeniero está transfiriendo un riesgo invisible a los usuarios. Ese traslado de riesgo es, en sí mismo, un acto con dimensión moral."},
-      {type:"quote", text:"Como profesionales, los ingenieros deben buscar el hacer las cosas bien y esto se consigue cuando se tiene la suficiente competencia técnica, cuando las relaciones personales están basadas en la confianza y cuando se tiene un profundo respeto a las personas y al medio ambiente.", author:"Marín, J. C. (2006). La gestión ética y la responsabilidad social en la ingeniería"},
-      {type:"h2", text:"El ingeniero como custodio de la confianza"},
-      {type:"p", text:"Implementar buenas prácticas de seguridad —cifrado robusto, autenticación multifactor, principio de mínimo privilegio, auditorías regulares— no debería ser visto como un costo adicional. Es parte de la responsabilidad deontológica del profesional, tan fundamental como escribir código correcto."},
-      {type:"p", text:"Más aún: el ingeniero tiene la obligación ética de comunicar con claridad los riesgos de seguridad a sus clientes y empleadores, incluso cuando esta comunicación resulte incómoda. El silencio cómplice ante una vulnerabilidad conocida es una forma de negligencia profesional."},
-      {type:"reflection", questions:["¿Es éticamente justificable implementar sistemas con vulnerabilidades conocidas bajo presión de plazos de entrega?","¿Qué responsabilidad tienen las empresas tecnológicas cuando sus plataformas son utilizadas para vigilar o perseguir a ciudadanos?","¿Cómo puede un profesional de la ciberseguridad operar éticamente en contextos donde la ley es ambigua?","¿Qué significa 'privacidad por diseño' y por qué debería ser un estándar mínimo en todo desarrollo de software?"]},
-      {type:"refs", items:["Marín, J. C. (2006). La gestión ética y la responsabilidad social en la ingeniería. Rev. Técnica Ind, 262, 26–30.","Arriola Rosales, C. R. (2024). La ética en la era digital. Revista Científica Internacional, 7(1), 135–153.","Sguerra, S. (2019). Comité de Ética en la Asociación Colombiana de Ingenieros – ACIEM."]}
+      {type:"lead", text:"La informática es una de las profesiones que más influencia tiene hoy en la vida cotidiana de las personas. Construimos los sistemas en los que se guardan recuerdos, se mueve dinero, se estudia, se trabaja y se comunican familias enteras. Esa cercanía con la vida de los demás hace que la ética no sea un complemento del trabajo del ingeniero, sino una parte esencial de él. A continuación se presentan cinco códigos éticos que, desde nuestra mirada como estudiantes y futuros profesionales, consideramos fundamentales para ejercer la informática con responsabilidad."},
+      {type:"p", text:"No se trata de reglas memorizadas, sino de actitudes que se viven en cada decisión: cómo manejamos los datos de un usuario, qué tan transparentes somos al entregar un proyecto, para qué decidimos usar lo que sabemos hacer, cómo reconocemos el trabajo de otros y, finalmente, qué impacto deja nuestro código en la sociedad. Estos cinco principios funcionan juntos: ninguno tiene sentido sin los demás."},
+      {type:"svg", id:"svg-cinco-codigos"},
+      {type:"h2", text:"1. Protección de la información y privacidad de las personas"},
+      {type:"p", text:"Uno de los principios más importantes en la ingeniería informática es respetar la privacidad de los usuarios. Hoy en día muchas aplicaciones guardan datos personales como nombres, fotos, números telefónicos, contraseñas e incluso información bancaria."},
+      {type:"p", text:"Consideramos que este código ético es fundamental porque las personas confían su información a las plataformas digitales esperando que esté segura. Cuando un ingeniero usa mal esos datos o permite que sean robados, no solo afecta a una persona, sino también la confianza que todos tienen en la tecnología. Por ejemplo, si una empresa vende información personal sin permiso, estaría actuando de manera poco ética. Un profesional responsable debe proteger esos datos y usarlos únicamente para lo que el usuario autorizó."},
+      {type:"p", text:"En nuestra opinión, respetar la privacidad demuestra respeto por las personas y refleja la honestidad del profesional."},
+      {type:"h2", text:"2. Honestidad en el desarrollo de software"},
+      {type:"p", text:"Otro código ético importante es trabajar con honestidad y transparencia. Muchas veces las personas dependen de programas para estudiar, trabajar o manejar dinero, por lo que los sistemas deben funcionar correctamente."},
+      {type:"p", text:"Pensamos que un ingeniero informático debe ser sincero sobre los errores o limitaciones de un programa. Ocultar fallas solo por terminar rápido o ganar dinero puede traer consecuencias graves para los usuarios. Un ejemplo claro sería una aplicación bancaria con errores de seguridad. Si el desarrollador sabe del problema y no lo reporta, podría causar pérdidas económicas a muchas personas."},
+      {type:"p", text:"Por eso considero que la honestidad es clave en esta profesión. Aceptar errores y corregirlos demuestra responsabilidad y profesionalismo."},
+      {type:"h2", text:"3. Uso responsable de la tecnología"},
+      {type:"p", text:"La tecnología puede ser utilizada para ayudar a las personas, pero también puede causar daño si se usa de manera incorrecta. Por esta razón, existe el deber ético de usar los conocimientos informáticos para fines positivos."},
+      {type:"p", text:"Estamos de acuerdo con este principio porque un ingeniero tiene la capacidad de crear herramientas muy poderosas. Dependiendo de cómo las utilice, puede beneficiar o perjudicar a otros. Por ejemplo, crear programas para robar información, engañar personas o realizar fraudes claramente va en contra de la ética profesional. En cambio, desarrollar aplicaciones educativas, médicas o de apoyo demuestra un uso correcto de la tecnología."},
+      {type:"p", text:"Consideramos que el conocimiento debe servir para mejorar la vida de las personas y no para aprovecharse de ellas."},
+      {type:"svg", id:"svg-codigos-accion"},
+      {type:"h2", text:"4. Respeto por la propiedad intelectual"},
+      {type:"p", text:"En informática es muy común trabajar con programas, diseños, imágenes y contenido creado por otras personas. Por eso, otro código ético importante es respetar los derechos de autor y reconocer el trabajo ajeno."},
+      {type:"p", text:"Muchas veces algunas personas copian programas o proyectos completos y los presentan como propios. Desde nuestro punto de vista, esto es incorrecto porque detrás de cada creación existe esfuerzo, tiempo y dedicación."},
+      {type:"p", text:"Un ingeniero ético debe citar las fuentes, pedir permisos cuando sea necesario y evitar el plagio. Además, respetar la propiedad intelectual también ayuda a fomentar la creatividad y la innovación."},
+      {type:"p", text:"Opinamos que reconocer el trabajo de otros habla muy bien de la integridad y valores de una persona."},
+      {type:"h2", text:"5. Compromiso con la sociedad y el bienestar común"},
+      {type:"p", text:"La ingeniería informática tiene un gran impacto en la vida diaria de las personas. Por eso, los profesionales deben pensar en cómo sus proyectos afectan a la sociedad."},
+      {type:"p", text:"Consideramos que este código ético es muy importante porque la tecnología influye en la educación, la comunicación, el trabajo y hasta en la salud. Un sistema mal diseñado puede generar problemas, exclusión o desigualdad. Por ejemplo, una aplicación difícil de usar para adultos mayores o personas con discapacidad podría dejar muchas personas por fuera. Un ingeniero responsable debe pensar en crear herramientas accesibles y útiles para todos."},
+      {type:"p", text:"El verdadero éxito de la tecnología no está solo en que funcione bien, sino en que realmente ayude a mejorar la vida de las personas."},
+      {type:"reflection", questions:["¿Cuál de los cinco códigos éticos crees que más se descuida hoy en la industria del software? ¿Por qué?","Si descubrieras una vulnerabilidad grave en un sistema en producción, ¿qué harías y qué principios de los cinco aplicarías para decidirlo?","¿Es posible respetar la propiedad intelectual cuando el ecosistema empuja a copiar código de internet sin citar? ¿Qué prácticas concretas adoptarías?","¿En qué momento de tu formación universitaria has sentido tensión entre lo técnico y lo ético? ¿Cómo se resolvió?","¿Cómo diseñarías una aplicación que tuviera en cuenta a personas mayores o usuarios con poca conectividad?"]}
     ]
   },
   {
     id: 6,
-    title: "El ingeniero informático frente a la brecha digital",
-    subtitle: "Tecnología para todos o para pocos: una elección ética",
-    category: "Impacto Social",
+    title: "5 conclusiones propositivas sobre la ética en la informática",
+    subtitle: "Del diagnóstico al compromiso: hacia una ingeniería con propósito",
+    category: "Ética General",
     author: "Simón Jiménez",
-    date: "Abril 2026",
+    date: "Mayo 2026",
     readTime: "7 min",
-    excerpt: "Mientras construimos aplicaciones más sofisticadas, millones de personas siguen sin acceso estable a internet. Esta paradoja no es solo un problema de infraestructura: es un dilema ético que interpela directamente a quienes diseñan el mundo digital.",
+    excerpt: "Después de recorrer dilemas, códigos y responsabilidades, llega el momento de proponer. Estas cinco conclusiones no son un punto final, sino el inicio de una manera distinta de ejercer la informática.",
     blocks: [
-      {type:"lead", text:"Mientras construimos aplicaciones más sofisticadas, millones de personas siguen sin acceso estable a internet. Esta paradoja no es solo un problema de infraestructura: es un dilema ético que interpela directamente a quienes diseñan el mundo digital. La brecha digital no es un fenómeno natural; es el resultado acumulado de decisiones —técnicas, económicas y políticas— tomadas por personas."},
-      {type:"h2", text:"¿Qué es la brecha digital y por qué importa éticamente?"},
-      {type:"p", text:"La brecha digital no se limita al acceso a dispositivos o conectividad. Incluye también la capacidad de uso significativo —la habilidad de evaluar críticamente la información, proteger la privacidad propia, participar en la economía digital— y las oportunidades que genera ese uso. Quien no tiene acceso queda excluido de servicios educativos, oportunidades laborales, atención médica digital y participación cívica."},
-      {type:"quote", text:"La nueva sociedad basada en las tecnologías de la información debería tender a reducir las desigualdades existentes y asegurar el acceso general a la información.", author:"Montuschi, L. (2005)"},
-      {type:"h2", text:"El diseño inclusivo como práctica ética"},
-      {type:"p", text:"Todo sistema que se desarrolla bajo la asunción implícita de que el usuario tiene banda ancha, un teléfono de última generación y alfabetización digital avanzada está tomando una decisión de exclusión. El diseño inclusivo —interfaces livianas, soporte offline, lenguaje claro, accesibilidad para personas con discapacidad— no es un añadido de lujo: es la implementación técnica de la justicia social."},
-      {type:"p", text:"Desde el utilitarismo de Mill, una tecnología verdaderamente buena es aquella que maximiza el bienestar del mayor número de personas. Desde Kant, ninguna persona puede ser tratada simplemente como un 'mercado no rentable' al que no vale la pena atender. Ambas tradiciones filosóficas convergen en la misma conclusión práctica: diseñar con inclusión es diseñar bien."},
-      {type:"h2", text:"El compromiso del ingeniero informático"},
-      {type:"p", text:"El ingeniero informático tiene herramientas concretas para actuar frente a la brecha digital: defender estándares abiertos, contribuir a proyectos de código libre, diseñar para dispositivos de bajo recurso, abogar dentro de sus organizaciones por políticas de accesibilidad. Cada una de estas decisiones es, al mismo tiempo, una decisión técnica y una declaración de valores."},
-      {type:"reflection", questions:["¿Es responsabilidad del ingeniero pensar en usuarios que nunca verá ni conocerá?","¿Cómo puede un profesional individual incidir en políticas de acceso digital que dependen de decisiones gubernamentales y corporativas?","¿Qué criterios éticos debería usar un equipo de desarrollo al decidir en qué plataformas y dispositivos soportar su aplicación?","¿La contribución al software libre es un acto ético, técnico o ambos?"]},
-      {type:"refs", items:["Montuschi, L. (2005). Aspectos éticos de las tecnologías de la información y de la comunicación. Serie Documentos de Trabajo, No. 298.","Miñano Rubio, R. (2017). Integración de competencias de responsabilidad social, sostenibilidad y ética profesional.","Balladares-Burgos, J. (2022). Valores para una ética digital a partir de las generaciones digitales. 593 Digital Publisher CEIT, 7(1), 40–52."]}
+      {type:"lead", text:"A lo largo de esta edición hemos discutido lo que la ética significa para quienes construyen el mundo digital: los dilemas que aparecen entre el algoritmo y la conciencia, los códigos deontológicos, la responsabilidad social del ingeniero. Pero un diagnóstico sin propuesta se queda corto. Estas cinco conclusiones son nuestro intento de cerrar este recorrido mirando hacia adelante: cinco compromisos concretos que creemos que pueden transformar la práctica profesional desde donde estamos —siendo todavía estudiantes— hasta donde queremos llegar."},
+      {type:"p", text:"No son ideas abstractas: cada una se traduce en decisiones diarias. Cómo escribimos una línea de código, cómo respondemos en una reunión donde alguien propone un atajo cuestionable, cómo elegimos a qué empresa entregar nuestro talento. La ética profesional se construye en esos pequeños momentos. Estas son cinco brújulas para orientarnos en ellos."},
+      {type:"svg", id:"svg-cinco-conclusiones"},
+      {type:"h2", text:"1. La ética no es un módulo extra: es parte del diseño técnico"},
+      {type:"p", text:"La primera y más importante conclusión es que la ética no puede tratarse como un seminario aparte, una asignatura electiva o un párrafo en la documentación. Tiene que estar presente en la arquitectura de un sistema, en la elección de qué datos recolectar, en cómo se prueba el software, en qué casos de uso se consideran al diseñar una interfaz. Cuando separamos lo técnico de lo ético terminamos construyendo sistemas funcionales pero injustos, eficientes pero dañinos."},
+      {type:"p", text:"Proponemos que cada decisión técnica venga acompañada de una pregunta ética: ¿a quién beneficia esto?, ¿a quién deja por fuera?, ¿qué pasa si falla? Esa pregunta no es un freno al desarrollo, es un instrumento de calidad. El software bien hecho es, simultáneamente, técnicamente sólido y éticamente defendible."},
+      {type:"quote", text:"La unión de lo técnico y lo profesional es lo ético, lo que implica que cada decisión técnica conlleva una dimensión moral.", author:"Marín, J. C. (2006). La gestión ética y la responsabilidad social en la ingeniería"},
+      {type:"h2", text:"2. Formar profesionales con conciencia, no solo con competencias"},
+      {type:"p", text:"La segunda conclusión tiene que ver con cómo se forma a los futuros ingenieros. Una carrera de informática que entrena solo en lenguajes, frameworks y certificaciones está formando técnicos, no profesionales. La diferencia es enorme: el técnico ejecuta, el profesional decide. Y decidir bien requiere una formación que combine lo técnico con lo humanístico."},
+      {type:"p", text:"Proponemos que las universidades —y este proyecto editorial es una pequeña contribución a ese propósito— integren la reflexión ética en cada curso, no como un añadido sino como una competencia transversal. Discutir el caso de Cambridge Analytica al estudiar bases de datos, hablar de sesgos algorítmicos al introducir machine learning, examinar la privacidad al programar APIs. La ética se aprende practicándola, no leyéndola."},
+      {type:"quote", text:"La escasa formación humanística y social recibida en la universidad hace imprescindible que se incluyan actividades encaminadas a poner a disposición de los profesionales qué es esto de la gestión ética y la responsabilidad social.", author:"Miñano Rubio, R. (2017). Integración de competencias éticas en ingeniería informática"},
+      {type:"h2", text:"3. Construir transparencia como práctica diaria"},
+      {type:"p", text:"La tercera conclusión es que la confianza pública en la tecnología solo puede recuperarse a través de la transparencia. Los algoritmos opacos, los términos y condiciones impenetrables, las decisiones automatizadas que nadie puede explicar: todo eso erosiona la relación entre la sociedad y quienes construimos sus sistemas. Y sin esa confianza, ningún avance tecnológico se sostiene a largo plazo."},
+      {type:"p", text:"Proponemos asumir la transparencia como práctica diaria: documentar para qué se usan los datos, explicar en lenguaje claro qué hace un sistema, abrir el código cuando sea posible, rendir cuentas cuando algo falla. La transparencia no es debilidad; es la condición para que la sociedad confíe en lo que hacemos."},
+      {type:"svg", id:"svg-diagnostico-compromiso"},
+      {type:"h2", text:"4. Diseñar para todos, no solo para el usuario rentable"},
+      {type:"p", text:"La cuarta conclusión nace de constatar que demasiada tecnología se diseña pensando solo en el usuario joven, urbano, con buen dispositivo y conexión estable. El resto del mundo —que es la mayoría del mundo— queda como un mercado secundario o, peor, invisible. Eso no es un problema de cobertura: es un problema ético. Las herramientas digitales se han convertido en infraestructura social, y excluir a alguien de la infraestructura es excluirlo de oportunidades reales."},
+      {type:"p", text:"Proponemos hacer del diseño inclusivo una práctica por defecto, no una mejora opcional: interfaces accesibles para personas con discapacidad, soporte para dispositivos modestos, lenguaje claro para usuarios con baja alfabetización digital, modos offline para zonas con mala conectividad. Cada una de esas decisiones es técnica y al mismo tiempo política: define quién entra y quién queda afuera."},
+      {type:"quote", text:"La nueva sociedad basada en las tecnologías de la información debería tender a reducir las desigualdades existentes y asegurar el acceso general a la información.", author:"Montuschi, L. (2005). Aspectos éticos de las TIC"},
+      {type:"h2", text:"5. La ética profesional se sostiene en comunidad"},
+      {type:"p", text:"La quinta y última conclusión es quizás la más esperanzadora: la ética no es una carga individual. Ningún ingeniero, por íntegro que sea, puede sostener prácticas éticas en un entorno que las castiga. Por eso la cultura ética se construye colectivamente: en los equipos, en las empresas, en las asociaciones profesionales, en las universidades, en las comunidades de código abierto."},
+      {type:"p", text:"Proponemos tejer comunidades donde hablar de ética sea normal, donde reportar un problema no implique represalias, donde compartir buenas prácticas sea más rentable que ocultarlas. Esa cultura se construye con conversaciones honestas, con mentores que dan ejemplo, con espacios editoriales como este. Cada uno de nosotros es responsable de la cultura que su entorno respira."},
+      {type:"quote", text:"Los valores para una ética digital se construyen en comunidad: los jóvenes profesionales aprenden a actuar éticamente no solo de los libros, sino de la observación de referentes y del diálogo con colegas.", author:"Balladares-Burgos, J. (2022). Valores para una ética digital"},
+      {type:"h2", text:"Cierre: la conciencia como brújula técnica"},
+      {type:"p", text:"Cierro este recorrido con una convicción: la ingeniería informática del futuro será más ética o no será sostenible. Las generaciones que vienen, los reguladores que se despiertan, los usuarios que ya no toleran lo intolerable, van a empujar a la profesión en esa dirección. Lo que está en juego no es si la ética llega a la informática —llegará—, sino si nosotros somos parte del cambio o lo recibimos a empujones."},
+      {type:"p", text:"Estas cinco propuestas son nuestra manera de elegir ser parte. Pequeñas, locales, imperfectas; pero nuestras. Y, como toda brújula, no nos llevarán al destino: nos ayudarán a no perdernos en el camino."},
+      {type:"reflection", questions:["De las cinco conclusiones, ¿cuál sientes que está más cerca de tu práctica actual y cuál más lejos?","¿Qué cambiarías en tu rutina como estudiante para acercarte a estas propuestas antes de graduarte?","¿Puede una sola persona transformar la cultura ética de su equipo, o se necesita siempre acción colectiva?","¿Cómo equilibrar la urgencia de entregar resultados con el tiempo que exige actuar éticamente?","Si tuvieras que añadir una sexta conclusión propositiva, ¿cuál sería y por qué?"]}
+    ]
+  },
+  {
+    id: 7,
+    title: "Banco de preguntas y respuestas: la voz de los estudiantes",
+    subtitle: "Encuesta a 20 estudiantes de ingeniería informática y electrónica",
+    category: "Ética General",
+    author: "María Camila Rodríguez",
+    date: "Mayo 2026",
+    readTime: "15 min",
+    excerpt: "El banco de preguntas que usamos para entrevistar a veinte estudiantes de ingeniería y la transcripción completa de sus respuestas sobre ética, privacidad, IA, presión empresarial y responsabilidad profesional.",
+    blocks: [
+      {type:"lead", text:"Esta edición no podía cerrarse solo con las voces del consejo editorial. Para entender qué piensan realmente los futuros ingenieros sobre los dilemas éticos de la tecnología, diseñamos un banco de preguntas y entrevistamos a veinte estudiantes de ingeniería informática y electrónica. Aquí publicamos íntegramente el banco de preguntas y las respuestas que cada uno nos compartió."},
+      {type:"h2", text:"Banco de preguntas"},
+      {type:"h3", text:"Preguntas para la reflexión"},
+      {type:"list", items:[
+        "¿En qué medida las decisiones que toma un ingeniero de software impactan a comunidades que nunca conocerá?",
+        "¿Cómo puede un profesional equilibrar la presión empresarial con sus compromisos éticos?",
+        "¿Qué responsabilidad tiene la universidad en formar ingenieros con conciencia social?",
+        "¿Es suficiente cumplir con la ley para actuar éticamente en el entorno digital?"
+      ]},
+      {type:"h3", text:"Preguntas para la reflexión"},
+      {type:"list", items:[
+        "¿Cómo puede un profesional garantizar la privacidad de los usuarios cuando las plataformas donde trabaja la vulneran?",
+        "¿Qué diferencia existe entre cumplir normas deontológicas y actuar éticamente?",
+        "¿De qué manera el 'ethics washing' daña la confianza pública en las instituciones tecnológicas?",
+        "¿Cómo construir relaciones profesionales auténticas en un entorno mediado por algoritmos?",
+        "¿Puede el conectivismo reemplazar la responsabilidad individual en la toma de decisiones éticas?"
+      ]},
+      {type:"h3", text:"Preguntas para la reflexión"},
+      {type:"list", items:[
+        "¿Puedes identificar ejemplos concretos en tu área donde algo sea legal pero éticamente cuestionable?",
+        "¿Qué harías si tu empleador te pidiera desarrollar una funcionalidad que no viola la ley pero que consideras manipuladora para los usuarios?",
+        "¿Tiene el ingeniero la obligación de conocer las implicaciones legales de su trabajo, o eso es responsabilidad de los abogados de la empresa?",
+        "¿Cómo debería actuar un profesional cuando detecta que su empresa opera en un vacío legal que le permite hacer daño sin ser sancionada?",
+        "¿Es posible construir tecnología verdaderamente ética en entornos corporativos donde la presión por el beneficio económico es dominante?"
+      ]},
+      {type:"h3", text:"Preguntas para la reflexión"},
+      {type:"list", items:[
+        "¿Conoces el código deontológico que rige el ejercicio de la ingeniería en Colombia? ¿Cuáles son sus principios fundamentales?",
+        "¿En qué situaciones concretas de tu futura práctica profesional podría entrar en conflicto el principio de seguridad pública con los intereses de tu empleador?",
+        "¿Es posible aplicar un código deontológico en entornos donde la presión por los resultados económicos es muy alta? ¿Cómo?",
+        "¿Qué diferencia existe entre cumplir un código deontológico por obligación y hacerlo por convicción? ¿Importa esa diferencia?",
+        "¿Debería existir un código deontológico específico para los ingenieros que trabajan en inteligencia artificial? ¿Qué principios incluirías?"
+      ]},
+      {type:"h3", text:"Preguntas para la reflexión"},
+      {type:"list", items:[
+        "¿Es éticamente justificable implementar sistemas con vulnerabilidades conocidas bajo presión de plazos de entrega?",
+        "¿Qué responsabilidad tienen las empresas tecnológicas cuando sus plataformas son utilizadas para vigilar o perseguir a ciudadanos?",
+        "¿Cómo puede un profesional de la ciberseguridad operar éticamente en contextos donde la ley es ambigua?",
+        "¿Qué significa 'privacidad por diseño' y por qué debería ser un estándar mínimo en todo desarrollo de software?"
+      ]},
+      {type:"h3", text:"Preguntas para la reflexión"},
+      {type:"list", items:[
+        "¿Es responsabilidad del ingeniero pensar en usuarios que nunca verá ni conocerá?",
+        "¿Cómo puede un profesional individual incidir en políticas de acceso digital que dependen de decisiones gubernamentales y corporativas?",
+        "¿Qué criterios éticos debería usar un equipo de desarrollo al decidir en qué plataformas y dispositivos soportar su aplicación?",
+        "¿La contribución al software libre es un acto ético, técnico o ambos?"
+      ]},
+      {type:"h2", text:"1. Cristian Daniel Buritica — Ingeniería Informática"},
+      {type:"qa", q:"¿En qué medida las decisiones que toma un ingeniero de software impactan a comunidades que nunca conocerá?", a:"Las decisiones de un ingeniero pueden afectar directamente la privacidad, la seguridad y hasta las oportunidades de muchas personas. Una aplicación mal diseñada puede excluir usuarios o exponer información sensible."},
+      {type:"qa", q:"¿Cómo puede un profesional equilibrar la presión empresarial con sus compromisos éticos?", a:"Creo que el profesional debe mantener límites claros y recordar que los usuarios también son personas que pueden verse perjudicadas por decisiones irresponsables."},
+      {type:"qa", q:"¿Qué responsabilidad tiene la universidad en formar ingenieros con conciencia social?", a:"La universidad debe enseñar ética y responsabilidad social, no solamente programación o diseño de circuitos."},
+      {type:"qa", q:"¿Es suficiente cumplir con la ley para actuar éticamente en el entorno digital?", a:"No, porque hay prácticas legales que igualmente pueden manipular o afectar negativamente a los usuarios."},
+      {type:"qa", q:"¿Qué diferencia existe entre cumplir normas deontológicas y actuar éticamente?", a:"Las normas son reglas establecidas, mientras que la ética implica reflexión personal sobre lo correcto."},
+      {type:"qa", q:"¿Puedes identificar ejemplos concretos donde algo sea legal pero éticamente cuestionable?", a:"Sí, como recopilar datos excesivos mediante políticas de privacidad demasiado largas y difíciles de entender."},
+      {type:"qa", q:"¿Qué harías si tu empleador te pidiera desarrollar una funcionalidad manipuladora?", a:"Intentaría expresar mis preocupaciones y buscar alternativas más transparentes."},
+      {type:"qa", q:"¿Es responsabilidad del ingeniero pensar en usuarios que nunca verá ni conocerá?", a:"Sí, porque la tecnología llega a miles de personas en diferentes contextos."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Significa crear sistemas donde la protección de datos sea prioridad desde el inicio."},
+      {type:"qa", q:"¿Debería existir un código deontológico para ingenieros en IA?", a:"Sí, especialmente enfocado en transparencia, equidad y responsabilidad."},
+      {type:"h2", text:"2. Joshua Marulanda Bolivar — Ingeniería Electrónica"},
+      {type:"qa", q:"¿Es éticamente justificable implementar sistemas con vulnerabilidades conocidas bajo presión de plazos?", a:"No, porque una vulnerabilidad puede afectar seriamente a los usuarios y poner en riesgo información importante."},
+      {type:"qa", q:"¿Qué responsabilidad tiene la universidad en formar ingenieros con conciencia social?", a:"Debe enseñar que la ingeniería tiene consecuencias humanas y sociales."},
+      {type:"qa", q:"¿Qué responsabilidad tienen las empresas tecnológicas cuando sus plataformas son usadas para vigilar ciudadanos?", a:"Las empresas deben asumir responsabilidad porque ellas crean y administran esas herramientas."},
+      {type:"qa", q:"¿Cómo puede un profesional garantizar la privacidad de los usuarios?", a:"Aplicando buenas prácticas de seguridad y limitando el acceso a los datos."},
+      {type:"qa", q:"¿Qué diferencia existe entre cumplir normas deontológicas y actuar éticamente?", a:"Actuar éticamente requiere conciencia personal y no solo obedecer reglas."},
+      {type:"qa", q:"¿Qué criterios éticos debería usar un equipo de desarrollo al decidir plataformas soportadas?", a:"Pensar en accesibilidad y evitar excluir usuarios por limitaciones económicas."},
+      {type:"qa", q:"¿Es posible aplicar un código deontológico en entornos con mucha presión económica?", a:"Sí, aunque requiere compromiso de la empresa y del profesional."},
+      {type:"qa", q:"¿Cómo construir relaciones profesionales auténticas en un entorno mediado por algoritmos?", a:"Manteniendo empatía y comunicación sincera."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Es incluir la protección de datos desde el desarrollo inicial."},
+      {type:"qa", q:"¿Debería existir un código ético específico para IA?", a:"Sí, porque la inteligencia artificial puede afectar muchas decisiones humanas."},
+      {type:"h2", text:"3. Miguel Angel Guzman — Ingeniería Informática"},
+      {type:"qa", q:"¿Cómo puede un profesional equilibrar presión empresarial y ética?", a:"Debe priorizar el bienestar de los usuarios incluso bajo presión."},
+      {type:"qa", q:"¿Es suficiente cumplir la ley para actuar éticamente?", a:"No, porque la ley no siempre cubre todos los problemas morales."},
+      {type:"qa", q:"¿Puede el conectivismo reemplazar la responsabilidad individual?", a:"No, cada persona sigue siendo responsable de sus decisiones."},
+      {type:"qa", q:"¿Qué harías si detectas que tu empresa opera en un vacío legal dañino?", a:"Intentaría reportarlo y promover soluciones internas."},
+      {type:"qa", q:"¿Es posible construir tecnología verdaderamente ética en entornos corporativos?", a:"Sí, pero requiere compromiso real de la organización."},
+      {type:"qa", q:"¿Qué diferencia existe entre cumplir normas y actuar éticamente?", a:"La ética implica actuar correctamente incluso sin obligación."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Diseñar pensando primero en proteger la información."},
+      {type:"qa", q:"¿Es responsabilidad del ingeniero pensar en usuarios desconocidos?", a:"Sí, porque la tecnología impacta personas en todo el mundo."},
+      {type:"qa", q:"¿Conoces el código deontológico de ingeniería en Colombia?", a:"Sí, busca proteger la sociedad y promover responsabilidad profesional."},
+      {type:"qa", q:"¿La contribución al software libre es ética o técnica?", a:"Considero que es ambas porque fomenta colaboración y acceso al conocimiento."},
+      {type:"h2", text:"4. Juan Sebastian Camargo Bernal — Ingeniería Electrónica"},
+      {type:"qa", q:"¿Qué responsabilidad tiene la universidad en formar ingenieros con conciencia social?", a:"Debe preparar profesionales responsables y conscientes del impacto de la tecnología."},
+      {type:"qa", q:"¿Es éticamente justificable implementar sistemas inseguros por presión?", a:"No, porque la seguridad debe estar por encima de la velocidad."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Crear sistemas seguros desde el inicio."},
+      {type:"qa", q:"¿Cómo construir relaciones profesionales auténticas?", a:"Con respeto y comunicación transparente."},
+      {type:"qa", q:"¿Es posible aplicar un código deontológico bajo presión económica?", a:"Sí, aunque requiere firmeza ética."},
+      {type:"qa", q:"¿Qué diferencia existe entre actuar éticamente y cumplir normas?", a:"La ética nace de la convicción personal."},
+      {type:"qa", q:"¿Debería existir un código ético para IA?", a:"Sí, especialmente para evitar discriminación."},
+      {type:"qa", q:"¿Qué responsabilidad tienen las empresas tecnológicas frente a vigilancia?", a:"Evitar abusos y proteger derechos humanos."},
+      {type:"qa", q:"¿Qué criterios éticos usarías al elegir plataformas soportadas?", a:"Accesibilidad e inclusión."},
+      {type:"qa", q:"¿La contribución al software libre es ética o técnica?", a:"Ambas porque beneficia a la comunidad tecnológica."},
+      {type:"h2", text:"5. Nicolás Arango Yepes — Ingeniería Informática"},
+      {type:"qa", q:"¿Es suficiente cumplir la ley para actuar éticamente?", a:"No, porque algunas acciones legales pueden seguir siendo injustas."},
+      {type:"qa", q:"¿Cómo puede un profesional garantizar privacidad?", a:"Protegiendo datos sensibles y aplicando cifrado."},
+      {type:"qa", q:"¿Qué harías si te piden crear algo manipulador?", a:"Intentaría dialogar y explicar los riesgos éticos."},
+      {type:"qa", q:"¿Puede el conectivismo reemplazar responsabilidad individual?", a:"No, cada profesional responde por sus decisiones."},
+      {type:"qa", q:"¿Qué diferencia existe entre normas y ética?", a:"Las normas son externas, la ética es personal."},
+      {type:"qa", q:"¿Es responsabilidad del ingeniero pensar en usuarios desconocidos?", a:"Sí, porque el impacto tecnológico es masivo."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Crear sistemas seguros desde el principio."},
+      {type:"qa", q:"¿Qué responsabilidad tiene la universidad?", a:"Formar ingenieros íntegros y responsables."},
+      {type:"qa", q:"¿Es posible construir tecnología ética en empresas?", a:"Sí, aunque requiere cultura organizacional adecuada."},
+      {type:"qa", q:"¿La contribución al software libre es ética o técnica?", a:"Ambas porque fomenta innovación y colaboración."},
+      {type:"h2", text:"6. Kevin Palomeque — Ingeniería Electrónica"},
+      {type:"qa", q:"¿Qué responsabilidad tiene la universidad en formar ingenieros éticos?", a:"La universidad debe enseñar valores y mostrar cómo las decisiones tecnológicas afectan a la sociedad."},
+      {type:"qa", q:"¿Es justificable implementar vulnerabilidades conocidas?", a:"No, porque se pone en riesgo la seguridad de los usuarios."},
+      {type:"qa", q:"¿Cómo actuar ante vacíos legales dañinos?", a:"El profesional debería reportar la situación y promover cambios responsables."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Es incluir medidas de protección de datos desde el desarrollo inicial."},
+      {type:"qa", q:"¿Qué responsabilidad tienen las empresas tecnológicas?", a:"Deben garantizar que sus productos no sean utilizados para perjudicar personas."},
+      {type:"qa", q:"¿Cómo construir relaciones auténticas en entornos digitales?", a:"Manteniendo comunicación honesta y empatía."},
+      {type:"qa", q:"¿Qué criterios éticos usarías para soportar plataformas?", a:"Accesibilidad e inclusión para diferentes usuarios."},
+      {type:"qa", q:"¿Existe diferencia entre cumplir normas y actuar éticamente?", a:"Sí, porque la ética implica actuar correctamente incluso sin obligación."},
+      {type:"qa", q:"¿Es posible aplicar códigos éticos con presión económica?", a:"Sí, aunque requiere compromiso profesional."},
+      {type:"qa", q:"¿Debería existir un código ético para IA?", a:"Sí, enfocado en transparencia y protección de derechos."},
+      {type:"h2", text:"7. Camila Mesa Jurado — Ingeniería Informática"},
+      {type:"qa", q:"¿La contribución al software libre es ética o técnica?", a:"Es ambas porque comparte conocimiento y ayuda a otros desarrolladores."},
+      {type:"qa", q:"¿Cómo equilibrar ética y presión empresarial?", a:"Recordando que las decisiones afectan personas reales."},
+      {type:"qa", q:"¿Es suficiente cumplir la ley?", a:"No, porque algo legal puede ser injusto."},
+      {type:"qa", q:"¿Qué diferencia existe entre ética y deontología?", a:"La deontología son normas y la ética es reflexión personal."},
+      {type:"qa", q:"¿Qué harías ante una funcionalidad manipuladora?", a:"Intentaría discutir el problema con el equipo."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Proteger datos desde el inicio del desarrollo."},
+      {type:"qa", q:"¿Es responsabilidad pensar en usuarios desconocidos?", a:"Sí, porque el alcance del software es global."},
+      {type:"qa", q:"¿Qué responsabilidad tiene la universidad?", a:"Formar profesionales conscientes de su impacto social."},
+      {type:"qa", q:"¿Puede el conectivismo reemplazar responsabilidad individual?", a:"No, cada ingeniero sigue siendo responsable."},
+      {type:"qa", q:"¿Es posible tecnología ética en empresas?", a:"Sí, aunque puede ser difícil por intereses económicos."},
+      {type:"h2", text:"8. Juan David Araque — Ingeniería Electrónica"},
+      {type:"qa", q:"¿Qué responsabilidad tienen las empresas tecnológicas?", a:"Deben proteger los derechos y la privacidad de los usuarios."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Desarrollar sistemas pensando primero en la seguridad."},
+      {type:"qa", q:"¿Es justificable implementar sistemas inseguros?", a:"No, porque puede causar daños importantes."},
+      {type:"qa", q:"¿Cómo garantizar privacidad?", a:"Limitando el acceso y cifrando información sensible."},
+      {type:"qa", q:"¿Qué diferencia hay entre normas y ética?", a:"La ética implica criterio personal."},
+      {type:"qa", q:"¿Cómo construir relaciones auténticas?", a:"Escuchando y manteniendo empatía."},
+      {type:"qa", q:"¿Qué responsabilidad tiene la universidad?", a:"Enseñar responsabilidad social además de técnica."},
+      {type:"qa", q:"¿Qué criterios éticos usarías en plataformas soportadas?", a:"Accesibilidad y compatibilidad para más usuarios."},
+      {type:"qa", q:"¿Debe existir código ético para IA?", a:"Sí, para controlar riesgos y discriminación."},
+      {type:"qa", q:"¿La contribución al software libre es ética o técnica?", a:"Considero que es ambas."},
+      {type:"h2", text:"9. Mateo Castaño — Ingeniería Informática"},
+      {type:"qa", q:"¿Cómo equilibrar presión empresarial y ética?", a:"Buscando soluciones responsables sin afectar usuarios."},
+      {type:"qa", q:"¿Es suficiente cumplir con la ley?", a:"No, porque la ética va más allá de las normas legales."},
+      {type:"qa", q:"¿Qué diferencia hay entre ética y deontología?", a:"La ética nace de la conciencia individual."},
+      {type:"qa", q:"¿Qué harías si detectas prácticas dañinas en tu empresa?", a:"Intentaría reportarlas y proponer mejoras."},
+      {type:"qa", q:"¿Es posible construir tecnología ética?", a:"Sí, aunque requiere compromiso constante."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Incluir seguridad y privacidad desde el inicio."},
+      {type:"qa", q:"¿Es responsabilidad pensar en usuarios desconocidos?", a:"Sí, porque todos pueden verse afectados."},
+      {type:"qa", q:"¿Qué responsabilidad tiene la universidad?", a:"Promover pensamiento crítico y responsabilidad social."},
+      {type:"qa", q:"¿La contribución al software libre es ética o técnica?", a:"Es técnica y también ética."},
+      {type:"qa", q:"¿Debe existir un código ético para IA?", a:"Sí, especialmente en transparencia."},
+      {type:"h2", text:"10. Daniela Ramírez — Ingeniería Electrónica"},
+      {type:"qa", q:"¿Debería existir un código deontológico específico para IA?", a:"Sí, porque la IA puede influir en decisiones importantes."},
+      {type:"qa", q:"¿Qué principios incluirías?", a:"Transparencia, privacidad y no discriminación."},
+      {type:"qa", q:"¿Es justificable implementar vulnerabilidades conocidas?", a:"No, porque pone en riesgo usuarios."},
+      {type:"qa", q:"¿Qué responsabilidad tienen las empresas tecnológicas?", a:"Evitar daños y proteger derechos humanos."},
+      {type:"qa", q:"¿Cómo garantizar privacidad?", a:"Aplicando medidas de seguridad adecuadas."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Crear tecnología segura desde el inicio."},
+      {type:"qa", q:"¿Qué diferencia existe entre ética y normas?", a:"La ética requiere reflexión personal."},
+      {type:"qa", q:"¿Cómo construir relaciones auténticas?", a:"Con comunicación clara y respeto."},
+      {type:"qa", q:"¿Es posible aplicar códigos éticos bajo presión económica?", a:"Sí, aunque requiere compromiso firme."},
+      {type:"qa", q:"¿La universidad debe enseñar ética?", a:"Sí, porque la ingeniería afecta a toda la sociedad."},
+      {type:"h2", text:"11. Jeronimo Ramírez López — Ingeniería Informática"},
+      {type:"qa", q:"¿Puedes identificar algo legal pero éticamente cuestionable?", a:"Sí, recopilar datos innecesarios de usuarios."},
+      {type:"qa", q:"¿Es suficiente cumplir la ley?", a:"No, porque algo legal puede perjudicar personas."},
+      {type:"qa", q:"¿Qué harías ante una funcionalidad manipuladora?", a:"Intentaría proponer alternativas más éticas."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Diseñar sistemas seguros desde el inicio."},
+      {type:"qa", q:"¿Es responsabilidad pensar en usuarios desconocidos?", a:"Sí, porque la tecnología tiene alcance masivo."},
+      {type:"qa", q:"¿Qué responsabilidad tiene la universidad?", a:"Formar ingenieros responsables y críticos."},
+      {type:"qa", q:"¿La contribución al software libre es ética o técnica?", a:"Es ambas cosas."},
+      {type:"qa", q:"¿Qué diferencia existe entre ética y normas?", a:"Las normas son externas y la ética es interna."},
+      {type:"qa", q:"¿Debe existir un código ético para IA?", a:"Sí, para evitar abusos."},
+      {type:"qa", q:"¿Es posible construir tecnología ética?", a:"Sí, aunque requiere esfuerzo constante."},
+      {type:"h2", text:"12. Valentina Salcedo — Ingeniería Electrónica"},
+      {type:"qa", q:"¿Es responsabilidad del ingeniero pensar en usuarios desconocidos?", a:"Sí, porque las decisiones tecnológicas afectan muchas vidas."},
+      {type:"qa", q:"¿Cómo puede un profesional influir en políticas digitales?", a:"Participando en debates y promoviendo acceso equitativo."},
+      {type:"qa", q:"¿Qué criterios éticos usarías en plataformas soportadas?", a:"Accesibilidad y bajo consumo de recursos."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Proteger información desde el desarrollo inicial."},
+      {type:"qa", q:"¿Qué responsabilidad tienen las empresas tecnológicas?", a:"Evitar usos indebidos de sus plataformas."},
+      {type:"qa", q:"¿Qué diferencia existe entre ética y deontología?", a:"La ética implica convicción personal."},
+      {type:"qa", q:"¿Es posible aplicar códigos éticos bajo presión económica?", a:"Sí, aunque puede ser difícil."},
+      {type:"qa", q:"¿Cómo construir relaciones auténticas?", a:"Con empatía y honestidad."},
+      {type:"qa", q:"¿Debe existir un código ético para IA?", a:"Sí, especialmente en transparencia."},
+      {type:"qa", q:"¿La contribución al software libre es ética o técnica?", a:"Considero que es ambas."},
+      {type:"h2", text:"13. Kevin Mauricio Ruiz — Ingeniería Informática"},
+      {type:"qa", q:"¿Qué harías si tu empleador te pidiera desarrollar una funcionalidad manipuladora?", a:"Intentaría primero dialogar y explicar por qué puede ser perjudicial para los usuarios."},
+      {type:"qa", q:"¿Es suficiente cumplir la ley para actuar éticamente?", a:"No, porque hay cosas legales que pueden ser poco éticas."},
+      {type:"qa", q:"¿Cómo garantizar privacidad de los usuarios?", a:"Usando buenas prácticas de seguridad y minimización de datos."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Integrar la protección de datos desde el inicio del sistema."},
+      {type:"qa", q:"¿Es responsabilidad del ingeniero pensar en usuarios desconocidos?", a:"Sí, porque el impacto del software es global."},
+      {type:"qa", q:"¿Qué diferencia existe entre ética y normas?", a:"Las normas son obligatorias, la ética es una decisión personal."},
+      {type:"qa", q:"¿Qué responsabilidad tiene la universidad?", a:"Formar profesionales con pensamiento crítico y ético."},
+      {type:"qa", q:"¿Qué harías si detectas un vacío legal dañino?", a:"Intentaría reportarlo internamente."},
+      {type:"qa", q:"¿La contribución al software libre es ética o técnica?", a:"Es ambas cosas."},
+      {type:"qa", q:"¿Debería existir código ético para IA?", a:"Sí, por su alto impacto social."},
+      {type:"h2", text:"14. Brayan Coronado — Ingeniería Electrónica"},
+      {type:"qa", q:"¿Cómo construir relaciones profesionales auténticas en entornos digitales?", a:"Manteniendo comunicación honesta y humana."},
+      {type:"qa", q:"¿Es suficiente cumplir la ley?", a:"No, la ética va más allá de la ley."},
+      {type:"qa", q:"¿Qué responsabilidad tienen las empresas tecnológicas?", a:"Proteger a los usuarios de posibles abusos."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Diseñar sistemas seguros desde el inicio."},
+      {type:"qa", q:"¿Cómo garantizar privacidad?", a:"Limitando la recolección de datos."},
+      {type:"qa", q:"¿Qué diferencia existe entre ética y deontología?", a:"La ética es reflexión, la deontología son reglas."},
+      {type:"qa", q:"¿Es posible aplicar códigos éticos bajo presión económica?", a:"Sí, aunque requiere compromiso."},
+      {type:"qa", q:"¿Qué criterios éticos usarías en plataformas soportadas?", a:"Accesibilidad e inclusión."},
+      {type:"qa", q:"¿Debe existir código ético para IA?", a:"Sí, para evitar daños sociales."},
+      {type:"qa", q:"¿Es responsabilidad pensar en usuarios desconocidos?", a:"Sí, porque todos pueden verse afectados."},
+      {type:"h2", text:"15. Cristian Gómez — Ingeniería Informática"},
+      {type:"qa", q:"¿Qué harías si detectas que tu empresa opera en un vacío legal dañino?", a:"Intentaría reportarlo y proponer soluciones internas."},
+      {type:"qa", q:"¿Es suficiente cumplir la ley?", a:"No, porque no siempre protege la ética."},
+      {type:"qa", q:"¿Cómo equilibrar presión empresarial y ética?", a:"Priorizando el bienestar del usuario."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Proteger datos desde el desarrollo."},
+      {type:"qa", q:"¿Es responsabilidad del ingeniero pensar en usuarios desconocidos?", a:"Sí, porque el impacto es global."},
+      {type:"qa", q:"¿Qué diferencia existe entre ética y normas?", a:"La ética depende del criterio personal."},
+      {type:"qa", q:"¿Qué responsabilidad tiene la universidad?", a:"Formar profesionales responsables."},
+      {type:"qa", q:"¿La contribución al software libre es ética o técnica?", a:"Es ambas."},
+      {type:"qa", q:"¿Debería existir código ético para IA?", a:"Sí, por su impacto en la sociedad."},
+      {type:"qa", q:"¿Es posible construir tecnología ética?", a:"Sí, pero requiere compromiso."},
+      {type:"h2", text:"16. Daniel Andres Agudelo — Ingeniería Electrónica"},
+      {type:"qa", q:"¿Es posible aplicar un código deontológico en entornos con presión económica?", a:"Sí, aunque requiere disciplina y apoyo institucional."},
+      {type:"qa", q:"¿Qué responsabilidad tiene la universidad?", a:"Formar ingenieros con ética y responsabilidad social."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Integrar seguridad desde el inicio del sistema."},
+      {type:"qa", q:"¿Cómo garantizar privacidad?", a:"Protegiendo datos sensibles adecuadamente."},
+      {type:"qa", q:"¿Qué responsabilidad tienen las empresas tecnológicas?", a:"Evitar daños a los usuarios."},
+      {type:"qa", q:"¿Qué diferencia existe entre ética y normas?", a:"La ética es interna y reflexiva."},
+      {type:"qa", q:"¿Cómo construir relaciones auténticas?", a:"Con empatía y comunicación clara."},
+      {type:"qa", q:"¿Es suficiente cumplir la ley?", a:"No, porque la ley no cubre todo."},
+      {type:"qa", q:"¿Debe existir código ético para IA?", a:"Sí, especialmente en transparencia."},
+      {type:"qa", q:"¿Es responsabilidad pensar en usuarios desconocidos?", a:"Sí, totalmente."},
+      {type:"h2", text:"17. Mateo Suaza — Ingeniería Informática"},
+      {type:"qa", q:"¿Puede el conectivismo reemplazar la responsabilidad individual?", a:"No, cada profesional sigue siendo responsable."},
+      {type:"qa", q:"¿Es suficiente cumplir la ley?", a:"No, porque la ética es más amplia."},
+      {type:"qa", q:"¿Cómo equilibrar presión empresarial y ética?", a:"Actuando con responsabilidad hacia los usuarios."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Diseñar pensando en la protección de datos."},
+      {type:"qa", q:"¿Qué responsabilidad tiene la universidad?", a:"Formar ingenieros críticos y éticos."},
+      {type:"qa", q:"¿Qué diferencia existe entre ética y deontología?", a:"La ética es reflexión personal."},
+      {type:"qa", q:"¿Qué harías ante una funcionalidad manipuladora?", a:"Intentaría oponerme o proponer cambios."},
+      {type:"qa", q:"¿Es responsabilidad pensar en usuarios desconocidos?", a:"Sí, porque la tecnología es masiva."},
+      {type:"qa", q:"¿La contribución al software libre es ética o técnica?", a:"Es ambas cosas."},
+      {type:"qa", q:"¿Debe existir código ético para IA?", a:"Sí, para regular su impacto."},
+      {type:"h2", text:"18. Camila Bustamante — Ingeniería Electrónica"},
+      {type:"qa", q:"¿Qué criterios éticos debería usar un equipo al elegir plataformas?", a:"Accesibilidad, inclusión y sostenibilidad."},
+      {type:"qa", q:"¿Es suficiente cumplir la ley?", a:"No, porque la ética es más exigente."},
+      {type:"qa", q:"¿Cómo garantizar privacidad?", a:"Usando cifrado y buenas prácticas."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Integrar protección desde el inicio."},
+      {type:"qa", q:"¿Qué responsabilidad tienen las empresas tecnológicas?", a:"Proteger a los usuarios."},
+      {type:"qa", q:"¿Qué diferencia existe entre ética y normas?", a:"La ética es personal y reflexiva."},
+      {type:"qa", q:"¿Cómo construir relaciones auténticas?", a:"Con respeto y comunicación directa."},
+      {type:"qa", q:"¿Es posible aplicar códigos éticos bajo presión económica?", a:"Sí, aunque es difícil."},
+      {type:"qa", q:"¿Debe existir código ético para IA?", a:"Sí, para evitar abusos."},
+      {type:"qa", q:"¿Es responsabilidad del ingeniero pensar en usuarios desconocidos?", a:"Sí, siempre."},
+      {type:"h2", text:"19. Esteban Vargas — Ingeniería Informática"},
+      {type:"qa", q:"¿Tiene el ingeniero la obligación de conocer implicaciones legales?", a:"Sí, porque sus decisiones pueden tener consecuencias legales."},
+      {type:"qa", q:"¿Es suficiente cumplir la ley?", a:"No, porque la ética va más allá."},
+      {type:"qa", q:"¿Qué harías ante prácticas dañinas en tu empresa?", a:"Intentaría reportarlas."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Diseñar sistemas seguros desde el inicio."},
+      {type:"qa", q:"¿Qué responsabilidad tiene la universidad?", a:"Formar profesionales responsables."},
+      {type:"qa", q:"¿Qué diferencia existe entre ética y normas?", a:"La ética implica reflexión personal."},
+      {type:"qa", q:"¿Es responsabilidad del ingeniero pensar en usuarios desconocidos?", a:"Sí, porque todos pueden ser afectados."},
+      {type:"qa", q:"¿Qué harías ante una funcionalidad manipuladora?", a:"Intentaría buscar alternativas éticas."},
+      {type:"qa", q:"¿La contribución al software libre es ética o técnica?", a:"Es ambas."},
+      {type:"qa", q:"¿Debe existir código ético para IA?", a:"Sí, por su impacto social."},
+      {type:"h2", text:"20. Miguel Muñoz — Ingeniería Electrónica"},
+      {type:"qa", q:"¿Cómo garantizar privacidad cuando la plataforma no lo hace?", a:"Aplicando medidas de seguridad adicionales y cuestionando decisiones internas."},
+      {type:"qa", q:"¿Es suficiente cumplir la ley?", a:"No, porque puede haber prácticas poco éticas."},
+      {type:"qa", q:"¿Qué responsabilidad tienen las empresas tecnológicas?", a:"Proteger los datos y derechos de los usuarios."},
+      {type:"qa", q:"¿Qué significa privacidad por diseño?", a:"Integrar seguridad desde el desarrollo."},
+      {type:"qa", q:"¿Qué responsabilidad tiene la universidad?", a:"Formar ingenieros con ética profesional."},
+      {type:"qa", q:"¿Qué diferencia existe entre ética y normas?", a:"La ética depende de la conciencia personal."},
+      {type:"qa", q:"¿Es responsabilidad del ingeniero pensar en usuarios desconocidos?", a:"Sí, porque la tecnología tiene impacto global."},
+      {type:"qa", q:"¿Qué harías si tu empresa vulnera usuarios?", a:"Intentaría reportarlo o buscar soluciones internas."},
+      {type:"qa", q:"¿La contribución al software libre es ética o técnica?", a:"Es ambas cosas."},
+      {type:"qa", q:"¿Debe existir código ético para IA?", a:"Sí, para regular su impacto social."}
+    ]
+  },
+  {
+    id: 8,
+    title: "Análisis académico y síntesis colectiva sobre ética, responsabilidad social y tecnología en ingeniería",
+    subtitle: "Lectura crítica de las respuestas de veinte estudiantes",
+    category: "Ética General",
+    author: "Samuel Romero",
+    date: "Mayo 2026",
+    readTime: "12 min",
+    excerpt: "Análisis académico y síntesis colectiva de las respuestas obtenidas en la encuesta a veinte estudiantes de ingeniería: ética vs legalidad, privacidad, responsabilidad social, presión empresarial, IA, formación universitaria, accesibilidad, software libre y relaciones humanas.",
+    blocks: [
+      {type:"h2", text:"Introducción"},
+      {type:"p", text:"Las respuestas analizadas reflejan una visión amplia y crítica de estudiantes de ingeniería informática y electrónica frente a los desafíos éticos de la tecnología contemporánea. A lo largo de las reflexiones aparecen preocupaciones constantes sobre privacidad, impacto social, inteligencia artificial, presión empresarial, responsabilidad profesional y formación universitaria."},
+      {type:"p", text:"En conjunto, las respuestas muestran que los estudiantes comprenden que la ingeniería no puede limitarse únicamente a aspectos técnicos. Existe una conciencia creciente de que cada decisión tecnológica afecta personas, comunidades y derechos fundamentales, incluso cuando quienes diseñan los sistemas nunca llegan a conocer directamente a los usuarios afectados."},
+      {type:"p", text:"El propósito general de las preguntas fue promover una reflexión profunda sobre el papel ético del ingeniero en la sociedad digital y analizar cómo las decisiones técnicas están conectadas con consecuencias humanas, sociales, políticas y económicas."},
+
+      {type:"h2", text:"1. Ética vs legalidad"},
+      {type:"h3", text:"Propósito de las preguntas"},
+      {type:"p", text:"Las preguntas relacionadas con ética y legalidad buscaban analizar si el cumplimiento de la ley es suficiente para considerar ética una acción tecnológica. También pretendían diferenciar entre obedecer normas formales y actuar desde una convicción moral consciente."},
+      {type:"h3", text:"Ideas más repetidas por los estudiantes"},
+      {type:"p", text:"La mayoría de los estudiantes coincidió en que actuar legalmente no garantiza actuar éticamente. Se repitió constantemente la idea de que existen prácticas permitidas por la ley que aun así pueden perjudicar a los usuarios."},
+      {type:"p", text:"Entre los ejemplos más mencionados aparecen:"},
+      {type:"list", items:["Recolección excesiva de datos personales.","Políticas de privacidad difíciles de comprender.","Funcionalidades manipuladoras dentro de plataformas digitales.","Vacíos legales aprovechados por empresas tecnológicas."]},
+      {type:"p", text:"Los estudiantes también diferenciaron claramente entre ética y deontología. Consideran que las normas deontológicas representan reglas externas y obligatorias, mientras que la ética implica reflexión personal, conciencia y responsabilidad individual."},
+      {type:"h3", text:"Preocupaciones éticas comunes"},
+      {type:"list", items:["Uso de vacíos legales para obtener beneficios económicos.","Manipulación de usuarios mediante diseño de plataformas.","Dependencia excesiva de normas sin reflexión moral.","Riesgo de justificar prácticas dañinas solo porque son legales."]},
+      {type:"h3", text:"Diferencias de opinión"},
+      {type:"p", text:"No hubo desacuerdos significativos respecto al tema. La mayoría sostuvo una posición similar: la ética debe ir más allá de la ley."},
+      {type:"p", text:"La principal diferencia estuvo en el nivel de responsabilidad que debería asumir el profesional frente a situaciones corporativas. Algunos priorizan el diálogo interno y otros sugieren una postura más firme frente a prácticas dañinas."},
+      {type:"h3", text:"Valores predominantes"},
+      {type:"list", items:["Responsabilidad social.","Honestidad.","Transparencia.","Justicia.","Pensamiento crítico."]},
+      {type:"h3", text:"Conclusión"},
+      {type:"p", text:"Las respuestas evidencian una visión madura sobre la diferencia entre legalidad y ética. Los estudiantes consideran que el ingeniero no debe limitarse a cumplir normas, sino analizar críticamente el impacto de sus decisiones. La ética aparece como una responsabilidad personal permanente, especialmente en contextos donde la ley todavía no regula adecuadamente las tecnologías emergentes."},
+
+      {type:"h2", text:"2. Privacidad, seguridad y protección de datos"},
+      {type:"h3", text:"Propósito de las preguntas"},
+      {type:"p", text:"Estas preguntas buscaban reflexionar sobre la responsabilidad de los ingenieros frente a la protección de datos personales y la seguridad de los usuarios en sistemas digitales."},
+      {type:"p", text:"También pretendían explorar el concepto de \"privacidad por diseño\" y analizar si la seguridad puede sacrificarse por presión económica o rapidez en el desarrollo."},
+      {type:"h3", text:"Ideas más repetidas por los estudiantes"},
+      {type:"p", text:"La expresión más recurrente fue que la privacidad debe integrarse desde el inicio del desarrollo de software. La mayoría definió la privacidad por diseño como la incorporación de medidas de protección desde las primeras etapas de creación del sistema."},
+      {type:"p", text:"Las respuestas también resaltan:"},
+      {type:"list", items:["Uso de cifrado.","Minimización de datos.","Restricción del acceso a información sensible.","Aplicación de buenas prácticas de seguridad.","Diseño centrado en la protección del usuario."]},
+      {type:"p", text:"Otro consenso importante fue que implementar sistemas con vulnerabilidades conocidas no es éticamente justificable, incluso bajo presión de plazos de entrega."},
+      {type:"h3", text:"Preocupaciones éticas comunes"},
+      {type:"list", items:["Exposición de datos sensibles.","Vigilancia masiva.","Uso indebido de plataformas tecnológicas.","Priorización de velocidad sobre seguridad.","Recolección excesiva de información."]},
+      {type:"h3", text:"Diferencias de opinión"},
+      {type:"p", text:"No hubo desacuerdos relevantes respecto a la importancia de la privacidad. Sin embargo, algunos estudiantes enfatizaron más la responsabilidad individual del profesional, mientras otros señalaron la necesidad de apoyo institucional y empresarial."},
+      {type:"h3", text:"Valores predominantes"},
+      {type:"list", items:["Protección de derechos.","Seguridad.","Responsabilidad profesional.","Respeto por la privacidad.","Prevención del daño."]},
+      {type:"h3", text:"Conclusión"},
+      {type:"p", text:"Los estudiantes entienden la privacidad como un derecho fundamental y no como una característica opcional. Existe una fuerte conciencia sobre la necesidad de diseñar tecnologías seguras desde el principio y sobre la responsabilidad ética de proteger la información de los usuarios incluso cuando las empresas priorizan intereses comerciales."},
+
+      {type:"h2", text:"3. Responsabilidad social del ingeniero"},
+      {type:"h3", text:"Propósito de las preguntas"},
+      {type:"p", text:"Estas preguntas buscaban reflexionar sobre el impacto social de la ingeniería y sobre la responsabilidad del profesional frente a personas y comunidades desconocidas."},
+      {type:"p", text:"También pretendían analizar el papel del ingeniero como actor social y no únicamente técnico."},
+      {type:"h3", text:"Ideas más repetidas por los estudiantes"},
+      {type:"p", text:"La mayoría afirmó que el ingeniero sí tiene responsabilidad sobre usuarios que nunca conocerá. Se repitió constantemente la idea de que la tecnología tiene alcance global y puede afectar miles o millones de personas."},
+      {type:"p", text:"Los estudiantes señalaron que:"},
+      {type:"list", items:["Las decisiones tecnológicas afectan oportunidades, inclusión y derechos.","Un sistema mal diseñado puede excluir usuarios.","El impacto de la ingeniería trasciende fronteras.","El bienestar de los usuarios debe priorizarse."]},
+      {type:"p", text:"También apareció la idea de que el ingeniero puede influir en políticas digitales mediante participación crítica, promoción de acceso equitativo y defensa de buenas prácticas."},
+      {type:"h3", text:"Preocupaciones éticas comunes"},
+      {type:"list", items:["Exclusión digital.","Desigualdad tecnológica.","Impacto masivo de decisiones técnicas.","Daños invisibles a comunidades lejanas.","Uso irresponsable de plataformas digitales."]},
+      {type:"h3", text:"Diferencias de opinión"},
+      {type:"p", text:"No se encontraron desacuerdos importantes. La mayoría comparte una visión amplia de la responsabilidad social del ingeniero."},
+      {type:"h3", text:"Valores predominantes"},
+      {type:"list", items:["Empatía.","Compromiso social.","Inclusión.","Solidaridad.","Conciencia global."]},
+      {type:"h3", text:"Conclusión"},
+      {type:"p", text:"Las respuestas muestran que los estudiantes perciben la ingeniería como una profesión profundamente conectada con la sociedad. Existe una comprensión clara de que diseñar tecnología implica asumir consecuencias humanas y considerar el bienestar colectivo más allá de los objetivos técnicos."},
+
+      {type:"h2", text:"4. Presión empresarial y ética profesional"},
+      {type:"h3", text:"Propósito de las preguntas"},
+      {type:"p", text:"El objetivo fue analizar cómo actúan los profesionales cuando las metas económicas de las empresas entran en conflicto con principios éticos."},
+      {type:"p", text:"También se buscaba explorar la capacidad de los ingenieros para resistir prácticas manipuladoras o dañinas."},
+      {type:"h3", text:"Ideas más repetidas por los estudiantes"},
+      {type:"p", text:"La mayoría sostuvo que el profesional debe priorizar el bienestar de los usuarios incluso bajo presión empresarial."},
+      {type:"p", text:"Las respuestas muestran varias estrategias recurrentes:"},
+      {type:"list", items:["Dialogar con el equipo o superiores.","Expresar preocupaciones éticas.","Buscar alternativas más transparentes.","Reportar prácticas dañinas.","Promover soluciones internas."]},
+      {type:"p", text:"También fue frecuente la idea de que sí es posible construir tecnología ética dentro de empresas, aunque requiere compromiso organizacional y cultura ética."},
+      {type:"h3", text:"Preocupaciones éticas comunes"},
+      {type:"list", items:["Manipulación de usuarios.","Presión por resultados económicos.","Normalización de prácticas poco éticas.","Vulnerabilidades implementadas por rapidez.","Falta de apoyo institucional."]},
+      {type:"h3", text:"Diferencias de opinión"},
+      {type:"p", text:"Algunos estudiantes consideran que el diálogo interno puede ser suficiente, mientras otros sugieren una posición más crítica frente a empresas que operan en vacíos legales."},
+      {type:"p", text:"También existen diferencias respecto al optimismo sobre la posibilidad real de mantener principios éticos dentro de grandes corporaciones."},
+      {type:"h3", text:"Valores predominantes"},
+      {type:"list", items:["Integridad.","Responsabilidad.","Transparencia.","Valentía profesional.","Compromiso ético."]},
+      {type:"h3", text:"Conclusión"},
+      {type:"p", text:"Los estudiantes reconocen que la presión empresarial es uno de los mayores desafíos éticos de la ingeniería actual. Sin embargo, también consideran que el profesional conserva responsabilidad individual y capacidad de actuar críticamente frente a decisiones corporativas dañinas."},
+
+      {type:"h2", text:"5. Inteligencia artificial y códigos éticos"},
+      {type:"h3", text:"Propósito de las preguntas"},
+      {type:"p", text:"Las preguntas sobre inteligencia artificial buscaban reflexionar sobre la necesidad de marcos éticos específicos para tecnologías capaces de influir directamente en decisiones humanas."},
+      {type:"h3", text:"Ideas más repetidas por los estudiantes"},
+      {type:"p", text:"Existe un consenso casi total sobre la necesidad de un código ético específico para inteligencia artificial."},
+      {type:"p", text:"Los principios más mencionados fueron:"},
+      {type:"list", items:["Transparencia.","Equidad.","No discriminación.","Protección de derechos.","Responsabilidad.","Privacidad."]},
+      {type:"p", text:"Los estudiantes perciben la IA como una tecnología con enorme capacidad de impacto social y potencial para generar discriminación, manipulación o abuso."},
+      {type:"h3", text:"Preocupaciones éticas comunes"},
+      {type:"list", items:["Sesgos algorítmicos.","Discriminación automatizada.","Falta de transparencia.","Influencia sobre decisiones humanas.","Uso irresponsable de datos."]},
+      {type:"h3", text:"Diferencias de opinión"},
+      {type:"p", text:"No hubo desacuerdos importantes sobre la necesidad de regulación ética. Las diferencias aparecen más en el énfasis de ciertos principios específicos."},
+      {type:"h3", text:"Valores predominantes"},
+      {type:"list", items:["Justicia.","Transparencia.","Protección de derechos humanos.","Responsabilidad tecnológica.","Equidad."]},
+      {type:"h3", text:"Conclusión"},
+      {type:"p", text:"Las respuestas muestran una percepción crítica y preventiva frente a la inteligencia artificial. Los estudiantes consideran que la IA requiere normas éticas más estrictas debido a su capacidad para influir en la vida de las personas y amplificar desigualdades existentes."},
+
+      {type:"h2", text:"6. Rol de la universidad en la formación ética"},
+      {type:"h3", text:"Propósito de las preguntas"},
+      {type:"p", text:"Estas preguntas buscaban analizar cuál debe ser el papel de la universidad en la formación integral de futuros ingenieros."},
+      {type:"h3", text:"Ideas más repetidas por los estudiantes"},
+      {type:"p", text:"La mayoría considera que la universidad no debe enfocarse únicamente en conocimientos técnicos."},
+      {type:"p", text:"Los estudiantes creen que la formación universitaria debe incluir:"},
+      {type:"list", items:["Ética profesional.","Responsabilidad social.","Pensamiento crítico.","Conciencia del impacto humano de la tecnología.","Reflexión sobre consecuencias sociales."]},
+      {type:"p", text:"También aparece la idea de que la universidad debe preparar profesionales capaces de cuestionar decisiones corporativas y tecnológicas."},
+      {type:"h3", text:"Preocupaciones éticas comunes"},
+      {type:"list", items:["Formación excesivamente técnica.","Falta de sensibilidad social.","Desconexión entre ingeniería y sociedad.","Ausencia de pensamiento crítico."]},
+      {type:"h3", text:"Diferencias de opinión"},
+      {type:"p", text:"No hubo diferencias relevantes. Existe amplio consenso sobre la responsabilidad ética de las instituciones educativas."},
+      {type:"h3", text:"Valores predominantes"},
+      {type:"list", items:["Formación integral.","Responsabilidad social.","Pensamiento crítico.","Conciencia profesional.","Compromiso ciudadano."]},
+      {type:"h3", text:"Conclusión"},
+      {type:"p", text:"Las respuestas muestran que los estudiantes esperan una educación que combine conocimiento técnico con formación humana. La universidad es vista como un espacio fundamental para desarrollar conciencia ética y preparar ingenieros capaces de enfrentar dilemas sociales complejos."},
+
+      {type:"h2", text:"7. Accesibilidad, inclusión y tecnología para todos"},
+      {type:"h3", text:"Propósito de las preguntas"},
+      {type:"p", text:"Las preguntas relacionadas con accesibilidad buscaban analizar si el desarrollo tecnológico debe considerar desigualdades económicas, sociales y técnicas."},
+      {type:"h3", text:"Ideas más repetidas por los estudiantes"},
+      {type:"p", text:"Los estudiantes destacaron que el desarrollo tecnológico debe evitar excluir personas."},
+      {type:"p", text:"Los criterios éticos más mencionados fueron:"},
+      {type:"list", items:["Accesibilidad.","Inclusión.","Compatibilidad con diferentes dispositivos.","Bajo consumo de recursos.","Acceso equitativo."]},
+      {type:"p", text:"También se percibe la inclusión digital como una responsabilidad ética del ingeniero."},
+      {type:"h3", text:"Preocupaciones éticas comunes"},
+      {type:"list", items:["Exclusión por limitaciones económicas.","Barreras tecnológicas.","Brechas digitales.","Diseño centrado solo en ciertos usuarios."]},
+      {type:"h3", text:"Diferencias de opinión"},
+      {type:"p", text:"No se observaron desacuerdos importantes."},
+      {type:"h3", text:"Valores predominantes"},
+      {type:"list", items:["Inclusión.","Equidad.","Acceso democrático.","Justicia social.","Solidaridad tecnológica."]},
+      {type:"h3", text:"Conclusión"},
+      {type:"p", text:"Las respuestas reflejan una preocupación clara por el acceso equitativo a la tecnología. Los estudiantes consideran que la ingeniería debe contribuir a reducir brechas digitales y construir herramientas accesibles para distintos contextos sociales."},
+
+      {type:"h2", text:"8. Software libre y compromiso social"},
+      {type:"h3", text:"Propósito de las preguntas"},
+      {type:"p", text:"Estas preguntas buscaban analizar si el software libre representa únicamente una práctica técnica o también una postura ética."},
+      {type:"h3", text:"Ideas más repetidas por los estudiantes"},
+      {type:"p", text:"La mayoría considera que la contribución al software libre es tanto ética como técnica."},
+      {type:"p", text:"Las razones más mencionadas fueron:"},
+      {type:"list", items:["Compartir conocimiento.","Promover colaboración.","Facilitar acceso al aprendizaje.","Beneficiar a la comunidad tecnológica.","Impulsar innovación colectiva."]},
+      {type:"h3", text:"Preocupaciones éticas comunes"},
+      {type:"list", items:["Acceso desigual al conocimiento.","Dependencia tecnológica.","Restricción de información."]},
+      {type:"h3", text:"Diferencias de opinión"},
+      {type:"p", text:"No hubo diferencias importantes. El consenso fue muy amplio."},
+      {type:"h3", text:"Valores predominantes"},
+      {type:"list", items:["Colaboración.","Solidaridad.","Conocimiento abierto.","Comunidad.","Innovación compartida."]},
+      {type:"h3", text:"Conclusión"},
+      {type:"p", text:"Los estudiantes entienden el software libre no solo como una herramienta técnica sino como una práctica alineada con valores de colaboración, democratización del conocimiento y beneficio colectivo."},
+
+      {type:"h2", text:"9. Relaciones humanas en entornos digitales"},
+      {type:"h3", text:"Propósito de las preguntas"},
+      {type:"p", text:"Estas preguntas pretendían reflexionar sobre cómo mantener relaciones auténticas en contextos mediados por plataformas digitales y algoritmos."},
+      {type:"h3", text:"Ideas más repetidas por los estudiantes"},
+      {type:"p", text:"La mayoría destacó la importancia de:"},
+      {type:"list", items:["Empatía.","Comunicación honesta.","Respeto.","Transparencia.","Escucha activa."]},
+      {type:"p", text:"Los estudiantes consideran que la tecnología no debe eliminar la dimensión humana de las relaciones profesionales."},
+      {type:"h3", text:"Preocupaciones éticas comunes"},
+      {type:"list", items:["Deshumanización de la comunicación.","Dependencia de algoritmos.","Relaciones superficiales.","Pérdida de empatía."]},
+      {type:"h3", text:"Diferencias de opinión"},
+      {type:"p", text:"No se identificaron desacuerdos importantes."},
+      {type:"h3", text:"Valores predominantes"},
+      {type:"list", items:["Empatía.","Honestidad.","Respeto.","Humanización de la tecnología."]},
+      {type:"h3", text:"Conclusión"},
+      {type:"p", text:"Las respuestas muestran que los estudiantes valoran la dimensión humana de la ingeniería y consideran que las relaciones digitales deben seguir guiadas por principios éticos y comunicación auténtica."},
+
+      {type:"h2", text:"Síntesis global final"},
+      {type:"h3", text:"¿Qué visión tienen los estudiantes sobre la ética en ingeniería?"},
+      {type:"p", text:"Los estudiantes conciben la ética como una dimensión inseparable de la práctica profesional. Para ellos, el ingeniero no solo desarrolla sistemas, sino que toma decisiones con consecuencias sociales profundas."},
+      {type:"p", text:"La ética es entendida como una responsabilidad activa que exige reflexión personal, pensamiento crítico y compromiso con el bienestar colectivo."},
+      {type:"h3", text:"¿Qué preocupaciones aparecen con más frecuencia?"},
+      {type:"p", text:"Las preocupaciones más recurrentes fueron:"},
+      {type:"list", items:["Protección de datos y privacidad.","Manipulación de usuarios.","Uso irresponsable de inteligencia artificial.","Presión empresarial.","Vigilancia digital.","Exclusión tecnológica.","Vulnerabilidades de seguridad.","Uso de vacíos legales."]},
+      {type:"h3", text:"¿Qué relación encuentran entre tecnología y responsabilidad social?"},
+      {type:"p", text:"Los estudiantes consideran que toda tecnología produce impactos sociales. Por eso, creen que la ingeniería debe orientarse hacia la protección de derechos, la inclusión y el bienestar humano."},
+      {type:"p", text:"La tecnología aparece no solo como herramienta técnica, sino como un elemento capaz de transformar la vida de personas y comunidades."},
+      {type:"h3", text:"¿Qué desafíos éticos consideran más importantes?"},
+      {type:"p", text:"Los desafíos más relevantes identificados son:"},
+      {type:"list", items:["Mantener principios éticos bajo presión económica.","Diseñar sistemas seguros y transparentes.","Evitar discriminación algorítmica.","Proteger la privacidad.","Construir tecnologías inclusivas.","Resistir prácticas manipuladoras.","Actuar responsablemente en vacíos legales."]},
+      {type:"h3", text:"¿Qué conclusiones podrían usarse para un video educativo universitario?"},
+      {type:"list", items:["La ética tecnológica no puede reducirse al cumplimiento legal.","Las decisiones de ingeniería afectan personas reales.","La privacidad debe integrarse desde el diseño.","La inteligencia artificial requiere responsabilidad especial.","La universidad debe formar ingenieros críticos y conscientes.","La tecnología ética necesita compromiso individual y colectivo.","La inclusión digital es parte de la responsabilidad social.","El ingeniero debe equilibrar innovación y protección humana."]},
+
+      {type:"h2", text:"Resumen ejecutivo (10 puntos)"},
+      {type:"list", items:[
+        "1. Los estudiantes consideran que cumplir la ley no garantiza actuar éticamente.",
+        "2. Existe una fuerte preocupación por privacidad, vigilancia y uso de datos personales.",
+        "3. La \"privacidad por diseño\" es vista como un estándar mínimo indispensable.",
+        "4. Se reconoce que las decisiones tecnológicas impactan comunidades globales.",
+        "5. La presión empresarial aparece como uno de los mayores retos éticos.",
+        "6. Hay consenso sobre la necesidad de códigos éticos específicos para inteligencia artificial.",
+        "7. La universidad es vista como responsable de formar profesionales con conciencia social.",
+        "8. La accesibilidad y la inclusión digital son consideradas obligaciones éticas.",
+        "9. El software libre es entendido como una práctica tanto técnica como socialmente valiosa.",
+        "10. La ética profesional es percibida como una convicción personal más allá de reglas formales."
+      ]},
+
+      {type:"h2", text:"Posible narrativa para un video educativo (2 a 4 minutos)"},
+      {type:"p", text:"La tecnología está presente en casi todos los aspectos de la vida moderna. Cada aplicación, algoritmo o sistema digital es resultado de decisiones tomadas por ingenieros y desarrolladores. Pero detrás de cada decisión técnica también existen consecuencias humanas."},
+      {type:"p", text:"Las reflexiones de los estudiantes muestran una preocupación creciente por temas como la privacidad, la seguridad y el uso ético de la inteligencia artificial. Para ellos, cumplir la ley no siempre significa actuar correctamente. Muchas prácticas digitales pueden ser legales y aun así perjudicar a las personas."},
+      {type:"p", text:"Uno de los temas más repetidos fue la importancia de diseñar sistemas pensando en la protección de datos desde el inicio. La llamada \"privacidad por diseño\" aparece como un principio esencial en el desarrollo tecnológico responsable."},
+      {type:"p", text:"También surge una preocupación importante frente a la presión empresarial. Los estudiantes reconocen que muchas veces las empresas priorizan resultados económicos, velocidad o crecimiento, incluso cuando eso puede afectar a los usuarios. Sin embargo, consideran que el profesional debe mantener criterios éticos y defender el bienestar de las personas."},
+      {type:"p", text:"La inteligencia artificial representa otro gran desafío. Los estudiantes creen que estas tecnologías necesitan reglas éticas claras para evitar discriminación, manipulación y abuso de poder."},
+      {type:"p", text:"Además, las respuestas reflejan una visión social de la ingeniería. Los futuros profesionales consideran que deben pensar en usuarios que nunca conocerán y diseñar tecnologías inclusivas, accesibles y seguras."},
+      {type:"p", text:"Finalmente, aparece una idea central: la ingeniería no es solamente una disciplina técnica. Es también una profesión con responsabilidad humana y social."},
+
+      {type:"h2", text:"Mensaje final reflexivo"},
+      {type:"p", text:"En la sociedad digital, el ingeniero no solo construye sistemas: también construye formas de interacción, acceso, poder y confianza. Cada decisión técnica puede proteger derechos o vulnerarlos, incluir personas o excluirlas, fortalecer la transparencia o facilitar el abuso."},
+      {type:"p", text:"Por eso, la ética en ingeniería no debe entenderse como una obligación externa, sino como una convicción profesional orientada al bienestar colectivo. En un mundo donde la tecnología influye cada vez más en la vida cotidiana, el verdadero desafío no es únicamente desarrollar sistemas más avanzados, sino construir tecnologías más humanas, responsables y justas."}
     ]
   }
 ];
@@ -1946,6 +2365,215 @@ const SVGS = {
       <text x="555" y="186" text-anchor="middle" font-size="8.5" fill="#1a4a7a">sin importar la relación</text>
       <text x="555" y="198" text-anchor="middle" font-size="8.5" fill="#1a4a7a">personal o laboral</text>
     </svg>`
+  },
+
+  /* ── DIAGRAM 9: Los 5 códigos éticos — pentágono (art. 5) ── */
+  "svg-cinco-codigos": {
+    title: "Los cinco pilares éticos de la informática",
+    svg: `<svg viewBox="0 0 680 360" xmlns="http://www.w3.org/2000/svg" font-family="'Source Serif 4', Georgia, serif">
+      <defs>
+        <radialGradient id="gNucleo" cx="50%" cy="50%" r="55%">
+          <stop offset="0%" stop-color="#1a4a7a"/><stop offset="100%" stop-color="#0d3656"/>
+        </radialGradient>
+      </defs>
+      <!-- Connector lines from center to each vertex -->
+      <g stroke="#4a9ec0" stroke-width="1.2" stroke-dasharray="4 3" opacity=".6">
+        <line x1="340" y1="180" x2="340" y2="60"/>
+        <line x1="340" y1="180" x2="538" y2="135"/>
+        <line x1="340" y1="180" x2="463" y2="305"/>
+        <line x1="340" y1="180" x2="217" y2="305"/>
+        <line x1="340" y1="180" x2="142" y2="135"/>
+      </g>
+      <!-- Central node -->
+      <circle cx="340" cy="180" r="46" fill="url(#gNucleo)" stroke="#4a9ec0" stroke-width="2"/>
+      <text x="340" y="173" text-anchor="middle" font-size="10" font-weight="700" fill="white">ÉTICA</text>
+      <text x="340" y="187" text-anchor="middle" font-size="10" font-weight="700" fill="white">EN LA</text>
+      <text x="340" y="201" text-anchor="middle" font-size="10" font-weight="700" fill="white">INFORMÁTICA</text>
+      <!-- Vertex 1: Privacidad (top) -->
+      <circle cx="340" cy="60" r="38" fill="rgba(26,74,122,.85)" stroke="#4a9ec0" stroke-width="1.6"/>
+      <text x="340" y="50" text-anchor="middle" font-size="11" font-weight="800" fill="#6FE3FF">1</text>
+      <text x="340" y="66" text-anchor="middle" font-size="8.5" font-weight="700" fill="white">Privacidad</text>
+      <text x="340" y="78" text-anchor="middle" font-size="8.5" font-weight="700" fill="white">de datos</text>
+      <!-- Vertex 2: Honestidad (top-right) -->
+      <circle cx="538" cy="135" r="38" fill="rgba(13,110,110,.85)" stroke="#4a9ec0" stroke-width="1.6"/>
+      <text x="538" y="125" text-anchor="middle" font-size="11" font-weight="800" fill="#6FE3FF">2</text>
+      <text x="538" y="141" text-anchor="middle" font-size="8.5" font-weight="700" fill="white">Honestidad</text>
+      <text x="538" y="153" text-anchor="middle" font-size="8.5" font-weight="700" fill="white">en el software</text>
+      <!-- Vertex 3: Uso responsable (bottom-right) -->
+      <circle cx="463" cy="305" r="38" fill="rgba(26,74,122,.85)" stroke="#4a9ec0" stroke-width="1.6"/>
+      <text x="463" y="295" text-anchor="middle" font-size="11" font-weight="800" fill="#6FE3FF">3</text>
+      <text x="463" y="311" text-anchor="middle" font-size="8.5" font-weight="700" fill="white">Uso</text>
+      <text x="463" y="323" text-anchor="middle" font-size="8.5" font-weight="700" fill="white">responsable</text>
+      <!-- Vertex 4: Propiedad intelectual (bottom-left) -->
+      <circle cx="217" cy="305" r="38" fill="rgba(13,110,110,.85)" stroke="#4a9ec0" stroke-width="1.6"/>
+      <text x="217" y="295" text-anchor="middle" font-size="11" font-weight="800" fill="#6FE3FF">4</text>
+      <text x="217" y="311" text-anchor="middle" font-size="8.5" font-weight="700" fill="white">Propiedad</text>
+      <text x="217" y="323" text-anchor="middle" font-size="8.5" font-weight="700" fill="white">intelectual</text>
+      <!-- Vertex 5: Bienestar común (top-left) -->
+      <circle cx="142" cy="135" r="38" fill="rgba(26,74,122,.85)" stroke="#4a9ec0" stroke-width="1.6"/>
+      <text x="142" y="125" text-anchor="middle" font-size="11" font-weight="800" fill="#6FE3FF">5</text>
+      <text x="142" y="141" text-anchor="middle" font-size="8.5" font-weight="700" fill="white">Compromiso</text>
+      <text x="142" y="153" text-anchor="middle" font-size="8.5" font-weight="700" fill="white">con la sociedad</text>
+    </svg>`
+  },
+
+  /* ── DIAGRAM 10: Del código ético a la acción concreta (art. 5) ── */
+  "svg-codigos-accion": {
+    title: "Del principio ético a la práctica profesional",
+    svg: `<svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" font-family="'Source Serif 4', Georgia, serif">
+      <!-- Header bar -->
+      <rect x="30" y="20" width="200" height="32" rx="4" fill="#1a4a7a"/>
+      <rect x="240" y="20" width="200" height="32" rx="4" fill="#0d6e6e"/>
+      <rect x="450" y="20" width="200" height="32" rx="4" fill="#1a4a7a"/>
+      <text x="130" y="41" text-anchor="middle" font-size="11" font-weight="700" fill="white">Código ético</text>
+      <text x="340" y="41" text-anchor="middle" font-size="11" font-weight="700" fill="white">Práctica que lo viola</text>
+      <text x="550" y="41" text-anchor="middle" font-size="11" font-weight="700" fill="white">Práctica que lo honra</text>
+      <!-- Row 1: Privacidad -->
+      <rect x="30" y="60" width="200" height="40" rx="3" fill="rgba(26,74,122,.10)" stroke="#dde5f5" stroke-width="1"/>
+      <rect x="240" y="60" width="200" height="40" rx="3" fill="rgba(180,60,60,.08)" stroke="#dde5f5" stroke-width="1"/>
+      <rect x="450" y="60" width="200" height="40" rx="3" fill="rgba(13,110,110,.08)" stroke="#dde5f5" stroke-width="1"/>
+      <text x="130" y="78" text-anchor="middle" font-size="10" font-weight="700" fill="#1a4a7a">Privacidad</text>
+      <text x="130" y="92" text-anchor="middle" font-size="8.5" fill="#3a5a8a">de los usuarios</text>
+      <text x="340" y="78" text-anchor="middle" font-size="9" fill="#a04040">Vender datos sin</text>
+      <text x="340" y="90" text-anchor="middle" font-size="9" fill="#a04040">consentimiento</text>
+      <text x="550" y="78" text-anchor="middle" font-size="9" fill="#1a6a5a">Cifrar, minimizar y</text>
+      <text x="550" y="90" text-anchor="middle" font-size="9" fill="#1a6a5a">pedir autorización</text>
+      <!-- Row 2: Honestidad -->
+      <rect x="30" y="106" width="200" height="40" rx="3" fill="rgba(26,74,122,.10)" stroke="#dde5f5" stroke-width="1"/>
+      <rect x="240" y="106" width="200" height="40" rx="3" fill="rgba(180,60,60,.08)" stroke="#dde5f5" stroke-width="1"/>
+      <rect x="450" y="106" width="200" height="40" rx="3" fill="rgba(13,110,110,.08)" stroke="#dde5f5" stroke-width="1"/>
+      <text x="130" y="124" text-anchor="middle" font-size="10" font-weight="700" fill="#1a4a7a">Honestidad</text>
+      <text x="130" y="138" text-anchor="middle" font-size="8.5" fill="#3a5a8a">en el desarrollo</text>
+      <text x="340" y="124" text-anchor="middle" font-size="9" fill="#a04040">Ocultar fallas</text>
+      <text x="340" y="136" text-anchor="middle" font-size="9" fill="#a04040">para entregar a tiempo</text>
+      <text x="550" y="124" text-anchor="middle" font-size="9" fill="#1a6a5a">Reportar bugs y</text>
+      <text x="550" y="136" text-anchor="middle" font-size="9" fill="#1a6a5a">limitaciones reales</text>
+      <!-- Row 3: Uso responsable -->
+      <rect x="30" y="152" width="200" height="40" rx="3" fill="rgba(26,74,122,.10)" stroke="#dde5f5" stroke-width="1"/>
+      <rect x="240" y="152" width="200" height="40" rx="3" fill="rgba(180,60,60,.08)" stroke="#dde5f5" stroke-width="1"/>
+      <rect x="450" y="152" width="200" height="40" rx="3" fill="rgba(13,110,110,.08)" stroke="#dde5f5" stroke-width="1"/>
+      <text x="130" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="#1a4a7a">Uso responsable</text>
+      <text x="130" y="184" text-anchor="middle" font-size="8.5" fill="#3a5a8a">de la tecnología</text>
+      <text x="340" y="170" text-anchor="middle" font-size="9" fill="#a04040">Crear malware,</text>
+      <text x="340" y="182" text-anchor="middle" font-size="9" fill="#a04040">fraudes o phishing</text>
+      <text x="550" y="170" text-anchor="middle" font-size="9" fill="#1a6a5a">Apps educativas,</text>
+      <text x="550" y="182" text-anchor="middle" font-size="9" fill="#1a6a5a">médicas o de apoyo</text>
+      <!-- Row 4: Propiedad intelectual -->
+      <rect x="30" y="198" width="200" height="40" rx="3" fill="rgba(26,74,122,.10)" stroke="#dde5f5" stroke-width="1"/>
+      <rect x="240" y="198" width="200" height="40" rx="3" fill="rgba(180,60,60,.08)" stroke="#dde5f5" stroke-width="1"/>
+      <rect x="450" y="198" width="200" height="40" rx="3" fill="rgba(13,110,110,.08)" stroke="#dde5f5" stroke-width="1"/>
+      <text x="130" y="216" text-anchor="middle" font-size="10" font-weight="700" fill="#1a4a7a">Propiedad</text>
+      <text x="130" y="230" text-anchor="middle" font-size="8.5" fill="#3a5a8a">intelectual</text>
+      <text x="340" y="216" text-anchor="middle" font-size="9" fill="#a04040">Copiar código y</text>
+      <text x="340" y="228" text-anchor="middle" font-size="9" fill="#a04040">presentarlo como propio</text>
+      <text x="550" y="216" text-anchor="middle" font-size="9" fill="#1a6a5a">Citar fuentes,</text>
+      <text x="550" y="228" text-anchor="middle" font-size="9" fill="#1a6a5a">licencias y autores</text>
+      <!-- Row 5: Compromiso social -->
+      <rect x="30" y="244" width="200" height="30" rx="3" fill="rgba(26,74,122,.10)" stroke="#dde5f5" stroke-width="1"/>
+      <rect x="240" y="244" width="200" height="30" rx="3" fill="rgba(180,60,60,.08)" stroke="#dde5f5" stroke-width="1"/>
+      <rect x="450" y="244" width="200" height="30" rx="3" fill="rgba(13,110,110,.08)" stroke="#dde5f5" stroke-width="1"/>
+      <text x="130" y="263" text-anchor="middle" font-size="10" font-weight="700" fill="#1a4a7a">Compromiso social</text>
+      <text x="340" y="263" text-anchor="middle" font-size="9" fill="#a04040">Excluir a adultos mayores</text>
+      <text x="550" y="263" text-anchor="middle" font-size="9" fill="#1a6a5a">Diseño accesible para todos</text>
+    </svg>`
+  },
+
+  /* ── DIAGRAM 11: Las 5 conclusiones propositivas — círculo (art. 6) ── */
+  "svg-cinco-conclusiones": {
+    title: "Cinco compromisos para una informática con propósito",
+    svg: `<svg viewBox="0 0 680 360" xmlns="http://www.w3.org/2000/svg" font-family="'Source Serif 4', Georgia, serif">
+      <defs>
+        <radialGradient id="gBrujula" cx="50%" cy="50%" r="55%">
+          <stop offset="0%" stop-color="#0d6e6e"/><stop offset="100%" stop-color="#0a3a52"/>
+        </radialGradient>
+      </defs>
+      <!-- Outer ring -->
+      <circle cx="340" cy="180" r="135" fill="none" stroke="#4a9ec0" stroke-width="1" stroke-dasharray="3 4" opacity=".55"/>
+      <!-- Center node -->
+      <circle cx="340" cy="180" r="56" fill="url(#gBrujula)" stroke="#4a9ec0" stroke-width="2"/>
+      <text x="340" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="white">COMPROMISO</text>
+      <text x="340" y="184" text-anchor="middle" font-size="10" font-weight="700" fill="white">PROFESIONAL</text>
+      <text x="340" y="200" text-anchor="middle" font-size="9" fill="#6FE3FF">5 propuestas</text>
+      <!-- 1. Ética integrada (top) -->
+      <circle cx="340" cy="45" r="34" fill="rgba(26,74,122,.85)" stroke="#4a9ec0" stroke-width="1.6"/>
+      <text x="340" y="40" text-anchor="middle" font-size="11" font-weight="800" fill="#6FE3FF">1</text>
+      <text x="340" y="54" text-anchor="middle" font-size="8" font-weight="700" fill="white">Ética</text>
+      <text x="340" y="66" text-anchor="middle" font-size="8" font-weight="700" fill="white">integrada</text>
+      <line x1="340" y1="79" x2="340" y2="124" stroke="#4a9ec0" stroke-width="1.2" stroke-dasharray="2 3"/>
+      <!-- 2. Formación con conciencia (top-right) -->
+      <circle cx="560" cy="115" r="34" fill="rgba(13,110,110,.85)" stroke="#4a9ec0" stroke-width="1.6"/>
+      <text x="560" y="110" text-anchor="middle" font-size="11" font-weight="800" fill="#6FE3FF">2</text>
+      <text x="560" y="124" text-anchor="middle" font-size="8" font-weight="700" fill="white">Formación</text>
+      <text x="560" y="136" text-anchor="middle" font-size="8" font-weight="700" fill="white">con conciencia</text>
+      <line x1="528" y1="125" x2="395" y2="170" stroke="#4a9ec0" stroke-width="1.2" stroke-dasharray="2 3"/>
+      <!-- 3. Transparencia (bottom-right) -->
+      <circle cx="520" cy="295" r="34" fill="rgba(26,74,122,.85)" stroke="#4a9ec0" stroke-width="1.6"/>
+      <text x="520" y="290" text-anchor="middle" font-size="11" font-weight="800" fill="#6FE3FF">3</text>
+      <text x="520" y="304" text-anchor="middle" font-size="8" font-weight="700" fill="white">Transparencia</text>
+      <text x="520" y="316" text-anchor="middle" font-size="8" font-weight="700" fill="white">diaria</text>
+      <line x1="494" y1="278" x2="385" y2="210" stroke="#4a9ec0" stroke-width="1.2" stroke-dasharray="2 3"/>
+      <!-- 4. Diseño inclusivo (bottom-left) -->
+      <circle cx="160" cy="295" r="34" fill="rgba(13,110,110,.85)" stroke="#4a9ec0" stroke-width="1.6"/>
+      <text x="160" y="290" text-anchor="middle" font-size="11" font-weight="800" fill="#6FE3FF">4</text>
+      <text x="160" y="304" text-anchor="middle" font-size="8" font-weight="700" fill="white">Diseño</text>
+      <text x="160" y="316" text-anchor="middle" font-size="8" font-weight="700" fill="white">inclusivo</text>
+      <line x1="186" y1="278" x2="295" y2="210" stroke="#4a9ec0" stroke-width="1.2" stroke-dasharray="2 3"/>
+      <!-- 5. Comunidad ética (top-left) -->
+      <circle cx="120" cy="115" r="34" fill="rgba(26,74,122,.85)" stroke="#4a9ec0" stroke-width="1.6"/>
+      <text x="120" y="110" text-anchor="middle" font-size="11" font-weight="800" fill="#6FE3FF">5</text>
+      <text x="120" y="124" text-anchor="middle" font-size="8" font-weight="700" fill="white">Comunidad</text>
+      <text x="120" y="136" text-anchor="middle" font-size="8" font-weight="700" fill="white">ética</text>
+      <line x1="152" y1="125" x2="285" y2="170" stroke="#4a9ec0" stroke-width="1.2" stroke-dasharray="2 3"/>
+    </svg>`
+  },
+
+  /* ── DIAGRAM 12: Del diagnóstico al compromiso — timeline (art. 6) ── */
+  "svg-diagnostico-compromiso": {
+    title: "Del diagnóstico al compromiso: una ruta práctica",
+    svg: `<svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" font-family="'Source Serif 4', Georgia, serif">
+      <!-- Horizontal arrow -->
+      <defs>
+        <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#1a4a7a"/>
+        </marker>
+      </defs>
+      <line x1="50" y1="120" x2="630" y2="120" stroke="#1a4a7a" stroke-width="2.5" marker-end="url(#arrowHead)"/>
+      <!-- Phase 1: Diagnóstico -->
+      <circle cx="100" cy="120" r="22" fill="#1a4a7a" stroke="#4a9ec0" stroke-width="2"/>
+      <text x="100" y="125" text-anchor="middle" font-size="14" font-weight="800" fill="white">1</text>
+      <text x="100" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="#1a4a7a">DIAGNÓSTICO</text>
+      <text x="100" y="185" text-anchor="middle" font-size="8.5" fill="#3a5a8a">Observar los dilemas</text>
+      <text x="100" y="197" text-anchor="middle" font-size="8.5" fill="#3a5a8a">éticos de mi entorno</text>
+      <text x="100" y="70" text-anchor="middle" font-size="9" font-style="italic" fill="#1a6a5a">"¿Qué está pasando?"</text>
+      <!-- Phase 2: Reflexión -->
+      <circle cx="240" cy="120" r="22" fill="#0d6e6e" stroke="#4a9ec0" stroke-width="2"/>
+      <text x="240" y="125" text-anchor="middle" font-size="14" font-weight="800" fill="white">2</text>
+      <text x="240" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="#1a4a7a">REFLEXIÓN</text>
+      <text x="240" y="185" text-anchor="middle" font-size="8.5" fill="#3a5a8a">Examinar mis valores</text>
+      <text x="240" y="197" text-anchor="middle" font-size="8.5" fill="#3a5a8a">y los del entorno</text>
+      <text x="240" y="70" text-anchor="middle" font-size="9" font-style="italic" fill="#1a6a5a">"¿Qué pienso de esto?"</text>
+      <!-- Phase 3: Diálogo -->
+      <circle cx="380" cy="120" r="22" fill="#1a4a7a" stroke="#4a9ec0" stroke-width="2"/>
+      <text x="380" y="125" text-anchor="middle" font-size="14" font-weight="800" fill="white">3</text>
+      <text x="380" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="#1a4a7a">DIÁLOGO</text>
+      <text x="380" y="185" text-anchor="middle" font-size="8.5" fill="#3a5a8a">Conversar con colegas,</text>
+      <text x="380" y="197" text-anchor="middle" font-size="8.5" fill="#3a5a8a">profesores, comunidad</text>
+      <text x="380" y="70" text-anchor="middle" font-size="9" font-style="italic" fill="#1a6a5a">"¿Qué piensan otros?"</text>
+      <!-- Phase 4: Decisión -->
+      <circle cx="500" cy="120" r="22" fill="#0d6e6e" stroke="#4a9ec0" stroke-width="2"/>
+      <text x="500" y="125" text-anchor="middle" font-size="14" font-weight="800" fill="white">4</text>
+      <text x="500" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="#1a4a7a">DECISIÓN</text>
+      <text x="500" y="185" text-anchor="middle" font-size="8.5" fill="#3a5a8a">Elegir el curso de</text>
+      <text x="500" y="197" text-anchor="middle" font-size="8.5" fill="#3a5a8a">acción coherente</text>
+      <text x="500" y="70" text-anchor="middle" font-size="9" font-style="italic" fill="#1a6a5a">"¿Qué voy a hacer?"</text>
+      <!-- Phase 5: Compromiso -->
+      <circle cx="610" cy="120" r="22" fill="#1a4a7a" stroke="#4a9ec0" stroke-width="2"/>
+      <text x="610" y="125" text-anchor="middle" font-size="14" font-weight="800" fill="white">5</text>
+      <text x="610" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="#1a4a7a">COMPROMISO</text>
+      <text x="610" y="185" text-anchor="middle" font-size="8.5" fill="#3a5a8a">Actuar y sostener</text>
+      <text x="610" y="197" text-anchor="middle" font-size="8.5" fill="#3a5a8a">la práctica en el tiempo</text>
+      <text x="610" y="70" text-anchor="middle" font-size="9" font-style="italic" fill="#1a6a5a">"¿Cómo lo sostengo?"</text>
+    </svg>`
   }
 };
 
@@ -1973,6 +2601,14 @@ function renderBlocks(blocks) {
       <div class="c-reflection">
         <div class="c-reflection-title">Preguntas para la reflexión</div>
         <ul>${b.questions.map(q => `<li>${q}</li>`).join('')}</ul>
+      </div>`;
+    if (b.type === 'list') return `
+      <ul class="c-list">${b.items.map(i => `<li>${i}</li>`).join('')}</ul>`;
+    if (b.type === 'h3')   return `<h3 class="c-h3">${b.text}</h3>`;
+    if (b.type === 'qa')   return `
+      <div class="c-qa">
+        <div class="c-qa-q">${b.q}</div>
+        <div class="c-qa-a">${b.a}</div>
       </div>`;
     if (b.type === 'svg')  return svgBlock(b.id);
     if (b.type === 'refs') return `

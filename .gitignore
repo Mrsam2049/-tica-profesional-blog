@@ -1,0 +1,14 @@
+# Otros proyectos en la misma carpeta
+Laboratorio1/
+my-application-5/
+MyApplication/
+MyApplication5/
+MyApplicationsebas/
+
+# Archivos zip y documentos sueltos
+*.zip
+*.docx
+
+# Carpetas IDE
+.vscode/
+.idea/
